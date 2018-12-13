@@ -1,0 +1,9 @@
+The core libraries, which include:
+IO/NIO
+Networking
+Reflection
+Concurrency
+Generics
+Scripting/Compiler
+Functional programming (Lambda, Streaming)
+Collection libraries that implement data structures such as lists, dictionaries, trees, sets, queues and double-ended queue, or stacks

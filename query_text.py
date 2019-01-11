@@ -1,30 +1,25 @@
 import argparse
+import os
 import re
 
 import numpy as np
 import spacy
-import pandas as pd
 from scipy.spatial.distance import cosine
+
+import utils
 
 
 def get_config():
     parser = argparse.ArgumentParser()
     parser.add_argument("-v", "--vocabulary", help="Vocabulary (model) for spaCy to use", default="en_core_web_lg")
     parser.add_argument("-k", "--keywords", help="File with keywords", default="keywords.csv")
+    parser.add_argument("-e", "--keyword_embeddings", default="keyword_embeddings.pickle",
+                        help="File with keyword embeddings. If path does not exist, keyword embeddings are created "
+                             "from vocabulary model and saved to this path.")
     parser.add_argument("-t", "--text", help="Text file containing a refernce to one or more keywords",
                         default="texts/tree_1.txt")
     parser.add_argument("-c", "--context", help="Number of words in left/right context", type=int, default=3)
     return parser.parse_args()
-
-
-def get_keyword_embeddings(keywords, nlp):
-    keywords_df = pd.read_csv(keywords)
-    embeddings = {}
-    for _, row in keywords_df.iterrows():
-        keyword = row['keyword']
-        embedding = np.mean([t.vector for t in nlp(keyword)], axis=0)
-        embeddings[keyword] = embedding
-    return embeddings
 
 
 def get_top_k_closest_keywords(embedding, keyword_embeddings, k=5):
@@ -38,11 +33,11 @@ def main():
     config = get_config()
     print('Config: {}'.format(config))
     nlp = spacy.load(config.vocabulary)
-    keyword_embeddings = get_keyword_embeddings(config.keywords, nlp)
+    keyword_embeddings = utils.get_keyword_embeddings(config.keyword_embeddings, config.keywords, nlp)
     with open(config.text) as f:
         sentence = re.sub(r'[^\w\s*]', ' ', f.read().strip().lower())
 
-    print(f'Input text: {sentence}')
+    print(f'\n\033[1mInput text\033[0m: {sentence}')
     words = sentence.split()
     c = config.context
     for i, word in enumerate(words):

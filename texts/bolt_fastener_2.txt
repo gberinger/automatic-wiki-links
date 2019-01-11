@@ -1,1 +1,1 @@
-A lockbolt is a fastener similar to a bolt in appearance and function. However, instead of using screw threads which connect to a nut using a turning motion, a lockbolt has annular grooves around the shaft of the bolt (pin).
+A lockbolt is a fastener similar to a *bolt* in appearance and function. However, instead of using screw threads which connect to a nut using a turning motion, a lockbolt has annular grooves around the shaft of the bolt (pin).

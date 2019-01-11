@@ -1,12 +1,12 @@
 path,keyword,link
-texts/tree_1.txt,tree,https://en.wikipedia.org/wiki/Fruit_tree
-texts/tree_2.txt,tree,https://en.wikipedia.org/wiki/Cell_wall
+texts/tree_forest_1.txt,tree forest,https://en.wikipedia.org/wiki/Fruit_tree
+texts/tree_forest_2.txt,tree forest,https://en.wikipedia.org/wiki/Cell_wall
 texts/tree_structure_1.txt,tree structure,https://en.wikipedia.org/wiki/Genetic_programming
 texts/tree_structure_2.txt,tree structure,https://en.wikipedia.org/wiki/Java_(programming_language)
-texts/decision_tree_1.txt,decision tree,https://en.wikipedia.org/wiki/Word-sense_disambiguation
-texts/decision_tree_2.txt,decision tree,https://en.wikipedia.org/wiki/Game_complexity
-texts/mars_1.txt,mars,https://en.wikipedia.org/wiki/Astronaut
-texts/mars_2.txt,mars,https://en.wikipedia.org/wiki/Cowboy_Bebop
+texts/tree_decision_1.txt,tree decision,https://en.wikipedia.org/wiki/Word-sense_disambiguation
+texts/tree_decision_2.txt,tree decision,https://en.wikipedia.org/wiki/Game_complexity
+texts/mars_planet_1.txt,mars planet,https://en.wikipedia.org/wiki/Astronaut
+texts/mars_planet_2.txt,mars planet,https://en.wikipedia.org/wiki/Cowboy_Bebop
 texts/mars_mythology_1.txt,mars mythology,https://en.wikipedia.org/wiki/Infanticide
 texts/mars_mythology_2.txt,mars mythology,https://en.wikipedia.org/wiki/Heterosexuality
 texts/mars_chocolate_bar_1.txt,mars chocolate bar,https://en.wikipedia.org/wiki/Dinnerladies_(TV_series)

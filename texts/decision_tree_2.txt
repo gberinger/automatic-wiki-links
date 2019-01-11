@@ -1,1 +1,0 @@
-The next two measures use the idea of a decision tree, which is a subtree of the game tree, with each position labelled with "player A wins", "player B wins" or "drawn", if that position can be proved to have that value (assuming best play by both sides) by examining only other positions in the graph.

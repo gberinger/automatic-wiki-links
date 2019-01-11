@@ -40,20 +40,26 @@ def main():
     nlp = spacy.load(config.vocabulary)
     keyword_embeddings = get_keyword_embeddings(config.keywords, nlp)
     with open(config.text) as f:
-        tokens = nlp(re.sub(r'[^\w\s]', ' ', f.read().strip().lower()))
+        sentence = re.sub(r'[^\w\s*]', ' ', f.read().strip().lower())
 
-    ctx = config.context
-    for i, token in enumerate(tokens):
-        token_w_context = [t for t in tokens[max(i - ctx, 0):min(i + 1 + ctx, len(tokens))]]
-        local_word_embedding = np.mean([t.vector for t in token_w_context], axis=0)
-        top_k = get_top_k_closest_keywords(local_word_embedding, keyword_embeddings)
+    print(f'Input text: {sentence}')
+    words = sentence.split()
+    c = config.context
+    for i, word in enumerate(words):
+        if not word.startswith('*'):
+            # We only care about marked words i.e. ones with '*' on both sides of the word
+            continue
+        word = words[i] = word[1:-1]  # Remove '*' on both sides
+        word_w_context = [w for w in words[max(i - c, 0):min(i + 1 + c, len(words))]]
+        context_keyword = np.mean([nlp(w).vector for w in word_w_context], axis=0)
+        top_k = get_top_k_closest_keywords(context_keyword, keyword_embeddings)
         print("--------------------------")
         print("Index: {}".format(i))
-        print("Word: \033[1m{}\033[0m".format(token))
-        print("Context: {}".format(" ".join([t.text for t in token_w_context])))
+        print("Word: \033[1m{}\033[0m".format(word))
+        print("Context: {}".format(" ".join(word_w_context)))
         print("Closest keywords:")
         for keyword, sim in top_k:
-            print("\t{} ({})".format(keyword, sim))
+            print("\t{} ({:.6f})".format(keyword, sim))
 
 
 if __name__ == "__main__":

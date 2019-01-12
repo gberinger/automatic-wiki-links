@@ -103,7 +103,10 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-#PyCharm
+# PyCharm
 .idea/
+
+# VSCode
+.vscode/
 
 keyword_embeddings.pickle

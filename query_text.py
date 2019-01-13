@@ -12,7 +12,7 @@ def get_config():
     parser = argparse.ArgumentParser()
     parser.add_argument("-v", "--vocabulary", help="Vocabulary (model) for spaCy to use", default="en_core_web_lg")
     parser.add_argument("-k", "--keywords", help="File with keywords", default="keywords.csv")
-    parser.add_argument("-e", "--keyword_embeddings", default="keyword_embeddings.pickle",
+    parser.add_argument("-e", "--kw_embeds", default="kw_embeds.pickle",
                         help="File with keyword embeddings. If path does not exist, keyword embeddings are created "
                              "from vocabulary model and saved to this path.")
     parser.add_argument("-t", "--text", help="Text file containing a refernce to one or more keywords",
@@ -25,7 +25,7 @@ def main():
     config = get_config()
     print('Config: {}'.format(config))
     nlp = spacy.load(config.vocabulary)
-    keyword_embeddings = utils.get_keyword_embeddings(config.keyword_embeddings, config.keywords, nlp)
+    kw_embeds = utils.get_keyword_embeddings(config.kw_embeds, config.keywords, nlp)
     with open(config.text) as f:
         sentence = re.sub(r'[^\w\s*]', ' ', f.read().strip().lower())
 
@@ -39,7 +39,7 @@ def main():
         word = words[i] = word[1:-1]  # Remove '*' on both sides
         word_w_context = [w for w in words[max(i - c, 0):min(i + 1 + c, len(words))]]
         context_embedding = np.mean([nlp(w).vector for w in word_w_context], axis=0)
-        top_k = utils.get_top_k_closest_keywords(context_embedding, keyword_embeddings)
+        top_k = utils.get_top_k_closest_keywords(context_embedding, kw_embeds)
         print("--------------------------")
         print("Index: {}".format(i))
         print("Word: {}".format(utils.bold(word)))

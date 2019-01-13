@@ -12,7 +12,7 @@ def get_config():
     parser = argparse.ArgumentParser()
     parser.add_argument("-v", "--vocabulary", help="Vocabulary (model) for spaCy to use", default="en_core_web_lg")
     parser.add_argument("-k", "--keywords", help="CSV file with keywords", default="keywords.csv")
-    parser.add_argument("-e", "--keyword_embeddings", default="keyword_embeddings.pickle",
+    parser.add_argument("-e", "--kw_embeds", default="kw_embeds.pickle",
                         help="File with keyword embeddings. If path does not exist, keyword embeddings are created "
                              "from vocabulary model and saved to this path.")
     parser.add_argument("-t", "--test", help="CSV file with test texts", default="test.csv")
@@ -24,7 +24,7 @@ def main():
     config = get_config()
     print('Config: {}'.format(config))
     nlp = spacy.load(config.vocabulary)
-    keyword_embeddings = utils.get_keyword_embeddings(config.keyword_embeddings, config.keywords, nlp)
+    kw_embeds = utils.get_keyword_embeddings(config.kw_embeds, config.keywords, nlp)
     test_texts_df = pd.read_csv(config.test)
     c = config.context
 
@@ -36,22 +36,22 @@ def main():
     top5_scores_all = []
     for _, sample in test_texts_df.iterrows():
         path = sample['path']
-        keyword = sample['keyword']
+        kw = sample['keyword']
         words = utils.preprocess_text(path)
         
         i = [i for i, w in enumerate(words) if w.startswith('*')][0]  # Find position of keyword in text
         words[i] = words[i][1:-1]  # Remove '*' on both sides
         word_w_context = [w for w in words[max(i - c, 0):min(i + 1 + c, len(words))]]
-        context_embedding = np.mean([nlp(w).vector for w in word_w_context], axis=0)
-        cos_dist = utils.cos_dist(context_embedding, keyword_embeddings[keyword])
-        cos_dists[keyword].append(cos_dist)
+        ctx_embed = np.mean([nlp(w).vector for w in word_w_context], axis=0)
+        cos_dist = utils.cos_dist(ctx_embed, kw_embeds[kw])
+        cos_dists[kw].append(cos_dist)
         cos_dists_all.append(cos_dist)
         
-        top5_kws = [kw for kw, _ in utils.get_top_k_closest_keywords(context_embedding, keyword_embeddings)]
-        is_top1 = int(keyword == top5_kws[0])
-        is_top5 = int(keyword in top5_kws)
-        top1_scores[keyword].append(is_top1)
-        top5_scores[keyword].append(is_top5)
+        top5_kws = [kw for kw, _ in utils.get_top_k_closest_keywords(ctx_embed, kw_embeds)]
+        is_top1 = int(kw == top5_kws[0])
+        is_top5 = int(kw in top5_kws)
+        top1_scores[kw].append(is_top1)
+        top5_scores[kw].append(is_top5)
         top1_scores_all.append(is_top1)
         top5_scores_all.append(is_top5)
         # print('{}, {}, {}, {}, {}'.format(keyword, top5_kws, is_top1, is_top5, cos_dist))

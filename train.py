@@ -11,10 +11,10 @@ def get_config():
     parser = argparse.ArgumentParser()
     parser.add_argument("-v", "--vocabulary", help="Vocabulary (model) for spaCy to use", default="en_core_web_lg")
     parser.add_argument("-k", "--keywords", help="CSV file with keywords", default="keywords.csv")
-    parser.add_argument("-e", "--keyword_embeddings_in", default="keyword_embeddings.pickle",
+    parser.add_argument("-e", "--kw_embeds", default="kw_embeds.pickle",
                         help="File with input keyword embeddings. If path does not exist, keyword embeddings are created "
                              "from vocabulary model and saved to this path.")
-    parser.add_argument("-o", "--keyword_embeddings_out", default="keyword_embeddings_opt.pickle",
+    parser.add_argument("-o", "--kw_embeds_out", default="kw_embeds_opt.pickle",
                         help="File with updated keyword embeddings.")
     parser.add_argument("-t", "--train", help="CSV file with train texts", default="train.csv")
     parser.add_argument("-c", "--context", help="Number of words in left/right context", type=int, default=3)
@@ -26,7 +26,7 @@ def main():
     config = get_config()
     print('Config: {}'.format(config))
     nlp = spacy.load(config.vocabulary)
-    kw_embeds = utils.get_keyword_embeddings(config.keyword_embeddings_in, config.keywords, nlp)
+    kw_embeds = utils.get_keyword_embeddings(config.kw_embeds, config.keywords, nlp)
     train_texts_df = pd.read_csv(config.train)
     c = config.context
 
@@ -47,7 +47,7 @@ def main():
         print('{}:\n\tCos dist: {:.6f} -> {:.6f}'.format(kw, cos_dist, cos_dist_new))
         kw_embeds[kw] = kw_embed
     
-    utils.save_keyword_embeddings(kw_embeds, config.keyword_embeddings_out)
+    utils.save_keyword_embeddings(kw_embeds, config.kw_embeds_out)
 
 
 if __name__ == "__main__":

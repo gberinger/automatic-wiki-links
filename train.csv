@@ -1,3 +1,6 @@
 path,keyword,link
-texts/test/tree_forest_1.txt,tree forest,https://en.wikipedia.org/wiki/Fruit_tree
-texts/test/tree_forest_2.txt,tree forest,https://en.wikipedia.org/wiki/Cell_wall
+texts/train/tree_forest_1.txt,tree forest,https://en.wikipedia.org/wiki/Algae
+texts/train/tree_forest_2.txt,tree forest,https://en.wikipedia.org/wiki/Albania
+texts/train/tree_forest_3.txt,tree forest,https://en.wikipedia.org/wiki/Kami
+texts/train/tree_forest_4.txt,tree forest,https://en.wikipedia.org/wiki/Marshall_Islands
+texts/train/tree_forest_5.txt,tree forest,https://en.wikipedia.org/wiki/Proteus

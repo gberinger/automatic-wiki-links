@@ -1,5 +1,6 @@
 import os
 import pickle
+import re
 
 import numpy as np
 import pandas as pd
@@ -64,3 +65,9 @@ def get_top_k_closest_keywords(embedding, keyword_embeddings, k=5):
 
 def bold(s):
     return '\033[1m{}\033[0m'.format(s)
+
+
+def preprocess_text(path):
+    with open(path) as f:
+        sentence = re.sub(r'[^\w\s*]', ' ', f.read().strip().lower())
+        return sentence.split()

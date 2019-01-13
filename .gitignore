@@ -109,4 +109,4 @@ venv.bak/
 # VSCode
 .vscode/
 
-keyword_embeddings.pickle
+*.pickle

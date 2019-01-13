@@ -1,6 +1,5 @@
 import argparse
 from collections import defaultdict
-import re
 
 import numpy as np
 import pandas as pd
@@ -38,9 +37,7 @@ def main():
     for _, sample in test_texts_df.iterrows():
         path = sample['path']
         keyword = sample['keyword']
-        with open(path) as f:
-            sentence = re.sub(r'[^\w\s*]', ' ', f.read().strip().lower())
-            words = sentence.split()
+        words = utils.preprocess_text(path)
         
         i = [i for i, w in enumerate(words) if w.startswith('*')][0]  # Find position of keyword in text
         words[i] = words[i][1:-1]  # Remove '*' on both sides

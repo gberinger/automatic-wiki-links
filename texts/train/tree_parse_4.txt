@@ -1,0 +1,1 @@
+Syntax is the study of language structure and phrasal hierarchies, depicted in parse *tree* format. It is concerned with the relationship between units at the level of words or morphology.

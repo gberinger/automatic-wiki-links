@@ -1,0 +1,1 @@
+Reflection is a term that computer scientists apply to software programs that have the ability to inspect their own structure, for example their parse *tree* or data types of input and output parameters. Reflection was first primarily a feature of interpreted languages such as Smalltalk and Lisp. 

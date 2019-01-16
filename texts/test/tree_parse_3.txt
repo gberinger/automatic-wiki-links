@@ -1,0 +1,1 @@
+Chomsky developed a formal theory of grammar in which transformations manipulated not only the surface strings but also the parse *tree* associated with them, making transformational grammar a system of tree automata.[

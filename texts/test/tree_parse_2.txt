@@ -1,0 +1,1 @@
+However, an interpreter written in a high level language typically uses another approach, such as generating and then walking a parse *tree*, or by generating and executing intermediate software-defined instructions, or both. 

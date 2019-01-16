@@ -1,0 +1,1 @@
+These phases themselves can be further broken down: lexing as scanning and evaluating, and parsing as building a concrete syntax *tree* (CST, parse tree) and then transforming it into an abstract syntax tree (AST, syntax tree).

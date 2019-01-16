@@ -1,0 +1,1 @@
+In technical syntax terminology, specifier is a YP that is the sister of X′, and the daughter of XP. The rule is XP → (YP) X′, where YP is the specifier. The X-bar schema of this phrase structure can be seen in the *tree* diagram below (where XP corresponds to X″)

@@ -1,0 +1,1 @@
+The role of the parentheses in the definition is to ensure that any formula can only be obtained in one way by following the inductive definition (in other words, there is a unique parse *tree* for each formula). This property is known as unique readability of formulas.

@@ -14,6 +14,11 @@ texts/train/tree_decision_2.txt,tree decision,https://en.wikipedia.org/wiki/Deci
 texts/train/tree_decision_3.txt,tree decision,https://en.wikipedia.org/wiki/Decision_tree_learning
 texts/train/tree_decision_4.txt,tree decision,https://en.wikipedia.org/wiki/Decision_tree_learning
 texts/train/tree_decision_5.txt,tree decision,https://en.wikipedia.org/wiki/Decision_tree_learning
+texts/train/tree_parse_1.txt,tree parse,https://en.wikipedia.org/wiki/Smalltalk
+texts/train/tree_parse_2.txt,tree parse,https://en.wikipedia.org/wiki/Compiler
+texts/train/tree_parse_3.txt,tree parse,https://en.wikipedia.org/wiki/Earley_parser
+texts/train/tree_parse_4.txt,tree parse,https://en.wikipedia.org/wiki/Theoretical_linguistics
+texts/train/tree_parse_5.txt,tree parse,https://en.wikipedia.org/wiki/Specifier_(linguistics)
 texts/train/mars_planet_1.txt,mars planet,https://en.wikipedia.org/wiki/Astrobiology
 texts/train/mars_planet_2.txt,mars planet,https://en.wikipedia.org/wiki/Astrobiology
 texts/train/mars_planet_3.txt,mars planet,https://en.wikipedia.org/wiki/Astrobiology

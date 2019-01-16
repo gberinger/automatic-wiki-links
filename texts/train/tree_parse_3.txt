@@ -1,0 +1,1 @@
+Earley's dissertation briefly describes an algorithm for constructing parse *trees* by adding a set of pointers from each non-terminal in an Earley item back to the items that caused it to be recognized.

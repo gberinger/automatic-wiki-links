@@ -1,0 +1,1 @@
+Determine the parse *tree* (grammatical analysis) of a given sentence. The grammar for natural languages is ambiguous and typical sentences have multiple possible analyses.

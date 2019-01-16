@@ -1,0 +1,1 @@
+The benefit of spring lock washers lies in the trapezoidal shape of the washer. When compressed to loads near the proof strength of the *bolt*, it will twist and flatten. This reduces the spring rate of the bolted joint which allows it to maintain more force under the same vibration levels. This prevents loosening.

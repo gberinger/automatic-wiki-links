@@ -1,0 +1,1 @@
+*Tree* models where the target variable can take a discrete set of values are called classification *trees*; in these tree structures, leaves represent class labels and branches represent conjunctions of features that lead to those class labels.

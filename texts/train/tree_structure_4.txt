@@ -1,0 +1,1 @@
+However, the arrangement of particular nodes into the *tree* is not part of the conceptual information. For example, in a normal binary search tree the placement of nodes depends almost entirely on the order in which they were added, and can be re-arranged (for example by balancing) without changing the meaning.

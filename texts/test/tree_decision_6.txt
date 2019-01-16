@@ -1,0 +1,1 @@
+Determine the structure of the learned function and corresponding learning algorithm. For example, the engineer may choose to use support vector machines or decision *trees*.

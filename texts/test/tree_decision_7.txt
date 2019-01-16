@@ -1,0 +1,1 @@
+Methods that employ a distance function, such as nearest neighbour methods and support vector machines with Gaussian kernels, are particularly sensitive to this. An advantage of decision *trees* is that they easily handle heterogeneous data.

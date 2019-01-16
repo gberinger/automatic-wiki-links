@@ -1,0 +1,1 @@
+Trees used for regression and *trees* used for classification have some similarities - but also some differences, such as the procedure used to determine where to split.

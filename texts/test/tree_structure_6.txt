@@ -1,0 +1,1 @@
+Some authors use the term complete to refer instead to a perfect binary tree as defined above, in which case they call this type of *tree* an almost complete binary tree or nearly complete binary tree. A complete binary tree can be efficiently represented using an array.

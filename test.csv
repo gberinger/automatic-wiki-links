@@ -6,21 +6,71 @@ texts/test/tree_forest_4.txt,tree forest,https://en.wikipedia.org/wiki/Ren%C3%A9
 texts/test/tree_forest_5.txt,tree forest,https://en.wikipedia.org/wiki/Petroleum
 texts/test/tree_structure_1.txt,tree structure,https://en.wikipedia.org/wiki/Genetic_programming
 texts/test/tree_structure_2.txt,tree structure,https://en.wikipedia.org/wiki/Java_(programming_language)
+texts/test/tree_structure_3.txt,tree structure,https://en.wikipedia.org/wiki/Document_Object_Model
+texts/test/tree_structure_4.txt,tree structure,https://en.wikipedia.org/wiki/Document_Object_Model
+texts/test/tree_structure_5.txt,tree structure,https://en.wikipedia.org/wiki/Document_Object_Model
+texts/test/tree_structure_6.txt,tree structure,https://en.wikipedia.org/wiki/Binary_tree
+texts/test/tree_structure_7.txt,tree structure,https://en.wikipedia.org/wiki/Binary_tree
 texts/test/tree_decision_1.txt,tree decision,https://en.wikipedia.org/wiki/Word-sense_disambiguation
 texts/test/tree_decision_2.txt,tree decision,https://en.wikipedia.org/wiki/Game_complexity
+texts/test/tree_decision_3.txt,tree decision,https://en.wikipedia.org/wiki/Decision_tree_learning
+texts/test/tree_decision_4.txt,tree decision,https://en.wikipedia.org/wiki/Decision_tree_learning
+texts/test/tree_decision_5.txt,tree decision,https://en.wikipedia.org/wiki/Supervised_learning
+texts/test/tree_decision_6.txt,tree decision,https://en.wikipedia.org/wiki/Supervised_learning
+texts/test/tree_decision_7.txt,tree decision,https://en.wikipedia.org/wiki/Supervised_learning
 texts/test/mars_planet_1.txt,mars planet,https://en.wikipedia.org/wiki/Astronaut
 texts/test/mars_planet_2.txt,mars planet,https://en.wikipedia.org/wiki/Cowboy_Bebop
+texts/test/mars_planet_3.txt,mars planet,https://en.wikipedia.org/wiki/Carl_Sagan
+texts/test/mars_planet_4.txt,mars planet,https://en.wikipedia.org/wiki/Carl_Sagan
+texts/test/mars_planet_5.txt,mars planet,https://en.wikipedia.org/wiki/Carl_Sagan
+texts/test/mars_planet_6.txt,mars planet,https://en.wikipedia.org/wiki/Carl_Sagan
+texts/test/mars_planet_7.txt,mars planet,https://en.wikipedia.org/wiki/Carl_Sagan
 texts/test/mars_mythology_1.txt,mars mythology,https://en.wikipedia.org/wiki/Infanticide
 texts/test/mars_mythology_2.txt,mars mythology,https://en.wikipedia.org/wiki/Heterosexuality
+texts/test/mars_mythology_3.txt,mars mythology,https://en.wikipedia.org/wiki/Jupiter_(mythology)
+texts/test/mars_mythology_4.txt,mars mythology,https://en.wikipedia.org/wiki/Jupiter_(mythology)
+texts/test/mars_mythology_5.txt,mars mythology,https://en.wikipedia.org/wiki/Venus_(mythology)
+texts/test/mars_mythology_6.txt,mars mythology,https://en.wikipedia.org/wiki/Venus_(mythology)
+texts/test/mars_mythology_7.txt,mars mythology,https://en.wikipedia.org/wiki/Venus_(mythology)
 texts/test/mars_chocolate_bar_1.txt,mars chocolate bar,https://en.wikipedia.org/wiki/Dinnerladies_(TV_series)
 texts/test/mars_chocolate_bar_2.txt,mars chocolate bar,https://en.wikipedia.org/wiki/Snickers
+texts/test/mars_chocolate_bar_3.txt,mars chocolate bar,https://en.wikipedia.org/wiki/Galaxy_Bubbles
+texts/test/mars_chocolate_bar_4.txt,mars chocolate bar,https://en.wikipedia.org/wiki/Media_in_The_Simpsons
+texts/test/mars_chocolate_bar_5.txt,mars chocolate bar,https://en.wikipedia.org/wiki/Snickers
+texts/test/mars_chocolate_bar_6.txt,mars chocolate bar,https://metro.co.uk/2019/01/14/mars-bar-hidden-loft-23-years-proves-shrinkflation-real-8343248/
+texts/test/mars_chocolate_bar_7.txt,mars chocolate bar,https://en.wikipedia.org/wiki/Galaxy_(chocolate)
 texts/test/nail_anatomy_1.txt,nail anatomy,https://en.wikipedia.org/wiki/Common_ostrich
 texts/test/nail_anatomy_2.txt,nail anatomy,https://en.wikipedia.org/wiki/Skin
+texts/test/nail_anatomy_3.txt,nail anatomy,https://en.wikipedia.org/wiki/Keratin
+texts/test/nail_anatomy_4.txt,nail anatomy,https://en.wikipedia.org/wiki/Keratin
+texts/test/nail_anatomy_5.txt,nail anatomy,https://en.wikipedia.org/wiki/Matrix_(biology)
+texts/test/nail_anatomy_6.txt,nail anatomy,https://en.wikipedia.org/wiki/Protein
+texts/test/nail_anatomy_7.txt,nail anatomy,https://en.wikipedia.org/wiki/Protein
 texts/test/nail_fastener_1.txt,nail fastener,https://en.wikipedia.org/wiki/Smelting
 texts/test/nail_fastener_2.txt,nail fastener,https://en.wikipedia.org/wiki/Carpentry
+texts/test/nail_fastener_3.txt,nail fastener,https://en.wikipedia.org/wiki/Cog_(ship)
+texts/test/nail_fastener_4.txt,nail fastener,https://en.wikipedia.org/wiki/Pipe_tool
+texts/test/nail_fastener_5.txt,nail fastener,https://en.wikipedia.org/wiki/Type_metal
+texts/test/nail_fastener_6.txt,nail fastener,https://en.wikipedia.org/wiki/Woodworking_joints
+texts/test/nail_fastener_7.txt,nail fastener,https://en.wikipedia.org/wiki/Woodworking_joints
 texts/test/bolt_fastener_1.txt,bolt fastener,https://en.wikipedia.org/wiki/Washer_(hardware)
 texts/test/bolt_fastener_2.txt,bolt fastener,https://en.wikipedia.org/wiki/Swaging
+texts/test/bolt_fastener_3.txt,bolt fastener,https://en.wikipedia.org/wiki/Tap_and_die
+texts/test/bolt_fastener_4.txt,bolt fastener,https://en.wikipedia.org/wiki/Tap_and_die
+texts/test/bolt_fastener_5.txt,bolt fastener,https://en.wikipedia.org/wiki/Tap_and_die
+texts/test/bolt_fastener_6.txt,bolt fastener,https://en.wikipedia.org/wiki/Tap_and_die
+texts/test/bolt_fastener_7.txt,bolt fastener,https://en.wikipedia.org/wiki/Tap_and_die
 texts/test/bolt_climbing_1.txt,bolt climbing,https://en.wikipedia.org/wiki/Caving
 texts/test/bolt_climbing_2.txt,bolt climbing,https://en.wikipedia.org/wiki/Lynn_Hill
+texts/test/bolt_climbing_3.txt,bolt climbing,https://en.wikipedia.org/wiki/Glossary_of_climbing_terms
+texts/test/bolt_climbing_4.txt,bolt climbing,https://en.wikipedia.org/wiki/Glossary_of_climbing_terms
+texts/test/bolt_climbing_5.txt,bolt climbing,https://en.wikipedia.org/wiki/Climbing_protection
+texts/test/bolt_climbing_6.txt,bolt climbing,https://en.wikipedia.org/wiki/Climbing_protection
+texts/test/bolt_climbing_7.txt,bolt climbing,https://en.wikipedia.org/wiki/Climbing_protection
 texts/test/bolt_firearms_1.txt,bolt firearms,https://en.wikipedia.org/wiki/Gun_safety
 texts/test/bolt_firearms_2.txt,bolt firearms,https://en.wikipedia.org/wiki/Rifle
+texts/test/bolt_firearms_3.txt,bolt firearms,https://en.wikipedia.org/wiki/Rifle
+texts/test/bolt_firearms_4.txt,bolt firearms,https://en.wikipedia.org/wiki/Rifle
+texts/test/bolt_firearms_5.txt,bolt firearms,https://www.britannica.com/technology/small-arm
+texts/test/bolt_firearms_6.txt,bolt firearms,https://en.wikipedia.org/wiki/Gun_safety
+texts/test/bolt_firearms_7.txt,bolt firearms,https://en.wikipedia.org/wiki/Gun_safety

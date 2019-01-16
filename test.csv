@@ -23,6 +23,11 @@ texts/test/tree_parse_2.txt,tree parse,https://en.wikipedia.org/wiki/Interpreter
 texts/test/tree_parse_3.txt,tree parse,https://en.wikipedia.org/wiki/Transformational_grammar
 texts/test/tree_parse_4.txt,tree parse,https://en.wikipedia.org/wiki/Syllable
 texts/test/tree_parse_5.txt,tree parse,https://en.wikipedia.org/wiki/First-order_logic
+texts/test/tree_command_1.txt,tree command,https://en.wikipedia.org/wiki/Tree_(command)
+texts/test/tree_command_2.txt,tree command,https://en.wikipedia.org/wiki/Tree_(command)
+texts/test/tree_command_3.txt,tree command,https://www.geeksforgeeks.org/tree-command-unixlinux/
+texts/test/tree_command_4.txt,tree command,https://www.geeksforgeeks.org/tree-command-unixlinux/
+texts/test/tree_command_5.txt,tree command,https://www.computerhope.com/unix/tree.htm
 texts/test/mars_planet_1.txt,mars planet,https://en.wikipedia.org/wiki/Astronaut
 texts/test/mars_planet_2.txt,mars planet,https://en.wikipedia.org/wiki/Cowboy_Bebop
 texts/test/mars_planet_3.txt,mars planet,https://en.wikipedia.org/wiki/Carl_Sagan

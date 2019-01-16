@@ -1,0 +1,1 @@
+If the `-l' option is given and the symbolic link refers to an actual directory, then *tree* will follow the path of the symbolic link as if it were a real directory.

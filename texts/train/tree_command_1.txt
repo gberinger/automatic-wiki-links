@@ -1,0 +1,1 @@
+With no arguments, tree lists the files in the current directory. When directory arguments are given, *tree* lists all the files or directories found in the given directories each in turn.

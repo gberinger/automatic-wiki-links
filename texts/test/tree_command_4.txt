@@ -1,0 +1,1 @@
+–prune : Makes *tree* prune empty directories from the output, useful when used in conjunction with -P or -I.

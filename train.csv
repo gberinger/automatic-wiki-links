@@ -19,6 +19,11 @@ texts/train/tree_parse_2.txt,tree parse,https://en.wikipedia.org/wiki/Compiler
 texts/train/tree_parse_3.txt,tree parse,https://en.wikipedia.org/wiki/Earley_parser
 texts/train/tree_parse_4.txt,tree parse,https://en.wikipedia.org/wiki/Theoretical_linguistics
 texts/train/tree_parse_5.txt,tree parse,https://en.wikipedia.org/wiki/Specifier_(linguistics)
+texts/train/tree_command_1.txt,tree command,https://en.wikipedia.org/wiki/Tree_(command)
+texts/train/tree_command_2.txt,tree command,https://en.wikipedia.org/wiki/COM_file
+texts/train/tree_command_3.txt,tree command,https://en.wikipedia.org/wiki/Find_(Unix)
+texts/train/tree_command_4.txt,tree command,https://www.geeksforgeeks.org/tree-command-unixlinux/
+texts/train/tree_command_5.txt,tree command,https://www.cyberciti.biz/faq/linux-show-directory-structure-command-line/
 texts/train/mars_planet_1.txt,mars planet,https://en.wikipedia.org/wiki/Astrobiology
 texts/train/mars_planet_2.txt,mars planet,https://en.wikipedia.org/wiki/Astrobiology
 texts/train/mars_planet_3.txt,mars planet,https://en.wikipedia.org/wiki/Astrobiology

@@ -1,0 +1,1 @@
+By default the *tree* command is not installed. Type the following command to install the same on a RHEL / CentOS / Fedora Linux using yum command

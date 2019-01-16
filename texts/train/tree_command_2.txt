@@ -1,0 +1,1 @@
+The use of the original .com extensions for these commands ensures compatibility with older DOS batch files that may refer to them with their full original filenames. These commands are CHCP, DISKCOMP, DISKCOPY, FORMAT, MODE, MORE and *TREE*.

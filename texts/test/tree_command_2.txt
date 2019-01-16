@@ -1,0 +1,1 @@
+pon completion of listing all files and directories found, *tree* returns the total number of files and directories listed.

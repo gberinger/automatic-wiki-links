@@ -1,0 +1,2 @@
+grep is a command-line utility for searching plain-text data sets for lines matching a regular expression and by default reporting matching lines on standard output.
+*tree* is a command-line utility that recursively lists files found in a directory tree, indenting the filenames according to their position in the file hierarchy.

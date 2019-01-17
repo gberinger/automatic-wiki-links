@@ -1,0 +1,1 @@
+If one places the root at the top (parents above children, as in a family *tree* ) and places all nodes that are a given distance from the root (in terms of number of edges: the "level" of a tree) on a given horizontal line, one obtains a standard drawing of the tree.

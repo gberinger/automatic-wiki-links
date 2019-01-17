@@ -1,0 +1,1 @@
+Family history (FH): listing of diseases in the family that may impact the patient. A family *tree* is sometimes used.

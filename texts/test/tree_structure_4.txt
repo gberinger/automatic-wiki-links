@@ -1,0 +1,1 @@
+The DOM model represents a document with a logical tree. Each branch of the *tree* ends in a node, and each node contains objects. DOM methods allow programmatic access to the tree; with them one can change the structure, style or content of a document.

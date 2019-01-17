@@ -1,0 +1,1 @@
+To construct a decision tree on this data, we need to compare the information gain of each of four *trees*, each split on one of the four features. The split with the highest information gain will be taken as the first split and the process will continue until all children nodes are pure, or until the information gain is 0.

@@ -1,0 +1,1 @@
+A degenerate (or pathological) *tree* is where each parent node has only one associated child node. This means that performance-wise, the tree will behave like a linked list data structure.

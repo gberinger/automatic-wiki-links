@@ -1,0 +1,1 @@
+In decision analysis, a decision tree can be used to visually and explicitly represent decisions and decision making. In data mining, a decision tree describes data (but the resulting classification *tree* can be an input for decision making). This page deals with decision trees in data mining.

@@ -1,0 +1,1 @@
+Algorithms for constructing decision *trees* usually work top-down, by choosing a variable at each step that best splits the set of items.[14] Different algorithms use different metrics for measuring "best".

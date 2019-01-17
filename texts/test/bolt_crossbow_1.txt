@@ -1,0 +1,1 @@
+If the player fires a weapon while not in a combat situation, it usually sets off an alarm and makes the guards attack the protagonist; however, certain weapons – the dagger and poisonous crossbow *bolts* – allow attacking enemies stealthily without activating the alarm.

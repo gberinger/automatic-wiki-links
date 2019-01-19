@@ -59,8 +59,8 @@ def cos_sim(a, b):
 def get_top_k_closest_keywords(embedding, keyword_embeddings, k=5):
     scores = []
     for kw, kw_embedding in keyword_embeddings.items():
-        scores.append((kw, cos_sim(embedding, kw_embedding)))
-    return sorted(scores, reverse=True, key=lambda tup: tup[1])[:k]
+        scores.append((kw, cos_dist(embedding, kw_embedding)))
+    return sorted(scores, key=lambda tup: tup[1])[:k]
 
 
 def bold(s):
@@ -94,6 +94,12 @@ def update_keyword_embeddings_with_context(kw_embeds, kw, ctx_embed, method='alp
         alpha = kwargs['alpha'] or cos_dist(ctx_embed, kw_embeds[kw])
         kw_embeds[kw] += alpha * (ctx_embed - kw_embeds[kw])
     elif method == 'alpha_beta':
-        raise NotImplementedError
+        alpha = kwargs['alpha'] or cos_dist(ctx_embed, kw_embeds[kw])
+        topk = get_top_k_closest_keywords(ctx_embed, kw_embeds, k=5)
+        kw_embeds[kw] += alpha * (ctx_embed - kw_embeds[kw])
+        for other_kw, dist in topk:
+            if other_kw != kw:
+                beta = kwargs['beta'] or dist
+                kw_embeds[other_kw] -= beta * (ctx_embed - kw_embeds[other_kw])
     else:
         raise Exception('Update method "{}" does not exist!'.format(method))

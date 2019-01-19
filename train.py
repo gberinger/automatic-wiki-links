@@ -27,6 +27,7 @@ def get_config():
                              "and context embeddings will be used as alpha (default).")
     parser.add_argument("-ep", "--epochs", type=int, default=1, help="Number of epochs")
     parser.add_argument("--verbose", action="store_true")
+    parser.add_argument("--shuffle", action="store_true")
     return parser.parse_args()
 
 
@@ -40,7 +41,8 @@ def main():
 
     for epoch in range(1, config.epochs + 1):
         print('Epoch {}/{}'.format(epoch, config.epochs))
-        for _, sample in train_texts_df.iterrows():
+        df = train_texts_df.sample(frac=1) if config.shuffle else train_texts_df
+        for _, sample in df.iterrows():
             path = sample['path']
             kw = sample['keyword']
             words = utils.preprocess_text(path)

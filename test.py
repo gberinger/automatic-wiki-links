@@ -55,15 +55,15 @@ def main():
         # print('{}, {}, {}, {}, {}'.format(keyword, top5_kws, is_top1, is_top5, cos_dist))
     
     kw_col_size = 24
-    print('\n---------------------------------------------------------------')
+    print('\n-------------------------------------------------------------------')
     print('| {} | avg cos dist | top-1 acc | top-5 acc |'.format(
         utils.bold('keyword'.ljust(kw_col_size))))
-    print('|-------------------------------------------------------------|')
+    print('|-----------------------------------------------------------------|')
     for kw, dists in cos_dists.items():
         print('| {} |   {:.6f}   |   {:.2f}    |   {:.2f}    |'.format(
             utils.bold(kw.ljust(kw_col_size)), np.mean(dists), np.mean(top1_scores[kw]), np.mean(top5_scores[kw]))
         )
-    print('---------------------------------------------------------------')
+    print('-------------------------------------------------------------------')
     print('\nAvg cosine distance: {:.6f}'.format(np.mean(cos_dists_all)))
     print('Top-1 acc:           {:.2f}'.format(np.mean(top1_scores_all)))
     print('Top-5 acc:           {:.2f}\n'.format(np.mean(top5_scores_all)))

@@ -25,6 +25,8 @@ def get_config():
     parser.add_argument("-a", "--alpha", type=float, default=None,
                         help="Strength of a single update. If not provided, cosinus distance between the keyword "
                              "and context embeddings will be used as alpha (default).")
+    parser.add_argument("-ep", "--epochs", type=int, default=1, help="Number of epochs")
+    parser.add_argument("--verbose", action="store_true")
     return parser.parse_args()
 
 
@@ -36,17 +38,20 @@ def main():
     train_texts_df = pd.read_csv(config.train)
     c = config.context
 
-    for _, sample in train_texts_df.iterrows():
-        path = sample['path']
-        kw = sample['keyword']
-        words = utils.preprocess_text(path)
-        kw_pos = utils.get_keyword_pos(words)
-        ctx_embed = utils.get_context_embedding(words, kw_pos, c, nlp, config.ctx_embed_method)
-        cos_dist_prev = utils.cos_dist(ctx_embed, kw_embeds[kw])
-        utils.update_keyword_embeddings_with_context(kw_embeds, kw, ctx_embed, config.update_method,
-                                                     alpha=config.alpha)
-        cos_dist_new = utils.cos_dist(ctx_embed, kw_embeds[kw])
-        print('{}:\n\tCos dist: {:.6f} -> {:.6f}'.format(kw, cos_dist_prev, cos_dist_new))
+    for epoch in range(1, config.epochs + 1):
+        print('Epoch {}/{}'.format(epoch, config.epochs))
+        for _, sample in train_texts_df.iterrows():
+            path = sample['path']
+            kw = sample['keyword']
+            words = utils.preprocess_text(path)
+            kw_pos = utils.get_keyword_pos(words)
+            ctx_embed = utils.get_context_embedding(words, kw_pos, c, nlp, config.ctx_embed_method)
+            cos_dist_prev = utils.cos_dist(ctx_embed, kw_embeds[kw])
+            utils.update_keyword_embeddings_with_context(kw_embeds, kw, ctx_embed, config.update_method,
+                                                        alpha=config.alpha)
+            cos_dist_new = utils.cos_dist(ctx_embed, kw_embeds[kw])
+            if config.verbose:
+                print('{}:\n\tCos dist: {:.6f} -> {:.6f}'.format(kw, cos_dist_prev, cos_dist_new))
     
     utils.save_keyword_embeddings(kw_embeds, config.kw_embeds_out)
 

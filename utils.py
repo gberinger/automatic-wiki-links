@@ -71,3 +71,29 @@ def preprocess_text(path):
     with open(path) as f:
         sentence = re.sub(r'[^\w\s*]', ' ', f.read().strip().lower())
         return sentence.split()
+
+
+def get_keyword_pos(words):
+    pos = [i for i, w in enumerate(words) if w.startswith('*')][0]  # Find position of keyword in text
+    words[pos] = words[pos][1:-1]  # Remove '*' on both sides
+    return pos
+
+
+def get_context_embedding(words, kw_idx, ctx, nlp, method='avg'):
+    ctx_embed = None
+    if method == 'avg':
+        word_w_context = words[max(kw_idx - ctx, 0):min(kw_idx + 1 + ctx, len(words))]
+        ctx_embed = np.mean([nlp(w).vector for w in word_w_context], axis=0)
+    else:
+        raise Exception('Context embedding method "{}" does not exist!'.format(method))
+    return ctx_embed
+
+
+def update_keyword_embeddings_with_context(kw_embeds, kw, ctx_embed, method='alpha', **kwargs):
+    if method == 'alpha':
+        alpha = kwargs['alpha'] or cos_dist(ctx_embed, kw_embeds[kw])
+        kw_embeds[kw] += alpha * (ctx_embed - kw_embeds[kw])
+    elif method == 'alpha_beta':
+        raise NotImplementedError
+    else:
+        raise Exception('Update method "{}" does not exist!'.format(method))

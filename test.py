@@ -39,10 +39,8 @@ def main():
         kw = sample['keyword']
         words = utils.preprocess_text(path)
         
-        i = [i for i, w in enumerate(words) if w.startswith('*')][0]  # Find position of keyword in text
-        words[i] = words[i][1:-1]  # Remove '*' on both sides
-        word_w_context = [w for w in words[max(i - c, 0):min(i + 1 + c, len(words))]]
-        ctx_embed = np.mean([nlp(w).vector for w in word_w_context], axis=0)
+        kw_pos = utils.get_keyword_pos(words)
+        ctx_embed = utils.get_context_embedding(words, kw_pos, c, nlp)
         cos_dist = utils.cos_dist(ctx_embed, kw_embeds[kw])
         cos_dists[kw].append(cos_dist)
         cos_dists_all.append(cos_dist)
@@ -56,13 +54,14 @@ def main():
         top5_scores_all.append(is_top5)
         # print('{}, {}, {}, {}, {}'.format(keyword, top5_kws, is_top1, is_top5, cos_dist))
     
+    kw_col_size = 24
     print('\n---------------------------------------------------------------')
     print('| {} | avg cos dist | top-1 acc | top-5 acc |'.format(
-        utils.bold('keyword'.ljust(20))))
+        utils.bold('keyword'.ljust(kw_col_size))))
     print('|-------------------------------------------------------------|')
     for kw, dists in cos_dists.items():
         print('| {} |   {:.6f}   |   {:.2f}    |   {:.2f}    |'.format(
-            utils.bold(kw.ljust(20)), np.mean(dists), np.mean(top1_scores[kw]), np.mean(top5_scores[kw]))
+            utils.bold(kw.ljust(kw_col_size)), np.mean(dists), np.mean(top1_scores[kw]), np.mean(top5_scores[kw]))
         )
     print('---------------------------------------------------------------')
     print('\nAvg cosine distance: {:.6f}'.format(np.mean(cos_dists_all)))

@@ -16,9 +16,15 @@ def get_config():
                              "from vocabulary model and saved to this path.")
     parser.add_argument("-o", "--kw_embeds_out", default="kw_embeds_opt.pickle",
                         help="File with updated keyword embeddings.")
+    parser.add_argument("-cm", "--ctx_embed_method", default="avg",
+                        help="Method for getting the context embedding. Default: avg")
+    parser.add_argument("-um", "--update_method", default="alpha",
+                        help="Method for updating the keyword embeddings. Default: update_correct")
     parser.add_argument("-t", "--train", help="CSV file with train texts", default="train.csv")
     parser.add_argument("-c", "--context", help="Number of words in left/right context", type=int, default=3)
-    parser.add_argument("-a", "--alpha", help="Strength of a single update.", type=float, default=0.2)
+    parser.add_argument("-a", "--alpha", type=float, default=None,
+                        help="Strength of a single update. If not provided, cosinus distance between the keyword "
+                             "and context embeddings will be used as alpha (default).")
     return parser.parse_args()
 
 
@@ -33,19 +39,14 @@ def main():
     for _, sample in train_texts_df.iterrows():
         path = sample['path']
         kw = sample['keyword']
-        kw_embed = kw_embeds[kw]
         words = utils.preprocess_text(path)
-        
-        i = [i for i, w in enumerate(words) if w.startswith('*')][0]  # Find position of keyword in text
-        words[i] = words[i][1:-1]  # Remove '*' on both sides
-        word_w_context = [w for w in words[max(i - c, 0):min(i + 1 + c, len(words))]]
-        ctx_embed = np.mean([nlp(w).vector for w in word_w_context], axis=0)
-        cos_dist = utils.cos_dist(ctx_embed, kw_embed)
-
-        kw_embed += config.alpha * (ctx_embed - kw_embed)
-        cos_dist_new = utils.cos_dist(ctx_embed, kw_embed)
-        print('{}:\n\tCos dist: {:.6f} -> {:.6f}'.format(kw, cos_dist, cos_dist_new))
-        kw_embeds[kw] = kw_embed
+        kw_pos = utils.get_keyword_pos(words)
+        ctx_embed = utils.get_context_embedding(words, kw_pos, c, nlp, config.ctx_embed_method)
+        cos_dist_prev = utils.cos_dist(ctx_embed, kw_embeds[kw])
+        utils.update_keyword_embeddings_with_context(kw_embeds, kw, ctx_embed, config.update_method,
+                                                     alpha=config.alpha)
+        cos_dist_new = utils.cos_dist(ctx_embed, kw_embeds[kw])
+        print('{}:\n\tCos dist: {:.6f} -> {:.6f}'.format(kw, cos_dist_prev, cos_dist_new))
     
     utils.save_keyword_embeddings(kw_embeds, config.kw_embeds_out)
 

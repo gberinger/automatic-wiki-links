@@ -89,17 +89,15 @@ def get_context_embedding(words, kw_idx, ctx, nlp, method='avg'):
     return ctx_embed
 
 
-def update_keyword_embeddings_with_context(kw_embeds, kw, ctx_embed, method='alpha', **kwargs):
-    if method == 'alpha':
+def update_keyword_embeddings_with_context(kw_embeds, kw, ctx_embed, method='alpha_beta', **kwargs):
+    if method == 'alpha_beta':
         alpha = kwargs['alpha'] or cos_dist(ctx_embed, kw_embeds[kw])
         kw_embeds[kw] += alpha * (ctx_embed - kw_embeds[kw])
-    elif method == 'alpha_beta':
-        alpha = kwargs['alpha'] or cos_dist(ctx_embed, kw_embeds[kw])
-        topk = get_top_k_closest_keywords(ctx_embed, kw_embeds, k=5)
-        kw_embeds[kw] += alpha * (ctx_embed - kw_embeds[kw])
-        for other_kw, dist in topk:
-            if other_kw != kw:
-                beta = kwargs['beta'] or dist
-                kw_embeds[other_kw] -= beta * (ctx_embed - kw_embeds[other_kw])
+        if kwargs['beta'] and kwargs['beta'] > 0:
+            topk = get_top_k_closest_keywords(ctx_embed, kw_embeds, k=5)
+            for other_kw, dist in topk:
+                if other_kw != kw:
+                    beta = kwargs['beta'] or dist
+                    kw_embeds[other_kw] -= beta * (ctx_embed - kw_embeds[other_kw])
     else:
         raise Exception('Update method "{}" does not exist!'.format(method))

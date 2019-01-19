@@ -18,16 +18,15 @@ def get_config():
                         help="File with updated keyword embeddings.")
     parser.add_argument("-cm", "--ctx_embed_method", default="avg",
                         help="Method for getting the context embedding. Default: avg")
-    parser.add_argument("-um", "--update_method", default="alpha",
-                        help="Method for updating the keyword embeddings. Default: update_correct")
+    parser.add_argument("-um", "--update_method", default="alpha_beta",
+                        help="Method for updating the keyword embeddings. Default: alpha_beta")
     parser.add_argument("-t", "--train", help="CSV file with train texts", default="train.csv")
     parser.add_argument("-c", "--context", help="Number of words in left/right context", type=int, default=3)
     parser.add_argument("-a", "--alpha", type=float, default=None,
                         help="Strength of a single update. If not provided, cosinus distance between the keyword "
                              "and context embeddings will be used as alpha (default).")
-    parser.add_argument("-b", "--beta", type=float, default=None,
-                        help="Strength of a single update on WRONG keywords. If not provided, cosinus distance "
-                             "between the wrong keyword and context embeddings will be used as beta (default).")
+    parser.add_argument("-b", "--beta", type=float, default=0.0,
+                        help="Strength of a single update on WRONG keywords, disabled by default.")
     parser.add_argument("-ep", "--epochs", type=int, default=1, help="Number of epochs")
     parser.add_argument("--verbose", action="store_true")
     parser.add_argument("--shuffle", action="store_true")

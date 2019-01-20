@@ -7,7 +7,7 @@ import spacy
 import utils
 
 
-def get_config():
+def get_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument("-v", "--vocabulary", help="Vocabulary (model) for spaCy to use", default="en_core_web_lg")
     parser.add_argument("-k", "--keywords", help="CSV file with keywords", default="keywords.csv")
@@ -30,7 +30,7 @@ def get_config():
     parser.add_argument("-ep", "--epochs", type=int, default=1, help="Number of epochs")
     parser.add_argument("--verbose", action="store_true")
     parser.add_argument("--shuffle", action="store_true")
-    return parser, parser.parse_args()
+    return parser
 
 
 def train(nlp, config):
@@ -53,12 +53,13 @@ def train(nlp, config):
             cos_dist_new = utils.cos_dist(ctx_embed, kw_embeds[kw])
             if config.verbose:
                 print('{}:\n\tCos dist: {:.6f} -> {:.6f}'.format(kw, cos_dist_prev, cos_dist_new))
-    
+
     utils.save_keyword_embeddings(kw_embeds, config.kw_embeds_opt)
 
 
 def main():
-    _, config = get_config()
+    parser = get_parser()
+    config = parser.parse_args()
     print('Config: {}'.format(config))
     nlp = spacy.load(config.vocabulary)
     train(nlp, config)

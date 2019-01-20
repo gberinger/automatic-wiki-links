@@ -14,7 +14,7 @@ def get_config():
     parser.add_argument("-e", "--kw_embeds", default="kw_embeds.pickle",
                         help="File with input keyword embeddings. If path does not exist, keyword embeddings are created "
                              "from vocabulary model and saved to this path.")
-    parser.add_argument("-o", "--kw_embeds_out", default="kw_embeds_opt.pickle",
+    parser.add_argument("-o", "--kw_embeds_opt", default="kw_embeds_opt.pickle",
                         help="File with updated keyword embeddings.")
     parser.add_argument("-cm", "--ctx_embed_method", default="avg",
                         help="Method for getting the context embedding. Default: avg")
@@ -30,13 +30,10 @@ def get_config():
     parser.add_argument("-ep", "--epochs", type=int, default=1, help="Number of epochs")
     parser.add_argument("--verbose", action="store_true")
     parser.add_argument("--shuffle", action="store_true")
-    return parser.parse_args()
+    return parser, parser.parse_args()
 
 
-def main():
-    config = get_config()
-    print('Config: {}'.format(config))
-    nlp = spacy.load(config.vocabulary)
+def train(nlp, config):
     kw_embeds = utils.get_keyword_embeddings(config.kw_embeds, config.keywords, nlp)
     train_texts_df = pd.read_csv(config.train)
     c = config.context
@@ -57,7 +54,14 @@ def main():
             if config.verbose:
                 print('{}:\n\tCos dist: {:.6f} -> {:.6f}'.format(kw, cos_dist_prev, cos_dist_new))
     
-    utils.save_keyword_embeddings(kw_embeds, config.kw_embeds_out)
+    utils.save_keyword_embeddings(kw_embeds, config.kw_embeds_opt)
+
+
+def main():
+    _, config = get_config()
+    print('Config: {}'.format(config))
+    nlp = spacy.load(config.vocabulary)
+    train(nlp, config)
 
 
 if __name__ == "__main__":

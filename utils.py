@@ -36,14 +36,17 @@ def load_keyword_embeddings(path):
         return pickle.load(f)
 
 
-def get_keyword_embeddings(kw_embed_path, kw_path, nlp):
+def get_keyword_embeddings(kw_embed_path, kw_path, nlp, verbose=False):
     if os.path.isfile(kw_embed_path):
-        print(f'Loading keyword embeddings from file: {kw_embed_path}')
+        if verbose:
+            print(f'Loading keyword embeddings from file: {kw_embed_path}')
         return load_keyword_embeddings(kw_embed_path)
     else:
-        print(f'Creating keyword embeddings from keywords: {kw_path}')
+        if verbose:
+            print(f'Creating keyword embeddings from keywords: {kw_path}')
         keyword_embeddings = create_keyword_embeddings(kw_path, nlp)
-        print(f'Saving keyword embeddings to file: {kw_embed_path}')
+        if verbose:
+            print(f'Saving keyword embeddings to file: {kw_embed_path}')
         save_keyword_embeddings(keyword_embeddings, kw_embed_path)
         return keyword_embeddings
 

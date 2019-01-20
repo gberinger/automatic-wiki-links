@@ -1,5 +1,5 @@
 import argparse
-from collections import defaultdict
+from collections import defaultdict, namedtuple
 
 import numpy as np
 import pandas as pd
@@ -18,6 +18,10 @@ def get_config():
     parser.add_argument("-t", "--test", help="CSV file with test texts", default="test.csv")
     parser.add_argument("-c", "--context", help="Number of words in left/right context", type=int, default=3)
     return parser.parse_args()
+
+
+ResultsTuple = namedtuple('ResultsTuple', ['cos_dist', 'top1_acc', 'top5_acc', 'cos_dists',
+                                           'top1_scores', 'top5_scores'])
 
 
 def test(nlp, config):
@@ -52,7 +56,7 @@ def test(nlp, config):
     cos_dist_avg = np.mean(cos_dists_all)
     top1_acc = np.mean(top1_scores_all)
     top5_acc = np.mean(top5_scores_all)
-    return cos_dist_avg, top1_acc, top5_acc, cos_dists, top1_scores, top5_scores
+    return ResultsTuple(cos_dist_avg, top1_acc, top5_acc, cos_dists, top1_scores, top5_scores)
 
 
 def main():
@@ -60,21 +64,22 @@ def main():
     print('Config: {}'.format(config))
     nlp = spacy.load(config.vocabulary)
 
-    cos_dist_avg, top1_acc, top5_acc, cos_dists, top1_scores, top5_scores = test(nlp, config)
+    results = test(nlp, config)
 
     kw_col_size = 24
     print('\n-------------------------------------------------------------------')
     print('| {} | avg cos dist | top-1 acc | top-5 acc |'.format(
         utils.bold('keyword'.ljust(kw_col_size))))
     print('|-----------------------------------------------------------------|')
-    for kw, dists in cos_dists.items():
+    for kw, dists in results.cos_dists.items():
         print('| {} |   {:.6f}   |   {:.2f}    |   {:.2f}    |'.format(
-            utils.bold(kw.ljust(kw_col_size)), np.mean(dists), np.mean(top1_scores[kw]), np.mean(top5_scores[kw]))
+            utils.bold(kw.ljust(kw_col_size)), np.mean(dists), np.mean(results.top1_scores[kw]),
+            np.mean(results.top5_scores[kw]))
         )
     print('-------------------------------------------------------------------')
-    print('\nAvg cosine distance: {:.6f}'.format(cos_dist_avg))
-    print('Top-1 acc:           {:.2f}'.format(top1_acc))
-    print('Top-5 acc:           {:.2f}\n'.format(top5_acc))
+    print('\nAvg cosine distance: {:.6f}'.format(results.cos_dist))
+    print('Top-1 acc:           {:.2f}'.format(results.top1_acc))
+    print('Top-5 acc:           {:.2f}\n'.format(results.top5_acc))
 
 
 if __name__ == "__main__":

@@ -14,6 +14,8 @@ import test
 def get_config():
     parser = train.get_parser()
     parser.add_argument("-te", "--test", help="CSV file with test texts", default="test.csv")
+    parser.add_argument("experiment", help="Experiment name. Options: context, epochs",
+                        choices=["context", "epochs"])
     parser.add_argument("outdir", help="Output directory")
     config = parser.parse_args()
     makedirs(config.outdir)
@@ -90,13 +92,49 @@ class ContextExperiment(Experiment):
         results_df.to_csv(os.path.join(self.config.outdir, 'results.csv'), index=False)
 
 
+class EpochExperiment(Experiment):
+    def __init__(self, config, max_epoch=15):
+        super().__init__(config)
+        self.max_epoch = max_epoch
+        self.results = []
+        self.current_epoch = 1
+        self.config.epochs = 1
+        self.kw_embeds_path = self.config.kw_embeds
+
+    def on_iter_begin(self):
+        print('Current epoch = {}'.format(self.current_epoch))
+
+    def on_iter_end(self, results):
+        # Update the keyword embeddings with each epoch
+        self.config.kw_embeds = self.config.kw_embeds_opt
+        self.results.append((self.current_epoch, results.cos_dist, results.top1_acc, results.top5_acc))
+        self.current_epoch += 1
+        if self.current_epoch > self.max_epoch:
+            self.is_done = True
+
+    def on_experiment_end(self):
+        results_df = pd.DataFrame(self.results, columns=['epoch','cos_dist','top1_acc','top5_acc'])
+        results_df.to_csv(os.path.join(self.config.outdir, 'results_{}.csv'.format(self.config.context)), index=False)
+        self.config.kw_embeds = self.kw_embeds_path
+
+
 def main():
     config = get_config()
     print('Config: {}'.format(config))
     with open(os.path.join(config.outdir, 'args.txt'), 'w') as f:
         json.dump(vars(config), f, indent=4, sort_keys=True)
 
-    ContextExperiment(config, contexts=range(1, 11)).run()
+    if config.experiment == 'context':
+        ContextExperiment(config, contexts=range(1, 11)).run()
+    elif config.experiment == 'epochs':
+        for c in range(1, 11):
+            config.context = c
+            print('****************************************************')
+            print('\nRunning experiment for context={}'.format(c))
+            print('****************************************************')
+            EpochExperiment(config, max_epoch=10).run()
+    else:
+        print('Wrong experiment name!')
 
 if __name__ == "__main__":
     main()

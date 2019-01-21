@@ -22,7 +22,7 @@ def get_parser():
                         help="Method for updating the keyword embeddings. Default: alpha_beta")
     parser.add_argument("-t", "--train", help="CSV file with train texts", default="train.csv")
     parser.add_argument("-c", "--context", help="Number of words in left/right context", type=int, default=3)
-    parser.add_argument("-a", "--alpha", type=float, default=None,
+    parser.add_argument("-a", "--alpha", type=float, default=0.15,
                         help="Strength of a single update. If not provided, cosinus distance between the keyword "
                              "and context embeddings will be used as alpha (default).")
     parser.add_argument("-b", "--beta", type=float, default=0.0,

@@ -15,7 +15,7 @@ def get_config():
     parser = train.get_parser()
     parser.add_argument("-te", "--test", help="CSV file with test texts", default="test.csv")
     parser.add_argument("experiment", help="Experiment name",
-                        choices=["context", "epochs", "epochs_cos_dist"])
+                        choices=["context", "epochs", "epochs_cos_dist", "alpha"])
     parser.add_argument("outdir", help="Output directory")
     config = parser.parse_args()
     makedirs(config.outdir)
@@ -70,28 +70,6 @@ class Experiment(object):
         self.on_experiment_end()
 
 
-class ContextExperiment(Experiment):
-    def __init__(self, config, contexts=range(1, 11)):
-        super().__init__(config)
-        self.contexts = contexts
-        self.results = []
-        self.idx = 0
-
-    def on_iter_begin(self):
-        self.config.context = self.contexts[self.idx]
-        print('Context = {}'.format(self.config.context))
-
-    def on_iter_end(self, results):
-        self.results.append((self.config.context, results.cos_dist, results.top1_acc, results.top5_acc))
-        self.idx += 1
-        if self.idx >= len(self.contexts):
-            self.is_done = True
-
-    def on_experiment_end(self):
-        results_df = pd.DataFrame(self.results, columns=['context','cos_dist','top1_acc','top5_acc'])
-        results_df.to_csv(os.path.join(self.config.outdir, 'results.csv'), index=False)
-
-
 class EpochExperiment(Experiment):
     def __init__(self, config, max_epoch=15):
         super().__init__(config)
@@ -118,6 +96,31 @@ class EpochExperiment(Experiment):
         self.config.kw_embeds = self.kw_embeds_path
 
 
+class ValueExperiment(Experiment):
+    def __init__(self, config, value_name, values):
+        super().__init__(config)
+        self.value_name = value_name
+        self.values = values
+        self.value_current = getattr(self.config, self.value_name)
+        self.results = []
+        self.idx = 0
+
+    def on_iter_begin(self):
+        self.value_current = self.values[self.idx]
+        setattr(self.config, self.value_name, self.value_current)
+        print('{} = {}'.format(self.value_name, self.value_current))
+
+    def on_iter_end(self, results):
+        self.results.append((self.value_current, results.cos_dist, results.top1_acc, results.top5_acc))
+        self.idx += 1
+        if self.idx >= len(self.values):
+            self.is_done = True
+
+    def on_experiment_end(self):
+        results_df = pd.DataFrame(self.results, columns=[self.value_name,'cos_dist','top1_acc','top5_acc'])
+        results_df.to_csv(os.path.join(self.config.outdir, 'results.csv'), index=False)
+
+
 def main():
     config = get_config()
     print('Config: {}'.format(config))
@@ -126,7 +129,7 @@ def main():
 
     exp = config.experiment
     if exp == 'context':
-        ContextExperiment(config, contexts=range(1, 11)).run()
+        ValueExperiment(config, 'context', values=range(1, 11)).run()
     elif exp == 'epochs':
         for c in range(1, 11):
             config.context = c
@@ -138,6 +141,8 @@ def main():
         config.alpha = None
         config.context = 4
         EpochExperiment(config, max_epoch=10).run()
+    elif exp == 'alpha':
+        ValueExperiment(config, 'alpha', values=np.linspace(0.05, 0.5, 10)).run()
     else:
         print('Wrong experiment name!')
 

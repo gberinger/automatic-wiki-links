@@ -15,7 +15,7 @@ def get_config():
     parser = train.get_parser()
     parser.add_argument("-te", "--test", help="CSV file with test texts", default="test.csv")
     parser.add_argument("experiment", help="Experiment name",
-                        choices=["context", "epochs", "epochs_cos_dist", "alpha", "beta"])
+                        choices=["context", "context_epochs", "epochs", "alpha", "beta"])
     parser.add_argument("outdir", help="Output directory")
     config = parser.parse_args()
     makedirs(config.outdir)
@@ -132,17 +132,15 @@ def main():
     exp = config.experiment
     if exp == 'context':
         ValueExperiment(config, 'context', values=range(1, 11)).run()
-    elif exp == 'epochs':
+    elif exp == 'context_epochs':
         for c in range(1, 11):
             config.context = c
             print('****************************************************')
             print('\nRunning experiment for context={}'.format(c))
             print('****************************************************')
             EpochExperiment(config, max_epoch=10, out_csv='results_{}.csv'.format(c)).run()
-    elif exp == 'epochs_cos_dist':
-        config.alpha = None
-        config.context = 4
-        EpochExperiment(config, max_epoch=10).run()
+    elif exp == 'epochs':
+        EpochExperiment(config, max_epoch=config.epochs).run()
     elif exp == 'alpha':
         ValueExperiment(config, 'alpha', values=np.linspace(0.05, 0.5, 10)).run()
     elif exp == 'beta':

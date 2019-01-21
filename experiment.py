@@ -14,8 +14,8 @@ import test
 def get_config():
     parser = train.get_parser()
     parser.add_argument("-te", "--test", help="CSV file with test texts", default="test.csv")
-    parser.add_argument("experiment", help="Experiment name. Options: context, epochs",
-                        choices=["context", "epochs"])
+    parser.add_argument("experiment", help="Experiment name",
+                        choices=["context", "epochs", "epochs_cos_dist"])
     parser.add_argument("outdir", help="Output directory")
     config = parser.parse_args()
     makedirs(config.outdir)
@@ -124,15 +124,20 @@ def main():
     with open(os.path.join(config.outdir, 'args.txt'), 'w') as f:
         json.dump(vars(config), f, indent=4, sort_keys=True)
 
-    if config.experiment == 'context':
+    exp = config.experiment
+    if exp == 'context':
         ContextExperiment(config, contexts=range(1, 11)).run()
-    elif config.experiment == 'epochs':
+    elif exp == 'epochs':
         for c in range(1, 11):
             config.context = c
             print('****************************************************')
             print('\nRunning experiment for context={}'.format(c))
             print('****************************************************')
             EpochExperiment(config, max_epoch=10).run()
+    elif exp == 'epochs_cos_dist':
+        config.alpha = None
+        config.context = 4
+        EpochExperiment(config, max_epoch=10).run()
     else:
         print('Wrong experiment name!')
 

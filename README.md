@@ -35,9 +35,10 @@ Source: https://en.wikipedia.org/wiki/Climbing
 
 Text:
 ```
-Traditional climbing (more casually known as Trad climbing) is a form of climbing without fixed anchors and *bolts*.
-Climbers place removable protection such as camming devices, nuts, and other passive and active protection that holds
-the rope to the rock (via the use of carabiners and webbing/slings) in the event of a fall and/or when weighted by a climber.
+Traditional climbing (more casually known as Trad climbing) is a form of climbing without fixed anchors
+and *bolts*. Climbers place removable protection such as camming devices, nuts, and other passive and
+active protection that holds the rope to the rock (via the use of carabiners and webbing/slings) in
+the event of a fall and/or when weighted by a climber.
 ```
 
 Word of interest is denoted by `*` on each side of the word. The goal of this experiment is to predict which keyword

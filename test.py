@@ -10,7 +10,7 @@ import utils
 
 def get_config():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-v", "--vocabulary", help="Vocabulary (model) for spaCy to use", default="en_core_web_lg")
+    parser.add_argument("-v", "--vocabulary", help="Vocabulary (model) for spaCy to use", default="en_vectors_web_lg")
     parser.add_argument("-k", "--keywords", help="CSV file with keywords", default="keywords.csv")
     parser.add_argument("-e", "--kw_embeds_opt", default="kw_embeds_opt.pickle",
                         help="File with keyword embeddings. If path does not exist, keyword embeddings are created "

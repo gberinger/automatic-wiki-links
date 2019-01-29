@@ -1,0 +1,1 @@
+When you use the *tree* command each directory name is displayed along with the names of any subdirectories within it.

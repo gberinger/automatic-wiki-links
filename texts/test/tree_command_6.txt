@@ -1,0 +1,1 @@
+It won't be wrong to say the ls command is the gold standard when it comes to listing directory contents on the Linux command line. However, there do exist some alternatives that have their own strong points when compared to ls. Once such tool is *tree*, basics of which we'll be discussing here in this tutorial.

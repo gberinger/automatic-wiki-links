@@ -1,0 +1,1 @@
+As the name suggests, the *tree* command in Linux lists contents of directories in a tree-like format. Following is its syntax

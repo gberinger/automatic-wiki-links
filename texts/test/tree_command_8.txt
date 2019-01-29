@@ -1,0 +1,1 @@
+In case the *tree* command isn't installed in your Ubuntu box, you can grab it using the following command

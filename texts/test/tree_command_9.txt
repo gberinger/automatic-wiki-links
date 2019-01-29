@@ -1,0 +1,1 @@
+First, you have to install the Xcode command line tools by running xcode-select --install. Then, download the *tree* source. Then change the Makefile to get it to work, which is also explained in @apuche's answer below. Commenting out the Linux options and uncommenting the macOS options should be enough.

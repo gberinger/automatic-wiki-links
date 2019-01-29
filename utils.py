@@ -59,7 +59,7 @@ def cos_sim(a, b):
     return 1 - cosine(a, b)
 
 
-def get_top_k_closest_keywords(embedding, keyword_embeddings, k=5):
+def get_top_k_closest_keywords(embedding, keyword_embeddings, k=3):
     scores = []
     for kw, kw_embedding in keyword_embeddings.items():
         scores.append((kw, cos_dist(embedding, kw_embedding)))
@@ -97,7 +97,7 @@ def update_keyword_embeddings_with_context(kw_embeds, kw, ctx_embed, method='alp
         alpha = kwargs['alpha'] or cos_dist(ctx_embed, kw_embeds[kw])
         kw_embeds[kw] += alpha * (ctx_embed - kw_embeds[kw])
         if kwargs['beta'] and kwargs['beta'] > 0:
-            topk = get_top_k_closest_keywords(ctx_embed, kw_embeds, k=5)
+            topk = get_top_k_closest_keywords(ctx_embed, kw_embeds)
             for other_kw, dist in topk:
                 if other_kw != kw:
                     beta = kwargs['beta'] or dist

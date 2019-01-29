@@ -1,0 +1,1 @@
+A preordering is a list of the vertices in the order that they were first visited by the depth-first search algorithm. This is a compact and natural way of describing the progress of the search, as was done earlier in this article. A preordering of an expression *tree* is the expression in Polish notation.

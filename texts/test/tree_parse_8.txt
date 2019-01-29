@@ -1,0 +1,1 @@
+Bottom-up parsing is a strategy for analyzing unknown data relationships that attempts to identify the most fundamental units first, and then to infer higher-order structures from them. Top-down parsers, on the other hand, hypothesize general parse *tree* structures and then consider whether the known fundamental structures are compatible with the hypothesis.

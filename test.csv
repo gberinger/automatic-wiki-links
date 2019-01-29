@@ -23,6 +23,11 @@ texts/test/tree_parse_2.txt,tree parse,https://en.wikipedia.org/wiki/Interpreter
 texts/test/tree_parse_3.txt,tree parse,https://en.wikipedia.org/wiki/Transformational_grammar
 texts/test/tree_parse_4.txt,tree parse,https://en.wikipedia.org/wiki/Syllable
 texts/test/tree_parse_5.txt,tree parse,https://en.wikipedia.org/wiki/First-order_logic
+texts/test/tree_parse_6.txt,tree parse,https://en.wikipedia.org/wiki/Phrase
+texts/test/tree_parse_7.txt,tree parse,https://en.wikipedia.org/wiki/Phrase_structure_rules
+texts/test/tree_parse_8.txt,tree parse,https://en.wikipedia.org/wiki/Top-down_and_bottom-up_design
+texts/test/tree_parse_9.txt,tree parse,https://en.wikipedia.org/wiki/Noun_phrase
+texts/test/tree_parse_10.txt,tree parse,https://en.wikipedia.org/wiki/Depth-first_search
 texts/test/tree_command_1.txt,tree command,https://en.wikipedia.org/wiki/Tree_(command)
 texts/test/tree_command_2.txt,tree command,https://en.wikipedia.org/wiki/Tree_(command)
 texts/test/tree_command_3.txt,tree command,https://www.geeksforgeeks.org/tree-command-unixlinux/

@@ -1,0 +1,1 @@
+Many theories of syntax and grammar illustrate sentence structure using phrase *trees*, which provide schematics of how the words in a sentence are grouped and relate to each other. Trees show the words, phrases, and, at times, clauses that make up sentences.

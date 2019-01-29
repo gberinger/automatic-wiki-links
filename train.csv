@@ -24,11 +24,11 @@ texts/train/tree_family_2.txt,tree family,https://en.wikipedia.org/wiki/Genealog
 texts/train/tree_family_3.txt,tree family,https://en.wikipedia.org/wiki/Language_family
 texts/train/tree_family_4.txt,tree family,https://en.wikipedia.org/wiki/Marriage
 texts/train/tree_family_5.txt,tree family,https://en.wikipedia.org/wiki/Tree_(data_structure)
-texts/train/trees_band_1.txt,trees band,https://en.wikipedia.org/wiki/Trees_(folk_band)
-texts/train/trees_band_2.txt,trees band,https://en.wikipedia.org/wiki/Trees_(folk_band)
-texts/train/trees_band_3.txt,trees band,https://en.wikipedia.org/wiki/English_folk_music
-texts/train/trees_band_4.txt,trees band,https://en.wikipedia.org/wiki/She_Moved_Through_the_Fair
-texts/train/trees_band_5.txt,trees band,https://en.wikipedia.org/wiki/St._Elsewhere_(album)
+texts/train/trees_band_1.txt,trees folk band,https://en.wikipedia.org/wiki/Trees_(folk_band)
+texts/train/trees_band_2.txt,trees folk band,https://en.wikipedia.org/wiki/Trees_(folk_band)
+texts/train/trees_band_3.txt,trees folk band,https://en.wikipedia.org/wiki/English_folk_music
+texts/train/trees_band_4.txt,trees folk band,https://en.wikipedia.org/wiki/She_Moved_Through_the_Fair
+texts/train/trees_band_5.txt,trees folk band,https://en.wikipedia.org/wiki/St._Elsewhere_(album)
 texts/train/tree_command_1.txt,tree command,https://en.wikipedia.org/wiki/Tree_(command)
 texts/train/tree_command_2.txt,tree command,https://en.wikipedia.org/wiki/COM_file
 texts/train/tree_command_3.txt,tree command,https://en.wikipedia.org/wiki/Find_(Unix)

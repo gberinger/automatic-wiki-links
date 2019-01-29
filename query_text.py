@@ -26,11 +26,8 @@ def main():
     print('Config: {}'.format(config))
     nlp = spacy.load(config.vocabulary)
     kw_embeds = utils.get_keyword_embeddings(config.kw_embeds, config.keywords, nlp)
-    with open(config.text) as f:
-        sentence = re.sub(r'[^\w\s*]', ' ', f.read().strip().lower())
-
+    words, sentence = utils.preprocess_text(config.text)
     print('\n{}: {}'.format(utils.bold('Input text'), sentence))
-    words = sentence.split()
     c = config.context
     for i, word in enumerate(words):
         if not word.startswith('*'):

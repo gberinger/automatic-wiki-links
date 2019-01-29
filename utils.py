@@ -5,6 +5,7 @@ import re
 import numpy as np
 import pandas as pd
 from scipy.spatial.distance import cosine
+from nltk.corpus import stopwords
 
 
 def create_keyword_embeddings(kw_path, nlp):
@@ -73,7 +74,8 @@ def bold(s):
 def preprocess_text(path):
     with open(path) as f:
         sentence = re.sub(r'[^\w\s*]', ' ', f.read().strip().lower())
-        return sentence.split()
+        words = [w for w in sentence.split() if w not in stopwords.words('english')]
+        return words, sentence
 
 
 def get_keyword_pos(words):

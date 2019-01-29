@@ -44,7 +44,7 @@ def train(nlp, config):
         for _, sample in df.iterrows():
             path = sample['path']
             kw = sample['keyword']
-            words = utils.preprocess_text(path)
+            words, _ = utils.preprocess_text(path)
             kw_pos = utils.get_keyword_pos(words)
             ctx_embed = utils.get_context_embedding(words, kw_pos, c, nlp, config.ctx_embed_method)
             cos_dist_prev = utils.cos_dist(ctx_embed, kw_embeds[kw])

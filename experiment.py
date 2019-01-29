@@ -80,6 +80,14 @@ class EpochExperiment(Experiment):
         self.kw_embeds_path = self.config.kw_embeds
         self.out_csv = out_csv
 
+    def on_experiment_begin(self):
+        # Check results for untrained embeddings
+        kw_embeds_opt = self.config.kw_embeds_opt
+        self.config.kw_embeds_opt = self.config.kw_embeds
+        results = self.test()
+        self.results.append((0, results.cos_dist, results.top1_acc, results.top3_acc))
+        self.config.kw_embeds_opt = kw_embeds_opt
+
     def on_iter_begin(self):
         print('Current epoch = {}'.format(self.current_epoch))
 

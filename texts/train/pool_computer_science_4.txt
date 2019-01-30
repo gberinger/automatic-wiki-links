@@ -1,0 +1,1 @@
+When used to control access to a *pool* of resources, a semaphore tracks only how many resources are free; it does not keep track of which of the resources are free. Some other mechanism (possibly involving more semaphores) may be required to select a particular free resource.

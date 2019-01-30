@@ -1,0 +1,1 @@
+Memory pools, also called fixed-size blocks allocation, is the use of *pools* for memory management that allows dynamic memory allocation comparable to malloc or C++'s operator new.

@@ -1,0 +1,1 @@
+In some systems, it is possible to dynamically add and remove from a cluster. Resources available at a host and cluster level can be partitioned out into resources *pools* with fine granularity.

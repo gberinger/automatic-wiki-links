@@ -1,0 +1,1 @@
+In computer science, a *pool* is a collection of resources that are kept ready to use, rather than acquired on use and released afterwards.

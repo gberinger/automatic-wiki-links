@@ -1,0 +1,4 @@
+The fair scheduler has three basic concepts.
+Jobs are grouped into *pools* .
+Each pool is assigned a guaranteed minimum share.
+Excess capacity is split between jobs.

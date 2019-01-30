@@ -1,0 +1,1 @@
+Btrfs is intended to address the lack of *pooling* , snapshots, checksums, and integral multi-device spanning in Linux file systems.

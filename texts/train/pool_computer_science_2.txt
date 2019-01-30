@@ -1,0 +1,1 @@
+A pool client requests a resource from the *pool* and performs desired operations on the returned resource. When the client finishes its use of the resource, it is returned to the pool rather than released and lost.

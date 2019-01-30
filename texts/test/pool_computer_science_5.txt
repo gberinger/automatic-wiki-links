@@ -1,0 +1,1 @@
+ Objects themselves hold no external resources and only occupy memory, although an already created object avoids the memory allocation required on object creation. Object *pools* are useful when the cost of object creation is high, but in certain situations this simple object pooling may not be efficient and could in fact decrease performance.

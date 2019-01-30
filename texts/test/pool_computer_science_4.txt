@@ -1,0 +1,1 @@
+Pools can also be used for objects, in which context a *pool* refers to a design pattern for implementing pools in object-oriented languages, such as in the object pool pattern.

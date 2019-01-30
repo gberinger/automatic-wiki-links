@@ -1,0 +1,1 @@
+Pooling is also useful when the latency is a concern, because a *pool* offers predictable times required to obtain resources since they have already been acquired.

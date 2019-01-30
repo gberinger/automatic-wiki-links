@@ -1,0 +1,1 @@
+This paper presents methods to visualize the structure of *trees* that occur in genetic programming. These methods allow for the inspection of structure of entire trees even though several thousand of nodes may be involved.

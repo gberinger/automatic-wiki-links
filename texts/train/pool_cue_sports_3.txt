@@ -1,0 +1,1 @@
+A slingshot maneuver of a satellite around a planet can also be viewed as a perfectly elastic collision. A collision between two *pool* balls is a good example of an almost totally elastic collision, due to their high rigidity, but when bodies come in contact there is always some dissipation.

@@ -1,0 +1,1 @@
+In decision analysis, a decision tree can be used to visually and explicitly represent decisions and decision making. As the name goes, it uses a *tree*-like model of decisions. Though a commonly used tool in data mining for deriving a strategy to reach a particular goal, its also widely used in machine learning, which will be the main focus of this article.

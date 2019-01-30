@@ -4,6 +4,11 @@ texts/test/tree_forest_2.txt,tree forest,https://en.wikipedia.org/wiki/Cell_wall
 texts/test/tree_forest_3.txt,tree forest,https://en.wikipedia.org/wiki/Olive
 texts/test/tree_forest_4.txt,tree forest,https://en.wikipedia.org/wiki/Ren%C3%A9_Descartes
 texts/test/tree_forest_5.txt,tree forest,https://en.wikipedia.org/wiki/Petroleum
+texts/test/tree_forest_6.txt,tree forest,http://en.citizendium.org/wiki/Tree
+texts/test/tree_forest_7.txt,tree forest,http://en.citizendium.org/wiki/Tree
+texts/test/tree_forest_8.txt,tree forest,http://en.citizendium.org/wiki/Tree
+texts/test/tree_forest_9.txt,tree forest,http://en.citizendium.org/wiki/Tree
+texts/test/tree_forest_10.txt,tree forest,http://en.citizendium.org/wiki/Tree
 texts/test/tree_structure_1.txt,tree structure,https://en.wikipedia.org/wiki/Genetic_programming
 texts/test/tree_structure_2.txt,tree structure,https://en.wikipedia.org/wiki/Java_(programming_language)
 texts/test/tree_structure_3.txt,tree structure,https://en.wikipedia.org/wiki/Document_Object_Model
@@ -11,6 +16,9 @@ texts/test/tree_structure_4.txt,tree structure,https://en.wikipedia.org/wiki/Doc
 texts/test/tree_structure_5.txt,tree structure,https://en.wikipedia.org/wiki/Document_Object_Model
 texts/test/tree_structure_6.txt,tree structure,https://en.wikipedia.org/wiki/Binary_tree
 texts/test/tree_structure_7.txt,tree structure,https://en.wikipedia.org/wiki/Binary_tree
+texts/test/tree_structure_8.txt,tree structure,http://library.wolfram.com/infocenter/MathSource/5163/
+texts/test/tree_structure_9.txt,tree structure,http://library.wolfram.com/infocenter/MathSource/5163/
+texts/test/tree_structure_10.txt,tree structure,http://library.wolfram.com/infocenter/MathSource/5163/
 texts/test/tree_decision_1.txt,tree decision,https://en.wikipedia.org/wiki/Word-sense_disambiguation
 texts/test/tree_decision_2.txt,tree decision,https://en.wikipedia.org/wiki/Game_complexity
 texts/test/tree_decision_3.txt,tree decision,https://en.wikipedia.org/wiki/Decision_tree_learning
@@ -18,6 +26,9 @@ texts/test/tree_decision_4.txt,tree decision,https://en.wikipedia.org/wiki/Decis
 texts/test/tree_decision_5.txt,tree decision,https://en.wikipedia.org/wiki/Supervised_learning
 texts/test/tree_decision_6.txt,tree decision,https://en.wikipedia.org/wiki/Supervised_learning
 texts/test/tree_decision_7.txt,tree decision,https://en.wikipedia.org/wiki/Supervised_learning
+texts/test/tree_decision_8.txt,tree decision,https://towardsdatascience.com/decision-trees-in-machine-learning-641b9c4e8052
+texts/test/tree_decision_9.txt,tree decision,http://library.wolfram.com/infocenter/Articles/1502/
+texts/test/tree_decision_10.txt,tree decision,http://en.citizendium.org/wiki/Decision_analysis
 texts/test/tree_parse_1.txt,tree parse,https://en.wikipedia.org/wiki/Natural_language_processing
 texts/test/tree_parse_2.txt,tree parse,https://en.wikipedia.org/wiki/Interpreter_(computing)
 texts/test/tree_parse_3.txt,tree parse,https://en.wikipedia.org/wiki/Transformational_grammar
@@ -65,6 +76,9 @@ texts/test/mars_planet_4.txt,mars planet,https://en.wikipedia.org/wiki/Carl_Saga
 texts/test/mars_planet_5.txt,mars planet,https://en.wikipedia.org/wiki/Carl_Sagan
 texts/test/mars_planet_6.txt,mars planet,https://en.wikipedia.org/wiki/Carl_Sagan
 texts/test/mars_planet_7.txt,mars planet,https://en.wikipedia.org/wiki/Carl_Sagan
+texts/test/mars_planet_8.txt,mars planet,http://www.scholarpedia.org/article/Celestial_mechanics
+texts/test/mars_planet_9.txt,mars planet,http://www.scholarpedia.org/article/Celestial_mechanics
+texts/test/mars_planet_10.txt,mars planet,http://www.scholarpedia.org/article/Celestial_mechanics
 texts/test/mars_mythology_1.txt,mars mythology,https://en.wikipedia.org/wiki/Infanticide
 texts/test/mars_mythology_2.txt,mars mythology,https://en.wikipedia.org/wiki/Heterosexuality
 texts/test/mars_mythology_3.txt,mars mythology,https://en.wikipedia.org/wiki/Jupiter_(mythology)
@@ -72,6 +86,9 @@ texts/test/mars_mythology_4.txt,mars mythology,https://en.wikipedia.org/wiki/Jup
 texts/test/mars_mythology_5.txt,mars mythology,https://en.wikipedia.org/wiki/Venus_(mythology)
 texts/test/mars_mythology_6.txt,mars mythology,https://en.wikipedia.org/wiki/Venus_(mythology)
 texts/test/mars_mythology_7.txt,mars mythology,https://en.wikipedia.org/wiki/Venus_(mythology)
+texts/test/mars_mythology_8.txt,mars mythology,https://www.britannica.com/topic/Mars-Roman-god
+texts/test/mars_mythology_9.txt,mars mythology,https://www.britannica.com/topic/Mars-Roman-god
+texts/test/mars_mythology_10.txt,mars mythology,http://en.citizendium.org/wiki/Mars_(planet)
 texts/test/mars_chocolate_bar_1.txt,mars chocolate bar,https://en.wikipedia.org/wiki/Dinnerladies_(TV_series)
 texts/test/mars_chocolate_bar_2.txt,mars chocolate bar,https://en.wikipedia.org/wiki/Snickers
 texts/test/mars_chocolate_bar_3.txt,mars chocolate bar,https://en.wikipedia.org/wiki/Galaxy_Bubbles
@@ -79,6 +96,9 @@ texts/test/mars_chocolate_bar_4.txt,mars chocolate bar,https://en.wikipedia.org/
 texts/test/mars_chocolate_bar_5.txt,mars chocolate bar,https://en.wikipedia.org/wiki/Snickers
 texts/test/mars_chocolate_bar_6.txt,mars chocolate bar,https://metro.co.uk/2019/01/14/mars-bar-hidden-loft-23-years-proves-shrinkflation-real-8343248/
 texts/test/mars_chocolate_bar_7.txt,mars chocolate bar,https://en.wikipedia.org/wiki/Galaxy_(chocolate)
+texts/test/mars_chocolate_bar_8.txt,mars chocolate bar,http://www.ladbible.com/news/food-aldi-is-selling-twix-and-mars-bar-hot-chocolate-pods-20190126
+texts/test/mars_chocolate_bar_9.txt,mars chocolate bar,http://www.ladbible.com/news/food-aldi-is-selling-twix-and-mars-bar-hot-chocolate-pods-20190126
+texts/test/mars_chocolate_bar_10.txt,mars chocolate bar,https://www.mars.com/uk/en/brands
 texts/test/mars_bruno_1.txt,mars bruno singer,https://en.wikipedia.org/wiki/Red_Hot_Chili_Peppers
 texts/test/mars_bruno_2.txt,mars bruno singer,https://en.wikipedia.org/wiki/Bruno_Mars
 texts/test/mars_bruno_3.txt,mars bruno singer,https://en.wikipedia.org/wiki/Bruno_Mars
@@ -96,6 +116,9 @@ texts/test/nail_anatomy_4.txt,nail anatomy,https://en.wikipedia.org/wiki/Keratin
 texts/test/nail_anatomy_5.txt,nail anatomy,https://en.wikipedia.org/wiki/Matrix_(biology)
 texts/test/nail_anatomy_6.txt,nail anatomy,https://en.wikipedia.org/wiki/Protein
 texts/test/nail_anatomy_7.txt,nail anatomy,https://en.wikipedia.org/wiki/Protein
+texts/test/nail_anatomy_8.txt,nail anatomy,https://www.britannica.com/science/nail-anatomy
+texts/test/nail_anatomy_9.txt,nail anatomy,http://www.scholarpedia.org/article/Adult_Play_and_Sexual_Selection
+texts/test/nail_anatomy_10.txt,nail anatomy,http://www.scholarpedia.org/article/Adult_Play_and_Sexual_Selection
 texts/test/nail_fastener_1.txt,nail fastener,https://en.wikipedia.org/wiki/Smelting
 texts/test/nail_fastener_2.txt,nail fastener,https://en.wikipedia.org/wiki/Carpentry
 texts/test/nail_fastener_3.txt,nail fastener,https://en.wikipedia.org/wiki/Cog_(ship)
@@ -103,6 +126,9 @@ texts/test/nail_fastener_4.txt,nail fastener,https://en.wikipedia.org/wiki/Pipe_
 texts/test/nail_fastener_5.txt,nail fastener,https://en.wikipedia.org/wiki/Type_metal
 texts/test/nail_fastener_6.txt,nail fastener,https://en.wikipedia.org/wiki/Woodworking_joints
 texts/test/nail_fastener_7.txt,nail fastener,https://en.wikipedia.org/wiki/Woodworking_joints
+texts/test/nail_fastener_8.txt,nail fastener,https://www.britannica.com/technology/nail-fastener
+texts/test/nail_fastener_9.txt,nail fastener,https://www.britannica.com/technology/nail-fastener
+texts/test/nail_fastener_10.txt,nail fastener,https://www.britannica.com/technology/nail-fastener
 texts/test/nail_relic_1.txt,nail relic,https://en.wikipedia.org/wiki/Holy_Nail
 texts/test/nail_relic_2.txt,nail relic,https://en.wikipedia.org/wiki/Holy_Nail
 texts/test/nail_relic_3.txt,nail relic,https://en.wikipedia.org/wiki/Relic
@@ -140,6 +166,9 @@ texts/test/bolt_fastener_4.txt,bolt fastener,https://en.wikipedia.org/wiki/Tap_a
 texts/test/bolt_fastener_5.txt,bolt fastener,https://en.wikipedia.org/wiki/Tap_and_die
 texts/test/bolt_fastener_6.txt,bolt fastener,https://en.wikipedia.org/wiki/Tap_and_die
 texts/test/bolt_fastener_7.txt,bolt fastener,https://en.wikipedia.org/wiki/Tap_and_die
+texts/test/bolt_fastener_8.txt,bolt fastener,https://www.housebeautiful.com/home-remodeling/g25895027/types-of-screws/
+texts/test/bolt_fastener_9.txt,bolt fastener,https://www.housebeautiful.com/home-remodeling/g25895027/types-of-screws/
+texts/test/bolt_fastener_10.txt,bolt fastener,https://www.housebeautiful.com/home-remodeling/g25895027/types-of-screws/
 texts/test/bolt_climbing_1.txt,bolt climbing,https://en.wikipedia.org/wiki/Caving
 texts/test/bolt_climbing_2.txt,bolt climbing,https://en.wikipedia.org/wiki/Lynn_Hill
 texts/test/bolt_climbing_3.txt,bolt climbing,https://en.wikipedia.org/wiki/Glossary_of_climbing_terms
@@ -147,6 +176,9 @@ texts/test/bolt_climbing_4.txt,bolt climbing,https://en.wikipedia.org/wiki/Gloss
 texts/test/bolt_climbing_5.txt,bolt climbing,https://en.wikipedia.org/wiki/Climbing_protection
 texts/test/bolt_climbing_6.txt,bolt climbing,https://en.wikipedia.org/wiki/Climbing_protection
 texts/test/bolt_climbing_7.txt,bolt climbing,https://en.wikipedia.org/wiki/Climbing_protection
+texts/test/bolt_climbing_8.txt,bolt climbing,http://www.spokesman.com/stories/2019/jan/18/outdoors-climbing-bower-climbing-coalition-the-was/
+texts/test/bolt_climbing_9.txt,bolt climbing,http://www.spokesman.com/stories/2019/jan/18/outdoors-climbing-bower-climbing-coalition-the-was/
+texts/test/bolt_climbing_10.txt,bolt climbing,https://www.britannica.com/sports/mountaineering
 texts/test/bolt_firearms_1.txt,bolt firearms,https://en.wikipedia.org/wiki/Gun_safety
 texts/test/bolt_firearms_2.txt,bolt firearms,https://en.wikipedia.org/wiki/Rifle
 texts/test/bolt_firearms_3.txt,bolt firearms,https://en.wikipedia.org/wiki/Rifle
@@ -154,6 +186,9 @@ texts/test/bolt_firearms_4.txt,bolt firearms,https://en.wikipedia.org/wiki/Rifle
 texts/test/bolt_firearms_5.txt,bolt firearms,https://www.britannica.com/technology/small-arm
 texts/test/bolt_firearms_6.txt,bolt firearms,https://en.wikipedia.org/wiki/Gun_safety
 texts/test/bolt_firearms_7.txt,bolt firearms,https://en.wikipedia.org/wiki/Gun_safety
+texts/test/bolt_firearms_8.txt,bolt firearms,https://dailycaller.com/2019/01/29/gun-test-eaa-mka-1923-bullpup-shotgun/
+texts/test/bolt_firearms_9.txt,bolt firearms,http://en.citizendium.org/wiki/Machine_gun
+texts/test/bolt_firearms_10.txt,bolt firearms,https://www.guns.com/news/2019/01/30/fierce-firearms-releases-new-carbon-fury-bolt-action-rifle-video
 texts/test/bolt_crossbow_1.txt,bolt crossbow,https://en.wikipedia.org/wiki/Strife_(1996_video_game)
 texts/test/bolt_crossbow_2.txt,bolt crossbow,https://en.wikipedia.org/wiki/Arbalest
 texts/test/bolt_crossbow_3.txt,bolt crossbow,https://en.wikipedia.org/wiki/Quiver

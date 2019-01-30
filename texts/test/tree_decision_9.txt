@@ -1,0 +1,1 @@
+Decision tree models may be more realistic if branching probabilities (and possibly utilities) are represented as distributions rather than point estimates. However, numerical analysis of such "probabilistic" *trees* is more difficult. This study employed the Mathematica computer algebra system to implement and verify previously described probabilistic methods.

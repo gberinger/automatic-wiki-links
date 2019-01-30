@@ -1,0 +1,1 @@
+Rather than being intentionally designed, these mechanisms would be an unintended consequence of using *trees* as information structures. A model is described that predicts outcomes in GP that would arise solely from such mechanisms. Comparisons with empirical results from GP lend support to the existence of these mechanisms.

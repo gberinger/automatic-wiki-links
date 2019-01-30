@@ -1,0 +1,1 @@
+Decision analysis is a formal method for modeling complex decisions in order to quantitatively compare choices. A decision *tree* is a "graphic device used in decision analysis, series of decision options are represented as branches (hierarchical)." An example of a decision analysis used in health care addresses screening for colorectal cancer.

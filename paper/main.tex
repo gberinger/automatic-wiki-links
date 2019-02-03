@@ -143,7 +143,7 @@ It is parametrized by context length \(l\), which specifies how many of words fr
 
 \textit{Context embedding} \(\bm{c}\) is also achieved by taking an average of word embeddings (Equation \ref{eq:keyword_embedding}).
 In this case, \(N = 2l + 1\) and \(w_1, w_2, ..., w_N\) is the context with ambiguous word inside. For some cases \(N < 2l + 1\), since the ambiguous word may occur at the beginning or ending of text example and full context cannot be collected.
-In this case, we just average average the reduced context.
+In this case, we just average the reduced context.
 
 Text, that we take context from, must be preprocessed.
 We remove any special characters and stopwords, and use lower-case letters only.

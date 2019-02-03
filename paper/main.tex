@@ -41,7 +41,7 @@ Gda{\'n}sk University of Technology, Gda{\'n}sk, Poland
 \maketitle
 \begin{abstract}
 Abstract
-\keywords{word sense disambiguation}
+\keywords{word sense disambiguation, word embeddings}
 
 \end{abstract}
 
@@ -63,6 +63,47 @@ We propose a simple method to infer the word meaning: an average of the context 
 
 \section{Dataset}
 \label{dataset}
+For the purpose of testing word embeddings as a method to differentiate between different meanings, we gathered examples for 6 ambiguous words, 4-7 meanings each (28 meanings in total).
+Ambiguous word together with its meaning constitues a \textit{keyword}, which we use as a separate class when identyfing the closest meaning given some context.
+All keywords can be seen on Figure 1.
+
+\begin{figure}
+    \label{fig:keywords}
+    \caption{Ambiguous words with their meanings (keywords) from the dataset}
+    \includegraphics[scale=0.35]{res/keywords.png}
+\end{figure}
+
+Examples were mostly gathered from Wikipedia, using \textit{What links here} utility for each keyword.
+If usage examples from Wikipedia were not enough, other websites were used (or even the Wikipedia article on specific keyword itself).
+
+The dataset is split into training and test set, with 5 training and 10 test examples for each keyword.
+Each example is stored in plain text, with the ambiguous word marked with "*" on both sides.
+
+The correct keyword for each example, together with a path to file and a link, where the original text was taken from, are stored in CSV files: \textit{train.csv} for training set, \textit{test.csv} for test set (columns: path,keyword,link).
+Keywords themselves, together with links to their Wikipedia articles, are stored in \textit{keywords.csv} file.
+Dataset, together with the code to execute experiments from this paper, can be found on our GitHub repository \cite{repository}.
+
+\bigskip
+\underline{Example for \textit{bolt crossbow} keyword:}
+
+\smallskip
+\textbf{Keyword definition}: keyword.csv\newline
+\textit{
+keyword,link\newline
+...\newline
+bolt crossbow,https://en.wikipedia.org/wiki/Crossbow\_bolt\newline}
+
+\smallskip
+\textbf{Test set}: test.csv\newline
+\textit{
+path,keyword,link\newline
+...\newline
+texts/test/bolt\_crossbow\_5.txt,bolt crossbow,https://en.wikipedia.org/wiki/Incendiary\_device\newline
+}
+
+\smallskip
+\textbf{Text}: texts/test/bolt\_crossbow\_5.txt\newline
+\textit{"Sulfur- and oil-soaked materials were sometimes ignited and thrown at the enemy, or attached to spears, arrow and *bolts* and fired by hand or machine. Some siege techniques—such as mining and boring—relied on combustibles and fire to complete the collapse of walls and structures."}
 
 \bibliographystyle{splncs}
 \bibliography{sample}

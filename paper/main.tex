@@ -188,8 +188,10 @@ where \(\bm{m}^{(i)}\) is the embedding of incorrect keyword at iteration \(i\) 
 
 \section{Experiments}
 \subsection{Assumptions}
-Since our goal is to check how embedding approach works for WSD problem, we use pretrained embedding model from spaCy - en\_vectors\_web\_lg.
-Due to high impact of training data order on test results, as a result we take average score of 30 runs for each optimization.
+Since our goal is to check how embedding approach works for WSD problem, we use pretrained embedding model from spaCy - en\_vectors\_web\_lg, 300-dimensional word vectors trained on Common Crawl with GloVe.\cite{spacymodel}.
+Due to high impact of training data order on test results, we take the average score of 30 runs (with random order of training data) for each optimization experiment.
+The best configuration of each experiment is taken as a baseline for the next experiment.
+The goal of these experiments is to show how each of parameters influences on model's accuracy after training.
 \subsection{Baseline}
 First of experiments is to check how out-of-the-box model works without extra optimizations. We perform tests with different context lengths, as a score we choose top 1 and top 3 accuracy. Results are shown in the Fig. \ref{fig:baseline}.
 
@@ -198,7 +200,10 @@ First of experiments is to check how out-of-the-box model works without extra op
     \caption{Top accuracy of base model with different context length}
     \includegraphics[scale=0.5]{res/baseline_context_top_acc.png}
 \end{figure}
-TODO: Some discussion.
+
+We see that the base model exceeds 90 percentages of top 3 accuracy for very short context length. It may be caused by low number of meanings of each disambiguation word.
+It can also be observed that top 1 score is the best for context length of 3 and therefore we decided to use it as a baseline for next two experiments.
+
 \subsection{Context length optimization}
 Once we have base model results we check how simple alpha optimization improves accuracy based on context length. To do this, we choose arbitrarily a value for alpha parameter and run tests after one epoch of training the model. Since we average results from 30 runs we mark the measurement uncertainty on the graph. Results are shown in the Fig. \ref{fig:exp1}.
 \begin{figure}
@@ -206,7 +211,7 @@ Once we have base model results we check how simple alpha optimization improves 
     \caption{Comparison of the base model and a little bit optimized model based on different context length}
     \includegraphics[scale=0.6]{res/exp1_context_top_acc.png}
 \end{figure}
-TODO: Some discussion.
+Independent of some noise caused by random order of training data, the optimized model is much better than the base model. Interestingly, the improvement is most visible for long context lengths, which achieved relatively poor results in the baseline experiment.
 
 \subsection{Alpha parameter optimization}
 Next step is to check the influence of alpha parameter on the accuracy score after one epoch of training with fixed context length - the best value for the base model. Results are shown in the Fig. \ref{fig:exp2}. In this experiment we also mark the measurement uncertainty on the graph.
@@ -216,7 +221,9 @@ Next step is to check the influence of alpha parameter on the accuracy score aft
     \caption{Based on fixed context length, comparison of the base model and a model optimized with various alpha parameters. }
     \includegraphics[scale=0.6]{res/exp2_alpha_top_acc.png}
 \end{figure}
-TODO: Some discussion.
+
+We observe that optimal value of alpha is 0.25 but higher values may cause worse accuracy score than the baseline. As alpha is responsible for reducing distance between context and keyword (Equation \ref{eq:alpha_optimization}) and it is a scalar value, it moves the keyword closer to correct context but after moving, the keyword may be also closer to the other, incorrect context.
+
 \subsection{Beta parameter optimization}
 Next optimization we test is the influence of beta parameter. In this test we also performs one epoch of training with fixed context length and alpha parameter, based on previous experiment's results. Results are shown in the Fig. \ref{fig:exp3}. Since in this case we compare our solution to non-fully deterministic solution we decide to mark only averaged score of performed tests.
 
@@ -225,10 +232,10 @@ Next optimization we test is the influence of beta parameter. In this test we al
     \caption{Based on fixed context length and alpha parameter value, comparison of the alpha-optimized model and a alpha-optimized model with various beta parameters. }
     \includegraphics[scale=0.5]{res/exp3_beta_top_acc.png}
 \end{figure}
-TODO: Some discussion.
+Beta parameter is also a scalar value and it is responsible for increasing distance between keyword and incorrect context (Equation \ref{eq:beta_optimization}) . In the graph of results we see that for low value of beta there is an improvement in top 1 accuracy, for top 3 accuracy the score goes under baseline value. It is interesting as we improve top 1 score and worsen top 3 score. Probably beta parameter should not be optimized during single epoch training and should be very slow as increasing distances between two incorrect embeddings may cause that we also increase distance between correct pair of embeddings.
 
 \subsection{Longer training}
-Previous optimization are applied for only one epoch of training. The goal of next experiment is to check how number of epochs affects final accuracy. We run up to 5 epochs of training using parameters obtained in previous experiments. Results are shown in the Fig. \ref{fig:exp4_2}.
+Previous optimization are applied for only one epoch of training. The goal of this experiment is to check how number of epochs affects final accuracy. We run up to 5 epochs of training using parameters obtained in previous experiments. Results are shown in the Fig. \ref{fig:exp4_2}.
 \begin{figure}
     \label{fig:exp4_1}
     \caption{5 epoch training of optimized model}
@@ -240,7 +247,7 @@ We see that there is almost no improvement after first epoch of training. Probab
     \caption{Comparison of multiple optimized models across 5 epochs of training. }
     \includegraphics[scale=0.6]{res/exp4_epoch_multiconfiguration_top_acc.png}
 \end{figure}
-TODO: Some discussion.
+Longer training shows that optimal parameters obtained from previous experiments are not good for longer training and lower values of alpha and beta parameters are better. Probably we should use additional decays parameters to decrease values of alpha and beta parameters.
 
 \bibliographystyle{splncs}
 \bibliography{sample}

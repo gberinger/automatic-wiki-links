@@ -19,7 +19,7 @@
 \usepackage{graphicx}
 
 \usepackage[colorinlistoftodos]{todonotes}
-\title{Super awesome embeddings}
+\title{Optimized average-based embeddings for word sense disambiguation problem}
 \author{Grzegorz Beringer \and Mateusz Jabłoński \and Piotr Januszewski \and Julian Szymański}
 %
 
@@ -241,6 +241,13 @@ We see that there is almost no improvement after first epoch of training. Probab
     \includegraphics[scale=0.6]{res/exp4_epoch_multiconfiguration_top_acc.png}
 \end{figure}
 TODO: Some discussion.
+
+\section{Conclusion and future work}
+
+Average-based keyword and context embeddings proved to be a surprisingly good baseline for the dataset of ambiguous keywords that we collected, achieving over 65\% top-1 and 93\% top-3 accuracy.
+We have shown, that you can improve these results up to about 80\% top-1 and 95\% top-3 accuracy by using a simple optimization method of improving keyword embeddings with even a few training examples per keyword.
+
+Further improvements could be sought by using different keyword and context embedding schemes, e.g. weighted average or by using some sentence embedding method. Optimization method itself could be made more stable by applying decay to alpha and beta parameters and by using a validation set for early stopping. It could also be bound to cosine distance between the keyword and context - the bigger the difference, the bigger the update. Finally, the dataset could be enhanced to contain more ambiguous words and training/test examples.
 
 \bibliographystyle{splncs}
 \bibliography{sample}

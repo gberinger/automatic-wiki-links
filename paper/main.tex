@@ -8,6 +8,7 @@
 \usepackage[utf8x]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[outdir=./]{epstopdf}
+\usepackage{bm}
 
 \usepackage[]{xcolor}
 %% Sets page size and margins
@@ -91,19 +92,75 @@ Dataset, together with the code to execute experiments from this paper, can be f
 \textit{
 keyword,link\newline
 ...\newline
-bolt crossbow,https://en.wikipedia.org/wiki/Crossbow\_bolt\newline}
+bolt crossbow,https://en.wikipedia.org/wiki/Crossbow\_bolt}
 
 \smallskip
 \textbf{Test set}: test.csv\newline
 \textit{
 path,keyword,link\newline
 ...\newline
-texts/test/bolt\_crossbow\_5.txt,bolt crossbow,https://en.wikipedia.org/wiki/Incendiary\_device\newline
+texts/test/bolt\_crossbow\_5.txt,bolt crossbow,https://en.wikipedia.org/wiki/Incendiary\_device
 }
 
 \smallskip
 \textbf{Text}: texts/test/bolt\_crossbow\_5.txt\newline
 \textit{"Sulfur- and oil-soaked materials were sometimes ignited and thrown at the enemy, or attached to spears, arrow and *bolts* and fired by hand or machine. Some siege techniques—such as mining and boring—relied on combustibles and fire to complete the collapse of walls and structures."}
+
+\section{Our method}
+\subsection{Keyword embedding}
+\textit{Keyword} is a sequence of words that lets us disambiguate between different meanings of the same ambiguous word, e.g. "tree forest" that represents a tree as a plant and "tree structure" which represents tree as a mathematical structure.
+
+To get the embedding of the keyword, we simply average all the words in the keyword:
+
+\begin{equation}
+    \label{eq:keyword_embedding}
+    \bm{k} = e(w_1, w_2, ..., w_N) = \frac{1}{N}\sum_{i=1}^{N} e(w_i)
+\end{equation}
+
+where \(e(\cdot)\) is the embedding function used and \(w_1, w_2, ..., w_N\) is a sequence of N words that, in this case, constitutes a keyword.
+
+\subsection{Context embedding}
+\textit{Context} is a sequence of words that contains an ambiguous word within, usually in the middle.
+It is parametrized by context length \(l\), which specifies how many of words from both side of the ambiguous word in question were taken into consideration.
+
+\textit{Context embedding} \(\bm{c}\) is also achieved by taking an average of word embeddings (Equation \ref{eq:keyword_embedding}).
+In this case, \(N = 2l + 1\) and \(w_1, w_2, ..., w_N\) is the context with ambiguous word inside. For some cases \(N < 2l + 1\), since the ambiguous word may occur at the beginning or ending of text example and full context cannot be collected.
+
+Text, that we take context from, must be preprocessed.
+We remove any special characters and stopwords, and use lower-case letters only.
+
+\underline{Example with \(l=3\)}:
+
+\textbf{Text}:
+\textit{"The object pool pattern is a software creational design pattern that uses a set of initialized objects kept ready to use – a " *pool* " – rather than allocating and destroying them on demand."}
+
+\textbf{Preprocessed text}:
+\textit{"the object pool pattern is a software creational design pattern that uses a set of initialized objects kept ready to use a *pool* rather than allocating and destroying them on demand"}
+
+\textbf{Context}:
+\textit{kept ready use \underline{pool} rather allocating destroying}
+
+\subsection{Optimization}
+As a baseline, we use keyword and context embeddings described above to find the closest keyword given some context, using cosine distance as a metric.
+To optimize this system, we use texts from the training set to improve the quality of keyword embeddings.
+For each training example, we shift the correct keyword embedding by a factor of \(\alpha\) in the direction of context embedding, which describes said keyword.
+
+\begin{equation}
+    \label{eq:alpha_optimization}
+    \bm{k}^{(i+1)} = \bm{k}^{(i)} + \alpha(\bm{c} - \bm{k}^{(i)})
+\end{equation}
+
+where \(\bm{k}^{(i)}\) is the embedding of the correct keyword at iteration \(i\), \(\bm{c}\) is the context embedding and \(\alpha\) is a scalar that controls the strength of the update.
+
+\smallskip
+We try to optimize the system even further, by also moving top-k closest keywords that are incorrect given the same context.
+
+\begin{equation}
+    \label{eq:beta_optimization}
+    \bm{m}^{(i+1)} = \bm{m}^{(i)} - \beta(\bm{c} - \bm{m}^{(i)})
+\end{equation}
+
+where \(\bm{m}^{(i)}\) is the embedding of incorrect keyword at iteration \(i\) and \(\beta\) is a scalar that controls the strength of the update.
 
 \bibliographystyle{splncs}
 \bibliography{sample}

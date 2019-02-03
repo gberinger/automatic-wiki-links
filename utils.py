@@ -96,7 +96,7 @@ def get_context_embedding(words, kw_idx, ctx, nlp, method='avg'):
 
 def update_keyword_embeddings_with_context(kw_embeds, kw, ctx_embed, method='alpha_beta', **kwargs):
     if method == 'alpha_beta':
-        alpha = kwargs['alpha'] or cos_dist(ctx_embed, kw_embeds[kw])
+        alpha = kwargs['alpha']
         kw_embeds[kw] += alpha * (ctx_embed - kw_embeds[kw])
         if kwargs['beta'] and kwargs['beta'] > 0:
             topk = get_top_k_closest_keywords(ctx_embed, kw_embeds)

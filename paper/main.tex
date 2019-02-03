@@ -63,10 +63,9 @@ We propose a simple method to infer the word meaning: an average of the context 
 
 \section{Dataset}
 \label{dataset}
-For the purpose of testing word embeddings as a method to differentiate between different meanings, we gathered examples
-for 6 ambiguous words, 4-7 meanings each (28 meanings in total). Ambiguous word together with its meaning constitues a
-\textit{keyword}, which we use as a separate class when identyfing the closest meaning given some context. All keywords
-can be seen on Figure 1.
+For the purpose of testing word embeddings as a method to differentiate between different meanings, we gathered examples for 6 ambiguous words, 4-7 meanings each (28 meanings in total).
+Ambiguous word together with its meaning constitues a \textit{keyword}, which we use as a separate class when identyfing the closest meaning given some context.
+All keywords can be seen on Figure 1.
 
 \begin{figure}
     \label{fig:keywords}
@@ -74,11 +73,11 @@ can be seen on Figure 1.
     \includegraphics[scale=0.35]{res/keywords.png}
 \end{figure}
 
-Examples were mostly gathered from Wikipedia, using \textit{What links here} utility for each keyword. If usage examples
-from Wikipedia were not enough, other websites were used (or even the Wiki article on specific keyword itself).
+Examples were mostly gathered from Wikipedia, using \textit{What links here} utility for each keyword.
+If usage examples from Wikipedia were not enough, other websites were used (or even the Wikipedia article on specific keyword itself).
 
-The dataset is split into training and test set, with 5 training and 10 test examples for each keyword. Each example
-is stored in plain text, with the ambiguous word marked with "*" on both sides.
+The dataset is split into training and test set, with 5 training and 10 test examples for each keyword.
+Each example is stored in plain text, with the ambiguous word marked with "*" on both sides.
 
 \bigskip
 \underline{Example for \textit{bolt crossbow} keyword:}
@@ -88,9 +87,9 @@ is stored in plain text, with the ambiguous word marked with "*" on both sides.
 fire to complete the collapse of walls and structures."}
 
 \bigskip
-The correct keyword for each example, together with a path to file and link, where the original text was taken from,
-are stored in CSV files: \textit{train.csv} for training set, \textit{test.csv} for test set. Keywords themselves,
-together with links to their Wiki articles, are stored in \textit{keywords.csv} file.
+The correct keyword for each example, together with a path to file and a link, where the original text was taken from, are stored in CSV files: \textit{train.csv} for training set, \textit{test.csv} for test set (columns: path,keyword,link).
+Keywords themselves, together with links to their Wikipedia articles, are stored in \textit{keywords.csv} file.
+Dataset, together with the code to execute experiments from this paper, can be found on our GitHub repository \cite{repository}.
 
 \bibliographystyle{splncs}
 \bibliography{sample}

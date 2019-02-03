@@ -61,6 +61,24 @@ We propose a simple method to infer the word meaning: an average of the context 
 \section{Related work}
 \label{related work}
 
+Typically, there are two kinds of approach for WSD: supervised, which make use of sense-annotated training data, and knowledge-based, which make use of the properties of lexical resources. In supervised approach, the most widely used training corpus used is SemCor\cite{semcor}, with 226,036 sense annotations from 352 manually annotated documents.
+Knowledge-based systems usually exploit WordNet\cite{wordnet} or BabelNet\cite{babelnet} as semantic network.
+Our solution joins two approaches. We use the knowledge-based word embeddings like GloVe\cite{GloVe} as a baseline for our method and then optimize them in supervised fashion.
+
+The most usual baseline is the Most Frequent Sense\cite{evalmfs} (MFS) heuristic, which selects for each target word the most frequent sense in the training data.
+Recent growth of sequence learning techniques using artificial neural networks contributed to WSD research: Raganato et al.\cite{neuralseqmodelingforWSD} propose a series of end-to-end neural architectures directly tailored to the task, from bidirectional Long Short-Term Memory (LSTM) to encoder-decoder models. Melamud et al.\cite{context2vec} also use bidirectional LSTM it their work. They use large plain text corpora to learn a neural model that embeds entire sentential contexts and target words in the same low-dimensional space, which is optimized to reflect inter-dependencies between targets and their entire sentential context as a whole.
+
+Iacobacci et al.\cite{embeddingsforWSD} were first to try to use word embeddings for WSD. They consider four different strategies for integrating a pre-trained word embeddings as context representation in a supervised WSD system: concatenation, average, fractional and exponential decay of the vectors of the words surrounding a target word.
+Peters et al.\cite{deepcontext} create word representations that differ from traditional word embeddings in that each token is assigned a representation that is a function of the entire input sentence. They use vectors derived from a bidirectional LSTM that is trained with a coupled language model objective on a large text corpus.
+
+Most of the previous neural networks applications to WSD ignore lexical resources like glosses (sense definitions) and rely solely on word's context. In Luo et al.\cite{glosses} paper, they integrate the context and glosses of the target word into a unified framework, in order to make full use of both labeled data and lexical knowledge.
+
+Entity Linking (EL) and WSD both address the lexical ambiguity of language. The aim of EL is to discover mentions of entities within text and to link them to the most suitable entry in a reference knowledge base. The two tasks are pretty similar, but they differ fundamentally: in EL the textual mention can be linked to a named entity which may or may not contain the exact mention, while in WSD there is a perfect match between the word form and a suitable word sense in the knowledge base.
+Moro et al.\cite{babelfy} present Babelfy, a unified graph-based approach to EL and WSD based on a loose identification of candidate meanings coupled with a densest subgraph heuristic, which selects high-coherence semantic interpretations.
+We can find also application of random walks\cite{randomwalks} and topic models\cite{topicmodels} for knowledge-based WSD.
+
+Developing WSD system requires much effort and as a result, very few open source WSD systems are publicly available. Zhong et al.\cite{itmakessense} present an English all-words WSD system, IMS (It Makes Sense), built using a supervised learning approach that is written in Java and completely open source. Following Lee and Ng\cite{SVMtoWSD}, they adopt support vector machines (SVM) as the classifier and integrate multiple knowledge sources including parts-of-speech (POS), surrounding words, and local collocations as features.
+
 \section{Dataset}
 \label{dataset}
 For the purpose of testing word embeddings as a method to differentiate between different meanings, we gathered examples for 6 ambiguous words, 4-7 meanings each (28 meanings in total).

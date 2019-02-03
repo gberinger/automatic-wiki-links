@@ -150,7 +150,7 @@ def main():
     elif exp == 'epochs':
         EpochExperiment(config, max_epoch=config.epochs).run()
     elif exp == 'alpha':
-        ValueExperiment(config, 'alpha', values=np.linspace(0.05, 0.5, 10)).run()
+        ValueExperiment(config, 'alpha', values=np.linspace(0, 0.5, 11)).run()
     elif exp == 'beta':
         ValueExperiment(config, 'beta', values=np.linspace(0, 0.1, 11)).run()
     else:

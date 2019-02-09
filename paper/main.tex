@@ -192,6 +192,10 @@ Since our goal is to check how embedding approach works for WSD problem, we use 
 Due to high impact of training data order on test results, we take the average score of 30 runs (with random order of training data) for each optimization experiment.
 The best configuration of each experiment is taken as a baseline for the next experiment.
 The goal of these experiments is to show how each of parameters influences on model's accuracy after training.
+
+We are aware that our method has some limitations.
+Firstly, it may be impossible to achieve optimal solution as we can move only keywords, we leave contexts fixed in the multidimensional space and it is possible that contexts for specific keyword overlap on contexts for other keyword. Hence, top 3 accuracy may be much better than top 1 accuracy.
+Another limitation is that averaged context embedding may be ambiguous, since it is just average, two different contexts may be represented by same vector.
 \subsection{Baseline}
 First of experiments is to check how out-of-the-box model works without extra optimizations. We perform tests with different context lengths, as a score we choose top 1 and top 3 accuracy. Results are shown in the Fig. \ref{fig:baseline}.
 
@@ -201,7 +205,7 @@ First of experiments is to check how out-of-the-box model works without extra op
     \includegraphics[scale=0.5]{res/baseline_context_top_acc.png}
 \end{figure}
 
-We see that the base model exceeds 90 percentages of top 3 accuracy for very short context length. It may be caused by low number of meanings of each disambiguation word.
+We see that the base model exceeds 90 percentages of top 3 accuracy for very short context length. It may be caused by low number of meanings of each ambiguous word.
 It can also be observed that top 1 score is the best for context length of 3 and therefore we decided to use it as a baseline for next two experiments.
 
 \subsection{Context length optimization}
@@ -211,7 +215,7 @@ Once we have base model results we check how simple alpha optimization improves 
     \caption{Comparison of the base model and a little bit optimized model based on different context length}
     \includegraphics[scale=0.6]{res/exp1_context_top_acc.png}
 \end{figure}
-Independent of some noise caused by random order of training data, the optimized model is much better than the base model. Interestingly, the improvement is most visible for long context lengths, which achieved relatively poor results in the baseline experiment.
+Independent of some noise caused by random order of training data, the optimized model is much better than the base model (12 - 36\% of improvement). Interestingly, the improvement is most visible for long context lengths, which achieved relatively poor results in the baseline experiment. It may be caused by huge value of alpha parameter. It can improve bad baseline prediction but when baseline prediction is quite good, the improvement is worse because update step is too long.
 
 \subsection{Alpha parameter optimization}
 Next step is to check the influence of alpha parameter on the accuracy score after one epoch of training with fixed context length - the best value for the base model. Results are shown in the Fig. \ref{fig:exp2}. In this experiment we also mark the measurement uncertainty on the graph.
@@ -223,6 +227,7 @@ Next step is to check the influence of alpha parameter on the accuracy score aft
 \end{figure}
 
 We observe that optimal value of alpha is 0.25 but higher values may cause worse accuracy score than the baseline. As alpha is responsible for reducing distance between context and keyword (Equation \ref{eq:alpha_optimization}) and it is a scalar value, it moves the keyword closer to correct context but after moving, the keyword may be also closer to the other, incorrect context.
+This is the case when even small enough alpha parameter can achieve worse results. To deal with it, more epochs of training are needed.
 
 \subsection{Beta parameter optimization}
 Next optimization we test is the influence of beta parameter. In this test we also performs one epoch of training with fixed context length and alpha parameter, based on previous experiment's results. Results are shown in the Fig. \ref{fig:exp3}. Since in this case we compare our solution to non-fully deterministic solution we decide to mark only averaged score of performed tests.

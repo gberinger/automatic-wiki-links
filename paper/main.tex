@@ -90,7 +90,7 @@ Developing WSD system requires much effort and as a result, very few open source
 \label{sec:dataset}
 For the purpose of testing word embeddings as a method to differentiate between different meanings, we gathered examples for 6 ambiguous words, 4-7 meanings each (28 meanings in total).
 Ambiguous word together with its meaning constitues a \textit{keyword}, which we use as a separate class when identyfing the closest meaning given some context.
-All keywords can be seen on Figure \ref{fig:keywords}.
+All keywords can be seen on Fig. \ref{fig:keywords}.
 
 \begin{figure}
     \centering
@@ -214,7 +214,7 @@ We compare results on the test set with two metrics: top-1 accuracy, where we ar
 \subsection{Baseline}
 \label{sec:baseline}
 For the baseline model, we check how out-of-the-box keyword (\ref{sec:kw_embed}) and context embeddings (\ref{sec:ctx_embed}) work without any extra optimizations.
-We evaluate the performance of the model with different context lengths, to see how it affects top-1 and top-3 accuracies (Figure \ref{fig:baseline}).
+We evaluate the performance of the model with different context lengths, to see how it affects top-1 and top-3 accuracies (Fig. \ref{fig:baseline}).
 
 \begin{figure}[H]
     \centering
@@ -231,8 +231,9 @@ As suspected (\ref{sec:limitations}), this is most likely due to the fact, that 
 The best result w.r.t. top-1 accuracy was achieved with \(l=3\), which is why we choose this context length as a starting point for next experiments.
 
 \subsection{Alpha optimization}
+\label{sec:exp_alpha}
 We check, how a simple optimization method of moving keyword embeddings closer to the contexts they appear in (Eq. \ref{eq:alpha_optimization}), affects the accuracy of the model.
-To do this, we arbitrarily choose some \(\alpha\) value (here 0.2), test the results of improved keyword embeddings with different context lengths and compare them to the baseline (\ref{sec:baseline}). Since we average the results from 30 runs, we mark the measurement uncertainty on the graph (Figure \ref{fig:exp1_optimization}).
+To do this, we arbitrarily choose some \(\alpha\) value (here 0.2), test the results of improved keyword embeddings with different context lengths and compare them to the baseline (\ref{sec:baseline}). Since we average the results from 30 runs, we mark the measurement uncertainty on the graph (Fig. \ref{fig:exp1_optimization}).
 
 \begin{figure}[H]
     \centering
@@ -248,7 +249,7 @@ It seems, that a simple optimization may help alleviate the problems with ambigu
 Overall, results suggest, that for an optimized model, context length is not as important as with the baseline model, at least with this particular \(\alpha\) value.
 
 \bigskip
-Next, we check the influence of the \(\alpha\) parameter value on the top-1 and top-3 accuracies for \(l=3\) (Figure \ref{fig:exp2_alpha}).
+Next, we check the influence of the \(\alpha\) parameter value on the top-1 and top-3 accuracies for \(l=3\) (Fig. \ref{fig:exp2_alpha}).
 
 \begin{figure}
     \centering
@@ -261,20 +262,27 @@ Top-1 accuracy grows up to \(\alpha=0.25\) and then starts to drop.
 It suggests, that bigger values of \(\alpha\) may cause the movement on the multidimensional plane to be too chaotic, moving the correct keyword embedding too close to a specific context, causing overfitting to a specific example.
 Similarly, small values of \(\alpha\) may update the keyword embedding too little, ending up in only slightly better position.
 
-\subsection{Beta parameter optimization}
-Next optimization we test is the influence of beta parameter. In this test we also performs one epoch of training with fixed context length and alpha parameter, based on previous experiment's results. Results are shown in Figure \ref{fig:exp3_beta}. Since in this case we compare our solution to non-fully deterministic solution we decide to mark only averaged score of performed tests.
+\subsection{Beta optimization}
+We proved that moving keyword embeddings closer to their contexts is beneficial for the accuracy on the test set (\ref{sec:exp_alpha}).
+We theorize, that the results could be further improved, if we also increase the distance between closest incorrect keyword embeddings and the context embedding for a specific example (Eq. \ref{eq:beta_optimization}).
+
+In following experiment, we therefore check the influence of \(\beta\) parameter value on the accuracy on the test set, for \(l=3, \alpha=0.25\) (Fig. \ref{fig:exp3_beta}).
+Since we compare the results to an average value from previous experiments (Fig. \ref{fig:exp2_alpha}), we decide to only plot an average result achieved by this optimization.
 
 \begin{figure}[H]
     \centering
-    \caption{Influence of \(\beta\) parameter value on top-1 and top-3 accuracies for \(l=3\) nad \(\alpha=0.25\). The value for \(\beta=0\) is the best result achieved by the model from previous experiment (Figure \ref{fig:exp2_alpha}).}
+    \caption{Influence of \(\beta\) parameter value on top-1 and top-3 accuracies for \(l=3\) nad \(\alpha=0.25\). The value for \(\beta=0\) is the best result achieved by the model from previous experiment (Fig. \ref{fig:exp2_alpha}).}
     \label{fig:exp3_beta}
     \includegraphics[scale=0.6]{res/exp3_beta_top_acc.png}
 \end{figure}
 
-Beta parameter is also a scalar value and it is responsible for increasing distance between keyword and incorrect context (Equation \ref{eq:beta_optimization}) . In the graph of results we see that for low value of beta there is an improvement in top 1 accuracy, for top 3 accuracy the score goes under baseline value. It is interesting as we improve top 1 score and worsen top 3 score. Probably beta parameter should not be optimized during single epoch training and should be very slow as increasing distances between two incorrect embeddings may cause that we also increase distance between correct pair of embeddings.
+Low values of \(\beta\) seem to slightly improve the performance of our optimization method w.r.t. top-1 accuracy (~1\% absolute improvement).
+High values of \(\beta\) suffer from a similar problem to high values of \(\alpha\), causing too much disruption to keyword embeddings.
 
-\subsection{Longer training}
-Previous optimization are applied for only one epoch of training. The goal of this experiment is to check how number of epochs affects final accuracy. We run up to 5 epochs of training using parameters obtained in previous experiments. Results are shown in Figure \ref{fig:exp4_1_epochs_fixed}.
+We chose to move only top-3 closest keywords per each training example. In future work, it might be interesting to see, how does the number of keyword embeddings moved affects the results. We also theorize, that influence of this particular optimization could be bigger for trainings with more than 1 epoch.
+
+\subsection{Accuracy in time}
+Previous optimization are applied for only one epoch of training. The goal of this experiment is to check how number of epochs affects final accuracy. We run up to 5 epochs of training using parameters obtained in previous experiments. Results are shown in Fig. \ref{fig:exp4_1_epochs_fixed}.
 
 \begin{figure}[H]
     \centering
@@ -283,7 +291,7 @@ Previous optimization are applied for only one epoch of training. The goal of th
     \includegraphics[scale=0.6]{res/exp4_epoch_top_acc.png}
 \end{figure}
 
-We see that there is almost no improvement after first epoch of training. Probably the problem is that alpha and beta parameters are too big. We also check what happens when we choose lower values of alpha/beta parameters. Results are shown in Figure \ref{fig:exp4_2_epochs_comparison}.
+We see that there is almost no improvement after first epoch of training. Probably the problem is that alpha and beta parameters are too big. We also check what happens when we choose lower values of alpha/beta parameters. Results are shown in Fig. \ref{fig:exp4_2_epochs_comparison}.
 
 \begin{figure}[H]
     \centering

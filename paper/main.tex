@@ -230,8 +230,9 @@ As suspected (\ref{sec:limitations}), this is most likely due to the fact, that 
 
 The best result w.r.t. top-1 accuracy was achieved with \(l=3\), which is why we choose this context length as a starting point for next experiments.
 
-\subsection{Context length optimization}
-Once we have base model results we check how simple alpha optimization improves accuracy based on context length. To do this, we choose arbitrarily a value for alpha parameter and run tests after one epoch of training the model. Since we average results from 30 runs we mark the measurement uncertainty on the graph. Results are shown in Figure \ref{fig:exp1_optimization}.
+\subsection{Alpha optimization}
+We check, how a simple optimization method of moving keyword embeddings closer to the contexts they appear in (Eq. \ref{eq:alpha_optimization}), affects the accuracy of the model.
+To do this, we arbitrarily choose some \(\alpha\) value (here 0.2), test the results of improved keyword embeddings with different context lengths and compare them to the baseline (\ref{sec:baseline}). Since we average the results from 30 runs, we mark the measurement uncertainty on the graph (Figure \ref{fig:exp1_optimization}).
 
 \begin{figure}[H]
     \centering
@@ -240,10 +241,14 @@ Once we have base model results we check how simple alpha optimization improves 
     \includegraphics[scale=0.6]{res/exp1_context_top_acc.png}
 \end{figure}
 
-Independent of some noise caused by random order of training data, the optimized model is much better than the base model (12 - 36\% of improvement). Interestingly, the improvement is most visible for long context lengths, which achieved relatively poor results in the baseline experiment. It may be caused by huge value of alpha parameter. It can improve bad baseline prediction but when baseline prediction is quite good, the improvement is worse because update step is too long.
+Independently of some noise caused by the random order of training data, the optimized model is much better than the base model (10-20\% absolute improvement w.r.t. top-1 accuracy on the test set).
+Improvement is most visible for longer context lengths, which achieved relatively poor results in the baseline experiment.
+It seems, that a simple optimization may help alleviate the problems with ambiguous embeddings of long contexts (\ref{sec:limitations}).
 
-\subsection{Alpha parameter optimization}
-Next step is to check the influence of alpha parameter on the accuracy score after one epoch of training with fixed context length - the best value for the base model. Results are shown in Figure \ref{fig:exp2_alpha}. In this experiment we also mark the measurement uncertainty on the graph.
+Overall, results suggest, that for an optimized model, context length is not as important as with the baseline model, at least with this particular \(\alpha\) value.
+
+\bigskip
+Next, we check the influence of the \(\alpha\) parameter value on the top-1 and top-3 accuracies for \(l=3\) (Figure \ref{fig:exp2_alpha}).
 
 \begin{figure}
     \centering
@@ -252,8 +257,9 @@ Next step is to check the influence of alpha parameter on the accuracy score aft
     \includegraphics[scale=0.6]{res/exp2_alpha_top_acc.png}
 \end{figure}
 
-We observe that optimal value of alpha is 0.25 but higher values may cause worse accuracy score than the baseline. As alpha is responsible for reducing distance between context and keyword (Equation \ref{eq:alpha_optimization}) and it is a scalar value, it moves the keyword closer to correct context but after moving, the keyword may be also closer to the other, incorrect context.
-This is the case when even small enough alpha parameter can achieve worse results. To deal with it, more epochs of training are needed.
+Top-1 accuracy grows up to \(\alpha=0.25\) and then starts to drop.
+It suggests, that bigger values of \(\alpha\) may cause the movement on the multidimensional plane to be too chaotic, moving the correct keyword embedding too close to a specific context, causing overfitting to a specific example.
+Similarly, small values of \(\alpha\) may update the keyword embedding too little, ending up in only slightly better position.
 
 \subsection{Beta parameter optimization}
 Next optimization we test is the influence of beta parameter. In this test we also performs one epoch of training with fixed context length and alpha parameter, based on previous experiment's results. Results are shown in Figure \ref{fig:exp3_beta}. Since in this case we compare our solution to non-fully deterministic solution we decide to mark only averaged score of performed tests.

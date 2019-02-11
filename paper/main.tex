@@ -9,6 +9,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[outdir=./]{epstopdf}
 \usepackage{bm}
+\usepackage{float}
 
 \usepackage[]{xcolor}
 %% Sets page size and margins
@@ -191,6 +192,7 @@ We try to optimize the system even further, by also moving top-k closest keyword
 where \(\bm{m}^{(i)}\) is the embedding of incorrect keyword at iteration \(i\) and \(\beta\) is a scalar that controls the strength of the update.
 
 \subsection{Limitations}
+\label{sec:limitations}
 We are aware that our method has some limitations.
 First of all, it may be impossible to achieve the optimal solution, as we can only optimize keyword embeddings, leaving context embeddings fixed in the multidimensional space.
 Therefore, it is possible that contexts for specific keyword overlap on contexts for other keyword.
@@ -207,20 +209,26 @@ Due to the high impact of training data order on test results, we take the avera
 The best configuration of each experiment is taken as a baseline for the next experiment.
 The goal of these experiments is to show how each of parameters influences on model's accuracy after training.
 
-We compare our results with two metrics: top-1 accuracy, where we are only interested, if the correct keyword is the closest one to a specific context describing it, and top-3 accuracy, where we check if we are in the closest three keywords.
+We compare results on the test set with two metrics: top-1 accuracy, where we are only interested, if the correct keyword is the closest one to a specific context describing it, and top-3 accuracy, where we check if we are in the closest three keywords.
 
 \subsection{Baseline}
-First of experiments is to check how out-of-the-box model works without extra optimizations. We perform tests with different context lengths, as a score we choose top 1 and top 3 accuracy. Results are shown in the Fig. \ref{fig:baseline}.
+For the baseline model, we check how out-of-the-box keyword (\ref{sec:kw_embed}) and context embeddings (\ref{sec:ctx_embed}) work without any extra optimizations.
+We evaluate the performance of the model with different context lengths, to see how it affects top-1 and top-3 accuracies.
+Results are shown in the Fig. \ref{fig:baseline}.
 
-\begin{figure}
+\begin{figure}[H]
     \centering
     \label{fig:baseline}
     \caption{Top accuracy of base model with different context length}
     \includegraphics[scale=0.5]{res/baseline_context_top_acc.png}
 \end{figure}
 
-We see that the base model exceeds 90 percentages of top 3 accuracy for very short context length. It may be caused by low number of meanings of each ambiguous word.
-It can also be observed that top 1 score is the best for context length of 3 and therefore we decided to use it as a baseline for next two experiments.
+We can see, that the model does relatively well, even unoptimized.
+Top-3 accuracy is about 85-90\%, which is probably caused by a low number of meanings for each ambiguous word.
+Top-1 accuracy for shorter context lengths can go as high as 65\% but decreases with longer contexts.
+As suspected (\ref{sec:limitations}), this is most likely due to the fact, that the average of many word embeddings may make some contexts similar to each other, therefore making it harder to distinguish between some meanings.
+
+The best result w.r.t. top-1 accuracy was achieved with \(l=3\), which is why we choose this context length as a starting point for next experiments.
 
 \subsection{Context length optimization}
 Once we have base model results we check how simple alpha optimization improves accuracy based on context length. To do this, we choose arbitrarily a value for alpha parameter and run tests after one epoch of training the model. Since we average results from 30 runs we mark the measurement uncertainty on the graph. Results are shown in the Fig. \ref{fig:exp1}.

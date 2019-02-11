@@ -282,7 +282,9 @@ High values of \(\beta\) suffer from a similar problem to high values of \(\alph
 We chose to move only top-3 closest keywords per each training example. In future work, it might be interesting to see, how does the number of keyword embeddings moved affects the results. We also theorize, that influence of this particular optimization could be bigger for trainings with more than 1 epoch.
 
 \subsection{Accuracy in time}
-Previous optimization are applied for only one epoch of training. The goal of this experiment is to check how number of epochs affects final accuracy. We run up to 5 epochs of training using parameters obtained in previous experiments. Results are shown in Fig. \ref{fig:exp4_1_epochs_fixed}.
+In previous experiments, we passed through the training data only once, which may not be optimal.
+The goal of this experiment is to check how a number of epochs (full passes through training data) affects the final accuracy.
+We run 5 epochs of training, using best parameters from previous experiments: \(l=3, \alpha=0.25, \beta=0.05\) (Fig. \ref{fig:exp4_1_epochs_fixed}).
 
 \begin{figure}[H]
     \centering
@@ -291,7 +293,9 @@ Previous optimization are applied for only one epoch of training. The goal of th
     \includegraphics[scale=0.6]{res/exp4_epoch_top_acc.png}
 \end{figure}
 
-We see that there is almost no improvement after first epoch of training. Probably the problem is that alpha and beta parameters are too big. We also check what happens when we choose lower values of alpha/beta parameters. Results are shown in Fig. \ref{fig:exp4_2_epochs_comparison}.
+We see that there is almost no improvement after the first epoch of training.
+The possible problem is that the values of \(\alpha\) and \(\beta\) are too high, causing the updates to keyword embeddings to be too big.
+We therefore check what happens, when we choose lower values of these parameters (Fig. \ref{fig:exp4_2_epochs_comparison}).
 
 \begin{figure}[H]
     \centering
@@ -299,14 +303,17 @@ We see that there is almost no improvement after first epoch of training. Probab
     \label{fig:exp4_2_epochs_comparison}
     \includegraphics[scale=0.6]{res/exp4_epoch_multiconfiguration_top_acc.png}
 \end{figure}
-Longer training shows that optimal parameters obtained from previous experiments are not good for longer training and lower values of alpha and beta parameters are better. Probably we should use additional decays parameters to decrease values of alpha and beta parameters.
+
+Longer training shows that optimal parameters obtained from previous experiments are not necessarily good for multiple passes through the training data.
+If we train for a bigger number of epochs, lower values of \(\alpha\) and \(\beta\) parameters are better.
+In future work (\ref{sec:conclusion}) we suggest, that a decay parameter might be useful for this particular reason, with each update being a bit smaller to fine-tune the results.
 
 
 \section{Conclusion and future work}
 \label{sec:conclusion}
 
 Average-based keyword and context embeddings proved to be a surprisingly good baseline for the dataset of ambiguous keywords that we collected, achieving over 65\% top-1 and 93\% top-3 accuracy.
-We have shown, that you can improve these results up to about 80\% top-1 and 95\% top-3 accuracy by using a simple optimization method of improving keyword embeddings with even a few training examples per keyword.
+We have shown, that you can improve these results up to about 79\% top-1 and 95\% top-3 accuracy by using a simple optimization method of improving keyword embeddings with even a few training examples per keyword.
 
 Further improvements could be sought by using different keyword and context embedding schemes, e.g. weighted average or by using some sentence embedding method. Optimization method itself could be made more stable by applying decay to alpha and beta parameters and by using a validation set for early stopping. It could also be bound to cosine distance between the keyword and context - the bigger the difference, the bigger the update. Finally, the dataset could be enhanced to contain more ambiguous words and training/test examples.
 

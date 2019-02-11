@@ -242,7 +242,7 @@ To do this, we arbitrarily choose some \(\alpha\) value (here 0.2), test the res
     \includegraphics[scale=0.6]{res/exp1_context_top_acc.png}
 \end{figure}
 
-Independently of some noise caused by the random order of training data, the optimized model is much better than the base model (10-20\% absolute improvement w.r.t. top-1 accuracy on the test set).
+Independently of some noise caused by the random order of training data, the optimized model is much better than the base model (12-36\% relative, 10-20\% absolute improvement w.r.t. top-1 accuracy on the test set).
 Improvement is most visible for longer context lengths, which achieved relatively poor results in the baseline experiment.
 It seems, that a simple optimization may help alleviate the problems with ambiguous embeddings of long contexts (\ref{sec:limitations}).
 
@@ -251,7 +251,7 @@ Overall, results suggest, that for an optimized model, context length is not as 
 \bigskip
 Next, we check the influence of the \(\alpha\) parameter value on the top-1 and top-3 accuracies for \(l=3\) (Fig. \ref{fig:exp2_alpha}).
 
-\begin{figure}
+\begin{figure}[H]
     \centering
     \caption{Influence of \(\alpha\) parameter value on top-1 and top-3 accuracies for \(l=3\). Blue line denotes the average result from 30 runs, dotted lines denote worst and best result. The value for \(\alpha=0\) is the result achieved by the baseline model (\ref{sec:baseline}).}
     \label{fig:exp2_alpha}
@@ -276,7 +276,7 @@ Since we compare the results to an average value from previous experiments (Fig.
     \includegraphics[scale=0.6]{res/exp3_beta_top_acc.png}
 \end{figure}
 
-Low values of \(\beta\) seem to slightly improve the performance of our optimization method w.r.t. top-1 accuracy (~1\% absolute improvement).
+Low values of \(\beta\) seem to slightly improve the performance of our optimization method w.r.t. top-1 accuracy (about 1\% absolute and relative improvement).
 High values of \(\beta\) suffer from a similar problem to high values of \(\alpha\), causing too much disruption to keyword embeddings.
 
 We chose to move only top-3 closest keywords per each training example. In future work, it might be interesting to see, how does the number of keyword embeddings moved affects the results. We also theorize, that influence of this particular optimization could be bigger for trainings with more than 1 epoch.

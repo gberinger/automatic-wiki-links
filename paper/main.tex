@@ -86,7 +86,7 @@ We can find also application of random walks\cite{randomwalks} and topic models\
 Developing WSD system requires much effort and as a result, very few open source WSD systems are publicly available. Zhong et al.\cite{itmakessense} present an English all-words WSD system, IMS (It Makes Sense), built using a supervised learning approach that is written in Java and completely open source. Following Lee and Ng\cite{SVMtoWSD}, they adopt support vector machines (SVM) as the classifier and integrate multiple knowledge sources including parts-of-speech (POS), surrounding words, and local collocations as features.
 
 \section{Dataset}
-\label{dataset}
+\label{sec:dataset}
 For the purpose of testing word embeddings as a method to differentiate between different meanings, we gathered examples for 6 ambiguous words, 4-7 meanings each (28 meanings in total).
 Ambiguous word together with its meaning constitues a \textit{keyword}, which we use as a separate class when identyfing the closest meaning given some context.
 All keywords can be seen on Figure 1.
@@ -131,6 +131,7 @@ texts/test/bolt\_crossbow\_5.txt,bolt crossbow,https://en.wikipedia.org/wiki/Inc
 
 \section{Our method}
 \subsection{Keyword embedding}
+\label{sec:kw_embed}
 \textit{Keyword} is a sequence of words that lets us disambiguate between different meanings of the same ambiguous word, e.g. "tree forest" that represents a tree as a plant and "tree structure" which represents tree as a mathematical structure.
 
 To get the embedding of the keyword, we simply average all the words in the keyword:
@@ -143,6 +144,7 @@ To get the embedding of the keyword, we simply average all the words in the keyw
 where \(e(\cdot)\) is the embedding function used and \(w_1, w_2, ..., w_N\) is a sequence of N words that, in this case, constitutes a keyword.
 
 \subsection{Context embedding}
+\label{sec:ctx_embed}
 \textit{Context} is a sequence of words that contains an ambiguous word within, usually in the middle.
 It is parametrized by context length \(l\), which specifies how many of words from both side of the ambiguous word in question were taken into consideration.
 
@@ -165,6 +167,7 @@ We remove any special characters and stopwords, and use lower-case letters only.
 \textit{kept ready use \underline{pool} rather allocating destroying}
 
 \subsection{Optimization}
+\label{sec:optimization}
 As a baseline, we use keyword and context embeddings described above to find the closest keyword given some context, using cosine distance as a metric.
 To optimize this system, we use texts from the training set to improve the quality of keyword embeddings.
 For each training example, we shift the correct keyword embedding by a factor of \(\alpha\) in the direction of context embedding, which describes said keyword.
@@ -186,16 +189,25 @@ We try to optimize the system even further, by also moving top-k closest keyword
 
 where \(\bm{m}^{(i)}\) is the embedding of incorrect keyword at iteration \(i\) and \(\beta\) is a scalar that controls the strength of the update.
 
+\subsection{Limitations}
+We are aware that our method has some limitations.
+First of all, it may be impossible to achieve the optimal solution, as we can only optimize keyword embeddings, leaving context embeddings fixed in the multidimensional space.
+Therefore, it is possible that contexts for specific keyword overlap on contexts for other keyword.
+
+Secondly, the average context embedding may be ambiguous, with a high possibility of two different context being mapped to a similar point in space, especially for longer context legths.
+In future work (\ref{sec:conclusion}), we suggest experimenting with different sequence embedding techniques, that might be better suited for this purpose than a flat average.
+
+
 \section{Experiments}
-\subsection{Assumptions}
-Since our goal is to check how embedding approach works for WSD problem, we use pretrained embedding model from spaCy - en\_vectors\_web\_lg, 300-dimensional word vectors trained on Common Crawl with GloVe.\cite{spacymodel}.
-Due to high impact of training data order on test results, we take the average score of 30 runs (with random order of training data) for each optimization experiment.
+The goal of following experiments is to check how embedding approach (\ref{sec:kw_embed}, \ref{sec:ctx_embed}) works for the dataset we collected (\ref{sec:dataset}), both out-of-the-box (baseline) and after applying optimization techniques (\ref{sec:optimization}).
+We use a pretrained embedding model from spaCy - \textit{en\_vectors\_web\_lg}, which contains 300-dimensional word vectors trained on Common Crawl with GloVe\cite{spacymodel}.
+
+Due to the high impact of training data order on test results, we take the average score of 30 runs (each with a random order of training data) for each optimization experiment.
 The best configuration of each experiment is taken as a baseline for the next experiment.
 The goal of these experiments is to show how each of parameters influences on model's accuracy after training.
 
-We are aware that our method has some limitations.
-Firstly, it may be impossible to achieve optimal solution as we can move only keywords, we leave contexts fixed in the multidimensional space and it is possible that contexts for specific keyword overlap on contexts for other keyword. Hence, top 3 accuracy may be much better than top 1 accuracy.
-Another limitation is that averaged context embedding may be ambiguous, since it is just average, two different contexts may be represented by same vector.
+We compare our results with two metrics: top-1 accuracy, where we are only interested, if the correct keyword is the closest one to a specific context describing it, and top-3 accuracy, where we check if we are in the closest three keywords.
+
 \subsection{Baseline}
 First of experiments is to check how out-of-the-box model works without extra optimizations. We perform tests with different context lengths, as a score we choose top 1 and top 3 accuracy. Results are shown in the Fig. \ref{fig:baseline}.
 
@@ -254,7 +266,9 @@ We see that there is almost no improvement after first epoch of training. Probab
 \end{figure}
 Longer training shows that optimal parameters obtained from previous experiments are not good for longer training and lower values of alpha and beta parameters are better. Probably we should use additional decays parameters to decrease values of alpha and beta parameters.
 
+
 \section{Conclusion and future work}
+\label{sec:conclusion}
 
 Average-based keyword and context embeddings proved to be a surprisingly good baseline for the dataset of ambiguous keywords that we collected, achieving over 65\% top-1 and 93\% top-3 accuracy.
 We have shown, that you can improve these results up to about 80\% top-1 and 95\% top-3 accuracy by using a simple optimization method of improving keyword embeddings with even a few training examples per keyword.

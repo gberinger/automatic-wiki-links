@@ -56,6 +56,7 @@ class Experiment(object):
         results = test.test(self.nlp, self.config)
         print('Avg cosine distance: {:.6f}'.format(results.cos_dist))
         print('Top-1 acc:           {:.2f}'.format(results.top1_acc))
+        print('Top-2 acc:           {:.2f}'.format(results.top2_acc))
         print('Top-3 acc:           {:.2f}'.format(results.top3_acc))
         return results
 
@@ -85,7 +86,7 @@ class EpochExperiment(Experiment):
         kw_embeds_opt = self.config.kw_embeds_opt
         self.config.kw_embeds_opt = self.config.kw_embeds
         results = self.test()
-        self.results.append((0, results.cos_dist, results.top1_acc, results.top3_acc))
+        self.results.append((0, results.cos_dist, results.top1_acc, results.top2_acc, results.top3_acc))
         self.config.kw_embeds_opt = kw_embeds_opt
 
     def on_iter_begin(self):
@@ -94,13 +95,13 @@ class EpochExperiment(Experiment):
     def on_iter_end(self, results):
         # Update the keyword embeddings with each epoch
         self.config.kw_embeds = self.config.kw_embeds_opt
-        self.results.append((self.current_epoch, results.cos_dist, results.top1_acc, results.top3_acc))
+        self.results.append((self.current_epoch, results.cos_dist, results.top1_acc, results.top2_acc, results.top3_acc))
         self.current_epoch += 1
         if self.current_epoch > self.max_epoch:
             self.is_done = True
 
     def on_experiment_end(self):
-        results_df = pd.DataFrame(self.results, columns=['epoch','cos_dist','top1_acc','top3_acc'])
+        results_df = pd.DataFrame(self.results, columns=['epoch','cos_dist','top1_acc','top2_acc','top3_acc'])
         results_df.to_csv(os.path.join(self.config.outdir, self.out_csv), index=False)
         self.config.kw_embeds = self.kw_embeds_path
 
@@ -121,13 +122,13 @@ class ValueExperiment(Experiment):
         print('{} = {}'.format(self.value_name, self.value_current))
 
     def on_iter_end(self, results):
-        self.results.append((self.value_current, results.cos_dist, results.top1_acc, results.top3_acc))
+        self.results.append((self.value_current, results.cos_dist, results.top1_acc, results.top2_acc, results.top3_acc))
         self.idx += 1
         if self.idx >= len(self.values):
             self.is_done = True
 
     def on_experiment_end(self):
-        results_df = pd.DataFrame(self.results, columns=[self.value_name,'cos_dist','top1_acc','top3_acc'])
+        results_df = pd.DataFrame(self.results, columns=[self.value_name,'cos_dist','top1_acc','top2_acc','top3_acc'])
         results_df.to_csv(os.path.join(self.config.outdir, self.out_csv), index=False)
 
 

@@ -20,8 +20,8 @@ def get_config():
     return parser.parse_args()
 
 
-ResultsTuple = namedtuple('ResultsTuple', ['cos_dist', 'top1_acc', 'top3_acc', 'cos_dists',
-                                           'top1_scores', 'top3_scores'])
+ResultsTuple = namedtuple('ResultsTuple', ['cos_dist', 'top1_acc', 'top2_acc', 'top3_acc', 'cos_dists',
+                                           'top1_scores', 'top2_scores', 'top3_scores'])
 
 
 def test(nlp, config):
@@ -31,9 +31,11 @@ def test(nlp, config):
 
     cos_dists = defaultdict(list)
     top1_scores = defaultdict(list)
+    top2_scores = defaultdict(list)
     top3_scores = defaultdict(list)
     cos_dists_all = []
     top1_scores_all = []
+    top2_scores_all = []
     top3_scores_all = []
     for _, sample in test_texts_df.iterrows():
         path = sample['path']
@@ -46,17 +48,22 @@ def test(nlp, config):
         cos_dists[kw].append(cos_dist)
         cos_dists_all.append(cos_dist)
 
-        top3_kws = [kw for kw, _ in utils.get_top_k_closest_keywords(ctx_embed, kw_embeds)]
+        top2_kws = [kw for kw, _ in utils.get_top_k_closest_keywords(ctx_embed, kw_embeds, k=2)]
+        top3_kws = [kw for kw, _ in utils.get_top_k_closest_keywords(ctx_embed, kw_embeds, k=3)]
         is_top1 = int(kw == top3_kws[0])
+        is_top2 = int(kw in top2_kws)
         is_top3 = int(kw in top3_kws)
         top1_scores[kw].append(is_top1)
+        top2_scores[kw].append(is_top2)
         top3_scores[kw].append(is_top3)
         top1_scores_all.append(is_top1)
+        top2_scores_all.append(is_top2)
         top3_scores_all.append(is_top3)
     cos_dist_avg = np.mean(cos_dists_all)
     top1_acc = np.mean(top1_scores_all)
+    top2_acc = np.mean(top2_scores_all)
     top3_acc = np.mean(top3_scores_all)
-    return ResultsTuple(cos_dist_avg, top1_acc, top3_acc, cos_dists, top1_scores, top3_scores)
+    return ResultsTuple(cos_dist_avg, top1_acc, top2_acc, top3_acc, cos_dists, top1_scores, top2_scores, top3_scores)
 
 
 def main():
@@ -68,17 +75,18 @@ def main():
 
     kw_col_size = 24
     print('\n-------------------------------------------------------------------')
-    print('| {} | avg cos dist | top-1 acc | top-3 acc |'.format(
+    print('| {} | avg cos dist | top-1 acc |  top-2 acc | top-3 acc |'.format(
         utils.bold('keyword'.ljust(kw_col_size))))
     print('|-----------------------------------------------------------------|')
     for kw, dists in results.cos_dists.items():
-        print('| {} |   {:.6f}   |   {:.2f}    |   {:.2f}    |'.format(
+        print('| {} |   {:.6f}   |   {:.2f}    |   {:.2f}    |   {:.2f}    |'.format(
             utils.bold(kw.ljust(kw_col_size)), np.mean(dists), np.mean(results.top1_scores[kw]),
-            np.mean(results.top3_scores[kw]))
+            np.mean(results.top2_scores[kw]), np.mean(results.top3_scores[kw]))
         )
     print('-------------------------------------------------------------------')
     print('\nAvg cosine distance: {:.6f}'.format(results.cos_dist))
     print('Top-1 acc:           {:.2f}'.format(results.top1_acc))
+    print('Top-2 acc:           {:.2f}'.format(results.top2_acc))
     print('Top-3 acc:           {:.2f}\n'.format(results.top3_acc))
 
 

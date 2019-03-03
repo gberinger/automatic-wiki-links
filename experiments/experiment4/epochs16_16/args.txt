@@ -1,0 +1,18 @@
+{
+    "alpha": 0.15,
+    "beta": 0.02,
+    "context": 3,
+    "ctx_embed_method": "avg",
+    "epochs": 5,
+    "experiment": "epochs",
+    "keywords": "keywords.csv",
+    "kw_embeds": "experiments/experiment4/epochs16_16/kw_embeds.pickle",
+    "kw_embeds_opt": "experiments/experiment4/epochs16_16/kw_embeds_opt.pickle",
+    "outdir": "experiments/experiment4/epochs16_16/",
+    "shuffle": true,
+    "test": "test.csv",
+    "train": "train.csv",
+    "update_method": "alpha_beta",
+    "verbose": false,
+    "vocabulary": "en_vectors_web_lg"
+}

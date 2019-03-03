@@ -220,7 +220,7 @@ We evaluate the performance of the model with different context lengths, to see 
     \centering
     \caption{Top-1 and top-3 accuracies of the baseline model with different context lengths.}
     \label{fig:baseline}
-    \includegraphics[scale=0.5]{res/baseline_context_top_acc.png}
+    \includegraphics[scale=0.7]{res/baseline_context_top_acc.png}
 \end{figure}
 
 We can see, that the model does relatively well, even unoptimized.
@@ -239,7 +239,7 @@ To do this, we arbitrarily choose some \(\alpha\) value (here 0.2), test the res
     \centering
     \caption{Comparison of the baseline model (\ref{sec:baseline}) and a model optimized with \(\alpha=0.2\) for different context lengths.}
     \label{fig:exp1_optimization}
-    \includegraphics[scale=0.6]{res/exp1_context_top_acc.png}
+    \includegraphics[scale=0.7]{res/exp1_context_top_acc.png}
 \end{figure}
 
 Independently of some noise caused by the random order of training data, the optimized model is much better than the base model (12-36\% relative, 10-20\% absolute improvement w.r.t. top-1 accuracy on the test set).
@@ -255,7 +255,7 @@ Next, we check the influence of the \(\alpha\) parameter value on the top-1 and 
     \centering
     \caption{Influence of \(\alpha\) parameter value on top-1 and top-3 accuracies for \(l=3\). Blue line denotes the average result from 30 runs, dotted lines denote worst and best result. The value for \(\alpha=0\) is the result achieved by the baseline model (\ref{sec:baseline}).}
     \label{fig:exp2_alpha}
-    \includegraphics[scale=0.6]{res/exp2_alpha_top_acc.png}
+    \includegraphics[scale=0.7]{res/exp2_alpha_top_acc.png}
 \end{figure}
 
 Top-1 accuracy grows up to \(\alpha=0.25\) and then starts to drop.
@@ -273,7 +273,7 @@ Since we compare the results to an average value from previous experiments (Fig.
     \centering
     \caption{Influence of \(\beta\) parameter value on top-1 and top-3 accuracies for \(l=3\) nad \(\alpha=0.25\). The value for \(\beta=0\) is the best result achieved by the model from previous experiment (Fig. \ref{fig:exp2_alpha}).}
     \label{fig:exp3_beta}
-    \includegraphics[scale=0.6]{res/exp3_beta_top_acc.png}
+    \includegraphics[scale=0.7]{res/exp3_beta_top_acc.png}
 \end{figure}
 
 Low values of \(\beta\) seem to slightly improve the performance of our optimization method w.r.t. top-1 accuracy (about 1\% absolute and relative improvement).
@@ -290,7 +290,7 @@ We run 5 epochs of training, using best parameters from previous experiments: \(
     \centering
     \caption{Top-1 and top-3 accuracy for model with \(l=3, \alpha=0.25, \beta=0.05\) trained for 5 epochs.}
     \label{fig:exp4_1_epochs_fixed}
-    \includegraphics[scale=0.6]{res/exp4_epoch_top_acc.png}
+    \includegraphics[scale=0.65]{res/exp4_epoch_top_acc.png}
 \end{figure}
 
 We see that there is almost no improvement after the first epoch of training.
@@ -301,7 +301,7 @@ We therefore check what happens, when we choose lower values of these parameters
     \centering
     \caption{Comparison of models optimized with different \(\alpha\) and \(\beta\) values with \(l=3\) for 5 epochs.}
     \label{fig:exp4_2_epochs_comparison}
-    \includegraphics[scale=0.6]{res/exp4_epoch_multiconfiguration_top_acc.png}
+    \includegraphics[scale=0.65]{res/exp4_epoch_multiconfiguration_top_acc.png}
 \end{figure}
 
 Longer training shows that optimal parameters obtained from previous experiments are not necessarily good for multiple passes through the training data.

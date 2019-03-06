@@ -1,0 +1,40 @@
+Config: Namespace(context=3, keywords='keywords.csv', kw_embeds_opt='experiments/experiment2/alpha5_4//kw_embeds_opt.pickle', test='test.csv', vocabulary='en_vectors_web_lg')
+
+-------------------------------------------------------------------
+| [1mkeyword                 [0m | avg cos dist | top-1 acc |  top-2 acc | top-3 acc | mistakes
+|-----------------------------------------------------------------|
+| [1mtree forest             [0m |   0.260022   |   0.40    |   0.70    |   0.80    |  tree decision (0.3), tree family (0.2), tree structure (0.1)
+| [1mtree structure          [0m |   0.199608   |   0.40    |   0.80    |   0.90    |  tree parse (0.3), tree family (0.2), tree decision (0.1)
+| [1mtree decision           [0m |   0.217127   |   0.80    |   1.00    |   1.00    |  tree structure (0.2)
+| [1mtree parse              [0m |   0.180533   |   0.90    |   0.90    |   0.90    |  tree decision (0.1)
+| [1mtree command            [0m |   0.200343   |   0.60    |   0.80    |   1.00    |  tree parse (0.2), tree decision (0.1), tree structure (0.1)
+| [1mtree family             [0m |   0.217683   |   0.90    |   0.90    |   0.90    |  tree parse (0.1)
+| [1mtrees folk band         [0m |   0.328290   |   0.30    |   0.30    |   0.50    |  nails new wave band (0.4), tree family (0.1), tree forest (0.1), nails hardcore punk band (0.1)
+| [1mmars planet             [0m |   0.298527   |   0.50    |   0.60    |   0.70    |  mars chocolate bar (0.2), season weather (0.2), pool computer science (0.1)
+| [1mmars mythology          [0m |   0.274530   |   0.70    |   0.70    |   0.80    |  mars planet (0.2), season society (0.1)
+| [1mmars chocolate bar      [0m |   0.304349   |   0.90    |   0.90    |   1.00    |  tree family (0.1)
+| [1mmars bruno singer       [0m |   0.394484   |   0.20    |   0.50    |   0.70    |  mars chocolate bar (0.3), nails new wave band (0.3), nails hardcore punk band (0.1), mars mythology (0.1)
+| [1mnail anatomy            [0m |   0.253201   |   0.90    |   1.00    |   1.00    |  nail fastener (0.1)
+| [1mnail fastener           [0m |   0.251460   |   0.90    |   1.00    |   1.00    |  nail anatomy (0.1)
+| [1mnail relic              [0m |   0.206576   |   0.90    |   1.00    |   1.00    |  nail fastener (0.1)
+| [1mnails new wave band     [0m |   0.287598   |   0.70    |   0.80    |   0.90    |  nail relic (0.2), nails hardcore punk band (0.1)
+| [1mnails hardcore punk band[0m |   0.326060   |   0.60    |   0.70    |   0.70    |  nail relic (0.2), nails new wave band (0.1), season society (0.1)
+| [1mbolt fastener           [0m |   0.189326   |   0.70    |   0.70    |   0.90    |  bolt climbing (0.2), bolt crossbow (0.1)
+| [1mbolt climbing           [0m |   0.219444   |   0.70    |   0.80    |   0.90    |  bolt fastener (0.1), season society (0.1), nail fastener (0.1)
+| [1mbolt firearms           [0m |   0.216589   |   0.90    |   0.90    |   1.00    |  bolt climbing (0.1)
+| [1mbolt crossbow           [0m |   0.213735   |   1.00    |   1.00    |   1.00    |  
+| [1mseason weather          [0m |   0.207138   |   0.70    |   0.90    |   1.00    |  season growing (0.3)
+| [1mseason society          [0m |   0.207331   |   1.00    |   1.00    |   1.00    |  
+| [1mseason sports           [0m |   0.229751   |   0.80    |   1.00    |   1.00    |  season society (0.2)
+| [1mseason growing          [0m |   0.188522   |   0.80    |   1.00    |   1.00    |  season weather (0.2)
+| [1mpool swimming           [0m |   0.185765   |   1.00    |   1.00    |   1.00    |  
+| [1mpool cue sports         [0m |   0.343579   |   0.10    |   0.20    |   0.50    |  pool betting (0.6), season society (0.2), pool computer science (0.1)
+| [1mpool computer science   [0m |   0.216050   |   1.00    |   1.00    |   1.00    |  
+| [1mpool betting            [0m |   0.193617   |   1.00    |   1.00    |   1.00    |  
+-------------------------------------------------------------------
+
+Avg cosine distance: 0.243259
+Top-1 acc:           0.72
+Top-2 acc:           0.82
+Top-3 acc:           0.90
+

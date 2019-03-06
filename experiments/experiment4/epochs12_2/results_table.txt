@@ -1,0 +1,40 @@
+Config: Namespace(context=3, keywords='keywords.csv', kw_embeds_opt='experiments/experiment4/epochs12_2//kw_embeds_opt.pickle', test='test.csv', vocabulary='en_vectors_web_lg')
+
+-------------------------------------------------------------------
+| [1mkeyword                 [0m | avg cos dist | top-1 acc |  top-2 acc | top-3 acc | mistakes
+|-----------------------------------------------------------------|
+| [1mtree forest             [0m |   0.280320   |   0.50    |   0.80    |   0.90    |  tree family (0.3), tree structure (0.2)
+| [1mtree structure          [0m |   0.217142   |   0.50    |   0.80    |   1.00    |  tree decision (0.3), tree parse (0.2)
+| [1mtree decision           [0m |   0.226347   |   0.80    |   0.90    |   1.00    |  tree structure (0.2)
+| [1mtree parse              [0m |   0.195098   |   0.80    |   0.90    |   0.90    |  tree structure (0.2)
+| [1mtree command            [0m |   0.230892   |   0.70    |   0.90    |   1.00    |  tree structure (0.2), tree parse (0.1)
+| [1mtree family             [0m |   0.232051   |   0.90    |   0.90    |   1.00    |  tree parse (0.1)
+| [1mtrees folk band         [0m |   0.280077   |   0.70    |   0.80    |   0.90    |  nails new wave band (0.2), tree family (0.1)
+| [1mmars planet             [0m |   0.357130   |   0.40    |   0.50    |   0.60    |  season weather (0.3), mars chocolate bar (0.3)
+| [1mmars mythology          [0m |   0.292227   |   0.70    |   0.80    |   0.80    |  mars bruno singer (0.1), mars planet (0.1), season society (0.1)
+| [1mmars chocolate bar      [0m |   0.269615   |   0.90    |   1.00    |   1.00    |  tree family (0.1)
+| [1mmars bruno singer       [0m |   0.359796   |   0.50    |   0.80    |   0.90    |  mars chocolate bar (0.2), nails hardcore punk band (0.1), mars mythology (0.1), nails new wave band (0.1)
+| [1mnail anatomy            [0m |   0.269446   |   1.00    |   1.00    |   1.00    |  
+| [1mnail fastener           [0m |   0.289233   |   0.50    |   0.90    |   1.00    |  nail anatomy (0.4), bolt climbing (0.1)
+| [1mnail relic              [0m |   0.202041   |   0.90    |   1.00    |   1.00    |  nail fastener (0.1)
+| [1mnails new wave band     [0m |   0.307882   |   0.70    |   0.80    |   0.90    |  nail relic (0.2), nails hardcore punk band (0.1)
+| [1mnails hardcore punk band[0m |   0.317879   |   0.80    |   1.00    |   1.00    |  nail relic (0.1), nail anatomy (0.1)
+| [1mbolt fastener           [0m |   0.210735   |   0.60    |   0.90    |   1.00    |  bolt climbing (0.4)
+| [1mbolt climbing           [0m |   0.203974   |   0.90    |   1.00    |   1.00    |  bolt crossbow (0.1)
+| [1mbolt firearms           [0m |   0.236313   |   0.90    |   0.90    |   1.00    |  bolt climbing (0.1)
+| [1mbolt crossbow           [0m |   0.204950   |   1.00    |   1.00    |   1.00    |  
+| [1mseason weather          [0m |   0.228030   |   0.60    |   0.90    |   1.00    |  season growing (0.3), tree forest (0.1)
+| [1mseason society          [0m |   0.236193   |   0.80    |   1.00    |   1.00    |  season weather (0.2)
+| [1mseason sports           [0m |   0.223849   |   1.00    |   1.00    |   1.00    |  
+| [1mseason growing          [0m |   0.201570   |   1.00    |   1.00    |   1.00    |  
+| [1mpool swimming           [0m |   0.194280   |   1.00    |   1.00    |   1.00    |  
+| [1mpool cue sports         [0m |   0.327428   |   0.50    |   0.60    |   0.60    |  pool betting (0.5)
+| [1mpool computer science   [0m |   0.229879   |   0.90    |   1.00    |   1.00    |  pool swimming (0.1)
+| [1mpool betting            [0m |   0.198878   |   1.00    |   1.00    |   1.00    |  
+-------------------------------------------------------------------
+
+Avg cosine distance: 0.250831
+Top-1 acc:           0.77
+Top-2 acc:           0.90
+Top-3 acc:           0.95
+

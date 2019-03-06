@@ -37,7 +37,7 @@ def test(nlp, config):
     top1_scores_all = []
     top2_scores_all = []
     top3_scores_all = []
-    mistakes = {}
+    mistakes = defaultdict(lambda: defaultdict(int))
     for _, sample in test_texts_df.iterrows():
         path = sample['path']
         kw = sample['keyword']
@@ -62,12 +62,7 @@ def test(nlp, config):
         top1_scores_all.append(is_top1)
         top2_scores_all.append(is_top2)
         top3_scores_all.append(is_top3)
-        if not kw in mistakes.keys():
-            mistakes[kw] = {}
         if not is_top1:
-            if not predicted_kw in mistakes[kw].keys():
-                mistakes[kw][predicted_kw] = 0
-
             mistakes[kw][predicted_kw] += 1
 
     for key in mistakes.keys():
@@ -93,7 +88,7 @@ def main():
         utils.bold('keyword'.ljust(kw_col_size))))
     print('|-----------------------------------------------------------------|')
     for kw, dists in results.cos_dists.items():
-        mistakes = ", ".join(["{} ({})".format(k, v / 10) for k, v in results.mistakes[kw]])
+        mistakes = ", ".join(["{} ({})".format(k, v / len(results.top1_scores[kw])) for k, v in results.mistakes[kw]])
         print('| {} |   {:.6f}   |   {:.2f}    |   {:.2f}    |   {:.2f}    |  {}'.format(
             utils.bold(kw.ljust(kw_col_size)), np.mean(dists), np.mean(results.top1_scores[kw]),
             np.mean(results.top2_scores[kw]), np.mean(results.top3_scores[kw]), mistakes)

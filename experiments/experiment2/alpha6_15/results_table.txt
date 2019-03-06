@@ -1,0 +1,40 @@
+Config: Namespace(context=3, keywords='keywords.csv', kw_embeds_opt='experiments/experiment2/alpha6_15//kw_embeds_opt.pickle', test='test.csv', vocabulary='en_vectors_web_lg')
+
+-------------------------------------------------------------------
+| [1mkeyword                 [0m | avg cos dist | top-1 acc |  top-2 acc | top-3 acc | mistakes
+|-----------------------------------------------------------------|
+| [1mtree forest             [0m |   0.279797   |   0.30    |   0.50    |   0.70    |  tree family (0.3), tree decision (0.2), tree structure (0.2)
+| [1mtree structure          [0m |   0.206524   |   0.30    |   0.60    |   1.00    |  tree decision (0.5), tree parse (0.2)
+| [1mtree decision           [0m |   0.209647   |   0.80    |   1.00    |   1.00    |  tree structure (0.2)
+| [1mtree parse              [0m |   0.192745   |   0.60    |   0.80    |   0.90    |  tree decision (0.3), tree structure (0.1)
+| [1mtree command            [0m |   0.208980   |   0.60    |   0.70    |   0.80    |  tree parse (0.2), tree structure (0.2)
+| [1mtree family             [0m |   0.221616   |   0.70    |   0.90    |   0.90    |  tree structure (0.1), trees folk band (0.1), tree decision (0.1)
+| [1mtrees folk band         [0m |   0.257173   |   0.70    |   0.70    |   0.70    |  nails new wave band (0.2), tree family (0.1)
+| [1mmars planet             [0m |   0.357501   |   0.40    |   0.40    |   0.40    |  mars chocolate bar (0.4), season weather (0.2)
+| [1mmars mythology          [0m |   0.282885   |   0.90    |   0.90    |   0.90    |  mars chocolate bar (0.1)
+| [1mmars chocolate bar      [0m |   0.233881   |   0.90    |   1.00    |   1.00    |  tree family (0.1)
+| [1mmars bruno singer       [0m |   0.338558   |   0.60    |   0.90    |   0.90    |  mars chocolate bar (0.3), trees folk band (0.1)
+| [1mnail anatomy            [0m |   0.256430   |   1.00    |   1.00    |   1.00    |  
+| [1mnail fastener           [0m |   0.295215   |   0.50    |   0.80    |   0.90    |  nail anatomy (0.2), bolt fastener (0.1), bolt climbing (0.1), tree decision (0.1)
+| [1mnail relic              [0m |   0.225450   |   0.90    |   1.00    |   1.00    |  nail fastener (0.1)
+| [1mnails new wave band     [0m |   0.295118   |   0.60    |   0.80    |   0.80    |  nails hardcore punk band (0.3), tree forest (0.1)
+| [1mnails hardcore punk band[0m |   0.331426   |   0.70    |   0.80    |   1.00    |  nail relic (0.1), season growing (0.1), trees folk band (0.1)
+| [1mbolt fastener           [0m |   0.197722   |   0.60    |   1.00    |   1.00    |  bolt climbing (0.3), bolt firearms (0.1)
+| [1mbolt climbing           [0m |   0.208274   |   0.50    |   0.90    |   1.00    |  bolt fastener (0.3), bolt firearms (0.1), bolt crossbow (0.1)
+| [1mbolt firearms           [0m |   0.211791   |   0.70    |   1.00    |   1.00    |  bolt crossbow (0.1), bolt climbing (0.1), bolt fastener (0.1)
+| [1mbolt crossbow           [0m |   0.219061   |   0.80    |   1.00    |   1.00    |  bolt firearms (0.2)
+| [1mseason weather          [0m |   0.230295   |   0.60    |   0.90    |   1.00    |  season growing (0.2), tree decision (0.1), season sports (0.1)
+| [1mseason society          [0m |   0.227342   |   0.70    |   0.80    |   0.90    |  season sports (0.2), season growing (0.1)
+| [1mseason sports           [0m |   0.230500   |   0.90    |   1.00    |   1.00    |  season society (0.1)
+| [1mseason growing          [0m |   0.187510   |   1.00    |   1.00    |   1.00    |  
+| [1mpool swimming           [0m |   0.171626   |   0.80    |   1.00    |   1.00    |  pool cue sports (0.2)
+| [1mpool cue sports         [0m |   0.312499   |   0.50    |   0.60    |   0.60    |  pool betting (0.4), pool computer science (0.1)
+| [1mpool computer science   [0m |   0.217520   |   0.90    |   1.00    |   1.00    |  pool swimming (0.1)
+| [1mpool betting            [0m |   0.194011   |   1.00    |   1.00    |   1.00    |  
+-------------------------------------------------------------------
+
+Avg cosine distance: 0.242896
+Top-1 acc:           0.70
+Top-2 acc:           0.86
+Top-3 acc:           0.91
+

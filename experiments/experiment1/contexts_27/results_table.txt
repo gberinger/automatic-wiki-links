@@ -1,0 +1,40 @@
+Config: Namespace(context=3, keywords='keywords.csv', kw_embeds_opt='experiments/experiment1/contexts_27//kw_embeds_opt.pickle', test='test.csv', vocabulary='en_vectors_web_lg')
+
+-------------------------------------------------------------------
+| [1mkeyword                 [0m | avg cos dist | top-1 acc |  top-2 acc | top-3 acc | mistakes
+|-----------------------------------------------------------------|
+| [1mtree forest             [0m |   0.236076   |   0.50    |   0.90    |   0.90    |  tree structure (0.2), tree family (0.1), tree decision (0.1), season growing (0.1)
+| [1mtree structure          [0m |   0.181791   |   0.80    |   1.00    |   1.00    |  tree parse (0.1), tree decision (0.1)
+| [1mtree decision           [0m |   0.197280   |   0.70    |   0.90    |   1.00    |  tree structure (0.3)
+| [1mtree parse              [0m |   0.195757   |   0.50    |   0.70    |   0.90    |  tree structure (0.4), tree decision (0.1)
+| [1mtree command            [0m |   0.185330   |   0.80    |   0.90    |   1.00    |  tree structure (0.1), tree parse (0.1)
+| [1mtree family             [0m |   0.190757   |   0.90    |   0.90    |   0.90    |  tree structure (0.1)
+| [1mtrees folk band         [0m |   0.191784   |   1.00    |   1.00    |   1.00    |  
+| [1mmars planet             [0m |   0.284985   |   0.70    |   0.70    |   0.70    |  season weather (0.2), pool computer science (0.1)
+| [1mmars mythology          [0m |   0.244544   |   0.80    |   0.90    |   0.90    |  mars planet (0.1), season society (0.1)
+| [1mmars chocolate bar      [0m |   0.224926   |   0.90    |   0.90    |   0.90    |  pool computer science (0.1)
+| [1mmars bruno singer       [0m |   0.311992   |   0.60    |   0.80    |   0.80    |  nails hardcore punk band (0.1), mars chocolate bar (0.1), mars planet (0.1), nails new wave band (0.1)
+| [1mnail anatomy            [0m |   0.271487   |   1.00    |   1.00    |   1.00    |  
+| [1mnail fastener           [0m |   0.258378   |   0.80    |   1.00    |   1.00    |  nail anatomy (0.2)
+| [1mnail relic              [0m |   0.227491   |   0.90    |   0.90    |   1.00    |  nail fastener (0.1)
+| [1mnails new wave band     [0m |   0.281000   |   0.80    |   0.90    |   0.90    |  nail relic (0.1), nails hardcore punk band (0.1)
+| [1mnails hardcore punk band[0m |   0.294213   |   0.60    |   0.70    |   0.80    |  nails new wave band (0.2), nail relic (0.1), season growing (0.1)
+| [1mbolt fastener           [0m |   0.202964   |   0.50    |   0.70    |   1.00    |  bolt climbing (0.4), nail fastener (0.1)
+| [1mbolt climbing           [0m |   0.245605   |   0.40    |   0.60    |   0.90    |  bolt fastener (0.3), nails new wave band (0.1), bolt firearms (0.1), season society (0.1)
+| [1mbolt firearms           [0m |   0.215490   |   0.70    |   0.90    |   1.00    |  bolt climbing (0.2), bolt fastener (0.1)
+| [1mbolt crossbow           [0m |   0.188098   |   1.00    |   1.00    |   1.00    |  
+| [1mseason weather          [0m |   0.224023   |   0.70    |   0.90    |   1.00    |  tree forest (0.1), mars planet (0.1), season growing (0.1)
+| [1mseason society          [0m |   0.193544   |   0.90    |   1.00    |   1.00    |  season weather (0.1)
+| [1mseason sports           [0m |   0.219717   |   1.00    |   1.00    |   1.00    |  
+| [1mseason growing          [0m |   0.168183   |   1.00    |   1.00    |   1.00    |  
+| [1mpool swimming           [0m |   0.151321   |   1.00    |   1.00    |   1.00    |  
+| [1mpool cue sports         [0m |   0.248291   |   0.50    |   0.80    |   0.90    |  pool betting (0.4), pool computer science (0.1)
+| [1mpool computer science   [0m |   0.240410   |   0.70    |   1.00    |   1.00    |  tree structure (0.2), pool swimming (0.1)
+| [1mpool betting            [0m |   0.164791   |   1.00    |   1.00    |   1.00    |  
+-------------------------------------------------------------------
+
+Avg cosine distance: 0.222865
+Top-1 acc:           0.78
+Top-2 acc:           0.89
+Top-3 acc:           0.95
+

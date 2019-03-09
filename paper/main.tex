@@ -18,6 +18,8 @@
 %% Useful packages
 %\usepackage{amsmath}
 \usepackage{graphicx}
+\usepackage{tabu}
+\usepackage{array}
 
 \usepackage[colorinlistoftodos]{todonotes}
 \title{Towards semantic-rich word embeddings}
@@ -88,48 +90,67 @@ Developing WSD system requires much effort and as a result, very few open source
 
 \section{Dataset}
 \label{sec:dataset}
-For the purpose of testing word embeddings as a method to differentiate between different meanings, we gathered examples for 6 ambiguous words, 4-7 meanings each (28 meanings in total).
+
+For the purpose of constructing semantic-rich word embeddings, we manually gathered usage examples for 6 ambiguous words, 4 to 7 meanings each (28 meanings in total) (Table \ref{table:dataset}).
 Ambiguous word together with its meaning constitues a \textit{keyword}, which we use as a separate class when identyfing the closest meaning given some context.
 All keywords can be seen on Fig. \ref{fig:keywords}.
 
+\begin{table}
+\centering
+    \begin{tabular}{ | m{7.5cm} | m{1cm} | }
+        \hline
+        Number of ambiguous words & 6 \\
+        \hline
+        Number of meanings per ambiguous word & 4 to 7 \\
+        \hline
+        Number of keywords (ambiguous word + meaning) & 28 \\
+    \hline
+    \hline
+    Number of training examples per keyword & 5 \\
+    \hline
+    Number of test examples per keyword & 10 \\
+    \hline
+    \end{tabular}
+    \caption{Statistics of the dataset collected for the purpose of this paper. Training examples can be used by the model to optimize semantic-rich word embeddings (Section \ref{sec:optimization}). Test examples are used to evaluate the embeddings and cannot be trained on.}
+    \label{table:dataset}
+\end{table}
+
 \begin{figure}
     \centering
-    \caption{Ambiguous words with their meanings that are present in the dataset. Each word-meaning pair is called a keyword, e.g. \textit{tree forest}, \textit{pool computer science}.}
+    \caption{Ambiguous words with their meanings that are present in the dataset. Each word-meaning pair is called a keyword, e.g. \textit{tree (forest)}, \textit{pool (computer science)}.}
     \label{fig:keywords}
     \includegraphics[scale=0.35]{res/keywords.png}
 \end{figure}
 
-Examples were mostly gathered from Wikipedia, using \textit{What links here} utility for each keyword.
-If usage examples from Wikipedia were not enough, other websites were used (or even the Wikipedia article on specific keyword itself).
+We chose ambiguous words based on the number and variety of meanings it had.
+Meanings themselves were chosen to cover a range of topics (e.g. \textit{tree (forest)}, \textit{tree (family)}, \textit{trees (folk band)}, \textit{tree (command)}).
+We also tried to look for meanings that are semantically related and can occur in similar context (and in turn be difficult for the model to differentiate between), e.g. \textit{tree (structure)}, \textit{tree (parse)}, \textit{tree (decision)} or \textit{nails (new wave band)}, \textit{nails (hardcore punk band)}.
+Lastly, we added some keywords, that we suspected to be really underrepresented in the word embedding of the ambiguous word, e.g. \textit{Mars} as the pop singer Bruno Mars (\textit{mars (bruno singer)}) or \textit{pool} as the computer science term (\textit{pool (computer science)}).
+
+Usage examples for keywords were gathered mostly from Wikipedia, using \textit{What links here} utility, which lists all Wikipedia pages that link to a specific article.
+We used these links to search for usages of our keywords in context.
+We found that \textit{What links here} utility has some limitations.
+Many articles linked to the keyword do not use that keyword in text at all or just list it in "See also" section, which does not provide good context around the keyword for the model to improve on.
+Moreover, some keywords do not have enough usage examples that can be found on Wikipedia alone.
+In such cases, other websites were used to find proper usage examples.
 
 The dataset is split into training and test set, with 5 training and 10 test examples for each keyword.
 Each example is stored in plain text, with the ambiguous word marked with "*" on both sides.
+For simplicity, only one word is marked in each text, even if more ambiguous word usages can be found.
+In case we wanted to mark another word in the same text, we could just add the same example twice, with different words marked each time.
 
 The correct keyword for each example, together with a path to file and a link, where the original text was taken from, are stored in CSV files: \textit{train.csv} for training set, \textit{test.csv} for test set (columns: path,keyword,link).
-Keywords themselves, together with links to their Wikipedia articles, are stored in \textit{keywords.csv} file.
+Keywords themselves, together with links to their Wikipedia articles, are stored in \textit{keywords.csv} file (Figure \ref{fig:dataset_format}).
+
 Dataset, together with the code to execute experiments from this paper, can be found on our GitHub repository \cite{repository}.
 
-\bigskip
-\underline{Example for \textit{bolt crossbow} keyword:}
+\begin{figure}
+    \centering
+    \caption{Dataset format with an example for \textit{bolt (crossbow)} keyword (highlighted text and arrows). Usage examples are stored in plain text, with ambiguous word marked with "*" (right), and are divided into training and test set. Paths to all test (training) examples can be read from \textit{test.csv} (\textit{train.csv}), together with the links to where they were taken from (middle). All keywords are stored in \textit{keywords.csv}, along with the link to their Wikipedia articles (left).}
+    \label{fig:dataset_format}
+    \includegraphics[scale=0.35]{res/dataset_format.png}
+\end{figure}
 
-\smallskip
-\textbf{Keyword definition}: keyword.csv\newline
-\textit{
-keyword,link\newline
-...\newline
-bolt crossbow,https://en.wikipedia.org/wiki/Crossbow\_bolt}
-
-\smallskip
-\textbf{Test set}: test.csv\newline
-\textit{
-path,keyword,link\newline
-...\newline
-texts/test/bolt\_crossbow\_5.txt,bolt crossbow,https://en.wikipedia.org/wiki/Incendiary\_device
-}
-
-\smallskip
-\textbf{Text}: texts/test/bolt\_crossbow\_5.txt\newline
-\textit{"Sulfur- and oil-soaked materials were sometimes ignited and thrown at the enemy, or attached to spears, arrow and *bolts* and fired by hand or machine. Some siege techniques—such as mining and boring—relied on combustibles and fire to complete the collapse of walls and structures."}
 
 \section{Our method}
 \subsection{Keyword embedding}

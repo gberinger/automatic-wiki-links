@@ -237,7 +237,7 @@ We compare results on the test set with two metrics: top-1 accuracy, where we ar
 For the baseline model, we check how out-of-the-box keyword (\ref{sec:kw_embed}) and context embeddings (\ref{sec:ctx_embed}) work without any extra optimizations.
 We evaluate the performance of the model with different context lengths, to see how it affects top-1 and top-3 accuracies (Fig. \ref{fig:baseline}).
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \caption{Top-1 and top-3 accuracies of the baseline model with different context lengths.}
     \label{fig:baseline}
@@ -256,7 +256,7 @@ The best result w.r.t. top-1 accuracy was achieved with \(l=3\), which is why we
 We check, how a simple optimization method of moving keyword embeddings closer to the contexts they appear in (Eq. \ref{eq:alpha_optimization}), affects the accuracy of the model.
 To do this, we arbitrarily choose some \(\alpha\) value (here 0.2), test the results of improved keyword embeddings with different context lengths and compare them to the baseline (\ref{sec:baseline}). Since we average the results from 30 runs, we mark the measurement uncertainty on the graph (Fig. \ref{fig:exp1_optimization}).
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \caption{Comparison of the baseline model (\ref{sec:baseline}) and a model optimized with \(\alpha=0.2\) for different context lengths.}
     \label{fig:exp1_optimization}
@@ -272,7 +272,7 @@ Overall, results suggest, that for an optimized model, context length is not as 
 \bigskip
 Next, we check the influence of the \(\alpha\) parameter value on the top-1 and top-3 accuracies for \(l=3\) (Fig. \ref{fig:exp2_alpha}).
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \caption{Influence of \(\alpha\) parameter value on top-1 and top-3 accuracies for \(l=3\). Blue line denotes the average result from 30 runs, dotted lines denote worst and best result. The value for \(\alpha=0\) is the result achieved by the baseline model (\ref{sec:baseline}).}
     \label{fig:exp2_alpha}
@@ -290,7 +290,7 @@ We theorize, that the results could be further improved, if we also increase the
 In following experiment, we therefore check the influence of \(\beta\) parameter value on the accuracy on the test set, for \(l=3, \alpha=0.25\) (Fig. \ref{fig:exp3_beta}).
 Since we compare the results to an average value from previous experiments (Fig. \ref{fig:exp2_alpha}), we decide to only plot an average result achieved by this optimization.
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \caption{Influence of \(\beta\) parameter value on top-1 and top-3 accuracies for \(l=3\) nad \(\alpha=0.25\). The value for \(\beta=0\) is the best result achieved by the model from previous experiment (Fig. \ref{fig:exp2_alpha}).}
     \label{fig:exp3_beta}
@@ -307,7 +307,7 @@ In previous experiments, we passed through the training data only once, which ma
 The goal of this experiment is to check how a number of epochs (full passes through training data) affects the final accuracy.
 We run 5 epochs of training, using best parameters from previous experiments: \(l=3, \alpha=0.25, \beta=0.05\) (Fig. \ref{fig:exp4_1_epochs_fixed}).
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \caption{Top-1 and top-3 accuracy for model with \(l=3, \alpha=0.25, \beta=0.05\) trained for 5 epochs.}
     \label{fig:exp4_1_epochs_fixed}
@@ -318,7 +318,7 @@ We see that there is almost no improvement after the first epoch of training.
 The possible problem is that the values of \(\alpha\) and \(\beta\) are too high, causing the updates to keyword embeddings to be too big.
 We therefore check what happens, when we choose lower values of these parameters (Fig. \ref{fig:exp4_2_epochs_comparison}).
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \caption{Comparison of models optimized with different \(\alpha\) and \(\beta\) values with \(l=3\) for 5 epochs.}
     \label{fig:exp4_2_epochs_comparison}

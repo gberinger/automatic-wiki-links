@@ -20,6 +20,7 @@
 \usepackage{graphicx}
 \usepackage{tabu}
 \usepackage{array}
+\usepackage{tcolorbox}
 
 \usepackage[colorinlistoftodos]{todonotes}
 \title{Towards semantic-rich word embeddings}
@@ -155,9 +156,9 @@ Dataset, together with the code to execute experiments from this paper, can be f
 \section{Our method}
 \subsection{Keyword embedding}
 \label{sec:kw_embed}
-\textit{Keyword} is a sequence of words that lets us disambiguate between different meanings of the same ambiguous word, e.g. "tree forest" that represents a tree as a plant and "tree structure" which represents tree as a mathematical structure.
+\textit{Keyword} is a sequence of words that lets us disambiguate between different meanings of the same ambiguous word, e.g. \textit{tree (forest)} that represents a tree as a plant and \textit{tree (structure)} which represents tree as a mathematical structure.
 
-To get the embedding of the keyword, we simply average all the words in the keyword:
+To get the embedding of the keyword, we average embeddings of all the words in the keyword:
 
 \begin{equation}
     \label{eq:keyword_embedding}
@@ -166,19 +167,30 @@ To get the embedding of the keyword, we simply average all the words in the keyw
 
 where \(e(\cdot)\) is the embedding function used and \(w_1, w_2, ..., w_N\) is a sequence of N words that, in this case, constitutes a keyword.
 
+Example for keyword \textit{tree (forest)}:
+
+\begin{equation}
+    \label{eq:example_kw_embed}
+    \bm{k}_{tree (forest)} = e(tree, forest) = \frac{e(tree) + e(forest)}{2}
+\end{equation}
+
 \subsection{Context embedding}
 \label{sec:ctx_embed}
 \textit{Context} is a sequence of words that contains an ambiguous word within, usually in the middle.
-It is parametrized by context length \(l\), which specifies how many of words from both side of the ambiguous word in question were taken into consideration.
+It is parametrized by \textbf{context length \(l\)}, which specifies how many of words from both side of the ambiguous word in question were taken into consideration.
 
 \textit{Context embedding} \(\bm{c}\) is also achieved by taking an average of word embeddings (Equation \ref{eq:keyword_embedding}).
 In this case, \(N = 2l + 1\) and \(w_1, w_2, ..., w_N\) is the context with ambiguous word inside. For some cases \(N < 2l + 1\), since the ambiguous word may occur at the beginning or ending of text example and full context cannot be collected.
 In this case, we just average the reduced context.
 
 Text, that we take context from, must be preprocessed.
-We remove any special characters and stopwords, and use lower-case letters only.
+We remove any special characters and stopwords, and use lower-case letters only. Below is an example taken from the dataset (\ref{sec:dataset}):
 
-\underline{Example with \(l=3\)}:
+\begin{tcolorbox}[
+    colframe=blue!25,
+    colback=white!10,
+    coltitle=white!20!black,
+    title={Example for keyword \textit{pool (computer science)} with context length \(l=3\)}]
 
 \textbf{Text}:
 \textit{"The object pool pattern is a software creational design pattern that uses a set of initialized objects kept ready to use – a " *pool* " – rather than allocating and destroying them on demand."}
@@ -189,11 +201,25 @@ We remove any special characters and stopwords, and use lower-case letters only.
 \textbf{Context}:
 \textit{kept ready use \underline{pool} rather allocating destroying}
 
+\textbf{Context embedding}:
+\(\bm{c} = \frac{e(kept) + e(ready) + e(use) + e(pool) + e(rather) + e(allocating) + e(destroying)}{7}\)
+
+\end{tcolorbox}
+
+\subsection{Basic model}
+\label{sec:basic_model}
+The basic approach is to use keyword (\ref{sec:kw_embed}) and context embeddings (\ref{sec:ctx_embed}) to find the closest keyword given some context, using cosine distance as a metric.
+
+In other words, given an input text and marked ambiguous word within, we extract the context and compute its embedding \(\bm{c}\) (see example in the frame above). The keyword, whose embedding is closest to \(\bm{c}\) w.r.t. cosine distance, is chosen as the ambiguous word's meaning.
+
+We evaluate this model based on top-k accuracy, which checks, if the embedding for correct keyword is among closest \(k\) keyword embeddings (\ref{sec:baseline}).
+
+
 \subsection{Optimization}
 \label{sec:optimization}
-As a baseline, we use keyword and context embeddings described above to find the closest keyword given some context, using cosine distance as a metric.
-To optimize this system, we use texts from the training set to improve the quality of keyword embeddings.
-For each training example, we shift the correct keyword embedding by a factor of \(\alpha\) in the direction of context embedding, which describes said keyword.
+We assume, that the performance of the basic model (\ref{sec:basic_model}) (and the quality of keyword embeddings) can be improved, if we provide examples of contexts that the specific keyword appears in. To this end, we move keyword embeddings closer to embeddings of contexts they appear in, using examples taken from the training set (\ref{sec:dataset}).
+
+For each training example, we shift the correct keyword embedding by a factor of \(\alpha\), in the direction of the context embedding, which describes said keyword.
 
 \begin{equation}
     \label{eq:alpha_optimization}
@@ -212,6 +238,16 @@ We try to optimize the system even further, by also moving top-k closest keyword
 
 where \(\bm{m}^{(i)}\) is the embedding of incorrect keyword at iteration \(i\) and \(\beta\) is a scalar that controls the strength of the update.
 
+Both optimization methods can be seen on Fig. \ref{fig:opt}. The performance of these techniques is evaluated in \ref{sec:exp_alpha} and \ref{sec:exp_beta}.
+
+\begin{figure}
+    \centering
+    \caption{Optimization. Square is the context embedding \(\bm{c}\), triangles are the closest keyword embeddings, with \(\bm{k}\) being the correct keyword. Without the optimization, the closest keyword embedding w.r.t to context is \(\bm{m}_{1}\), which is incorrect (a). We move the correct keyword embedding in the direction of the context embedding by the factor of \(\alpha\) (Eq. \ref{eq:alpha_optimization}) and the closest \(N\) incorrect keyword embeddings (here \(N=2\)) away from the context embedding by the factor of \(\beta\) (Eq. \ref{eq:beta_optimization}) (b). After optimization, \(\bm{k}\) is the closest keyword (c).}
+    \label{fig:opt}
+    \includegraphics[scale=0.31]{res/opt.png}
+\end{figure}
+
+
 \subsection{Limitations}
 \label{sec:limitations}
 We are aware that our method has some limitations.
@@ -220,6 +256,8 @@ Therefore, it is possible that contexts for specific keyword overlap on contexts
 
 Secondly, the average context embedding may be ambiguous, with a high possibility of two different context being mapped to a similar point in space, especially for longer context legths.
 In future work (\ref{sec:conclusion}), we suggest experimenting with different sequence embedding techniques, that might be better suited for this purpose than a flat average.
+
+Finally, we run experiments for a very small number of ambiguous words and meanings (Table \ref{table:dataset}). Our method could have problems with a bigger dataset, since it would be much more difficult to separate different keywords.
 
 
 \section{Experiments}
@@ -284,6 +322,7 @@ It suggests, that bigger values of \(\alpha\) may cause the movement on the mult
 Similarly, small values of \(\alpha\) may update the keyword embedding too little, ending up in only slightly better position.
 
 \subsection{Beta optimization}
+\label{sec:exp_beta}
 We proved that moving keyword embeddings closer to their contexts is beneficial for the accuracy on the test set (\ref{sec:exp_alpha}).
 We theorize, that the results could be further improved, if we also increase the distance between closest incorrect keyword embeddings and the context embedding for a specific example (Eq. \ref{eq:beta_optimization}).
 
@@ -303,6 +342,7 @@ High values of \(\beta\) suffer from a similar problem to high values of \(\alph
 We chose to move only top-3 closest keywords per each training example. In future work, it might be interesting to see, how does the number of keyword embeddings moved affects the results. We also theorize, that influence of this particular optimization could be bigger for trainings with more than 1 epoch.
 
 \subsection{Accuracy in time}
+\label{sec:exp_epochs}
 In previous experiments, we passed through the training data only once, which may not be optimal.
 The goal of this experiment is to check how a number of epochs (full passes through training data) affects the final accuracy.
 We run 5 epochs of training, using best parameters from previous experiments: \(l=3, \alpha=0.25, \beta=0.05\) (Fig. \ref{fig:exp4_1_epochs_fixed}).

@@ -212,7 +212,7 @@ The basic approach is to use keyword (\ref{sec:kw_embed}) and context embeddings
 
 In other words, given an input text and marked ambiguous word within, we extract the context and compute its embedding \(\bm{c}\) (see example in the frame above). The keyword, whose embedding is closest to \(\bm{c}\) w.r.t. cosine distance, is chosen as the ambiguous word's meaning.
 
-We evaluate this model based on top-k accuracy, which checks, if the embedding for correct keyword is among closest \(k\) keyword embeddings (\ref{sec:baseline}).
+We evaluate this model based on top-k accuracy, which checks, if the embedding for correct keyword is among closest \(k\) keyword embeddings (\ref{sec:exp_baseline}).
 
 
 \subsection{Optimization}
@@ -271,8 +271,8 @@ The best configuration of each experiment is taken as a baseline for the next ex
 The goal of these experiments is to show how each of parameters influences on model's accuracy after training.
 
 \subsection{Baseline}
-\label{sec:baseline}
-As the baseline for optimization experiments, we check how keyword and context embeddings perform without any extra optimizations (\ref{sec:baseline_model}).
+\label{sec:exp_baseline}
+As the baseline for optimization experiments, we check how keyword and context embeddings perform without any extra optimizations (\ref{sec:exp_baseline_model}).
 We evaluate the performance of the baseline model with different context lengths, to see how it affects top-k accuracies (Fig. \ref{fig:baseline}).
 
 \begin{figure}
@@ -292,11 +292,11 @@ The best result w.r.t. top-1 accuracy was achieved with \(l=3\), which is why we
 \subsection{Alpha optimization}
 \label{sec:exp_alpha}
 We check, how an optimization method of moving keyword embeddings closer to the contexts they appear in (Eq. \ref{eq:alpha_optimization}), affects the accuracy of the model.
-To do this, we arbitrarily choose some \(\alpha\) value (here 0.2), test the results of improved keyword embeddings with different context lengths and compare them to the baseline (\ref{sec:baseline}). Since we average the results from 30 runs, we mark the measurement uncertainty on the graph (Fig. \ref{fig:exp1_optimization}).
+To do this, we arbitrarily choose some \(\alpha\) value (here 0.2), test the results of improved keyword embeddings with different context lengths and compare them to the baseline (\ref{sec:exp_baseline}). Since we average the results from 30 runs, we mark the measurement uncertainty on the graph (Fig. \ref{fig:exp1_optimization}).
 
 \begin{figure}
     \centering
-    \caption{Comparison of the baseline model (\ref{sec:baseline}) and a model optimized with \(\alpha=0.2\) for different context lengths.}
+    \caption{Comparison of the baseline model (\ref{sec:exp_baseline}) and a model optimized with \(\alpha=0.2\) for different context lengths.}
     \label{fig:exp1_optimization}
     \includegraphics[scale=0.65]{res/exp1_context_top_acc.png}
 \end{figure}
@@ -314,7 +314,7 @@ Similarly, small values of \(\alpha\) may update the keyword embedding too littl
 
 \begin{figure}
     \centering
-    \caption{Influence of \(\alpha\) parameter value on top-k accuracies for \(l=3\). Blue line denotes the average result from 30 runs, dotted lines denote worst and best result. The value for \(\alpha=0\) is the result achieved by the baseline model (\ref{sec:baseline}).}
+    \caption{Influence of \(\alpha\) parameter value on top-k accuracies for \(l=3\). Blue line denotes the average result from 30 runs, dotted lines denote worst and best result. The value for \(\alpha=0\) is the result achieved by the baseline model (\ref{sec:exp_baseline}).}
     \label{fig:exp2_alpha}
     \includegraphics[scale=0.65]{res/exp2_alpha_top_acc.png}
 \end{figure}
@@ -353,7 +353,7 @@ We run 5 epochs of training, using best parameters from previous experiments: \(
 \end{figure}
 
 It can be seen, that there is almost no improvement after the first epoch of training.
-The possible problem is that the values of \(\alpha\) and \(\beta\) are too high, causing the updates to keyword embeddings to be too big.
+The possible problem is that the values of \(\alpha\) and \(\beta\) are too high, causing the updates to keyword embeddings to be too big, similar to what happens, if we choose a big learning rate when training neural networks.
 We therefore check what happens, when we choose lower values of these parameters (Fig. \ref{fig:exp4_2_epochs_comparison}).
 
 \begin{figure}
@@ -370,11 +370,19 @@ In future work (\ref{sec:conclusion}) we suggest, that a decay parameter might b
 
 \section{Conclusion and future work}
 \label{sec:conclusion}
+Constructing semantic-rich embeddings for ambiguous words, by taking the average of embeddings of the ambiguous word and words describing its meaning (\ref{sec:kw_embed}), and then comparing it with the average embedding of context words describing said keyword (\ref{sec:ctx_embed}), proved to be a surprisingly good approach for the task of disambiguation on the dataset of 28 keywords we collected (\ref{sec:dataset}).
+The baseline model (\ref{sec:baseline_model}) achieved 67\% top-1, 85\% top-2 and 93\% top-3 accuracy (\ref{sec:exp_baseline}) for context length \(l=3\). Longer context lengths were shown to decrease the accuracy, since the average of many word embeddings may result in similar embeddings for different contexts.
 
-Average-based keyword and context embeddings proved to be a surprisingly good baseline for the dataset of ambiguous keywords that we collected, achieving over 65\% top-1 and 93\% top-3 accuracy.
-We have shown, that you can improve these results up to about 79\% top-1 and 95\% top-3 accuracy by using a simple optimization method of improving keyword embeddings with even a few training examples per keyword.
+To improve the quality of embeddings, an optimization method of moving keyword embeddings closer to contexts they appear in was suggested (\ref{sec:optimization}).
+We have shown, that accuracy on the disambiguation task can be improved up to about 79\% top-1, 90\% top-2 and 95\% top-3 accuracy, even with a few training examples per keyword.
+Importance of choosing parameters \(\alpha\) (Eq. \ref{eq:alpha_optimization}) and \(\beta\) (Eq. \ref{eq:beta_optimization}) was shown, with \(\alpha\) being the most crucial for final accuracy (\ref{sec:exp_alpha}).
+Moving incorrect keyword embeddings, given some context embedding, controlled by \(\beta\) parameter, was shown to  minimally improve results (\ref{sec:exp_beta}) over only using the \(\alpha\) parameter.
+The accuracy was further increased, by performing the optimization over many epochs (i.e. using the training examples more than once, in random order), but with lower values of \(\alpha\) than with a single epoch (\ref{sec:exp_epochs}).
 
-Further improvements could be sought by using different keyword and context embedding schemes, e.g. weighted average or by using some sentence embedding method. Optimization method itself could be made more stable by applying decay to alpha and beta parameters and by using a validation set for early stopping. It could also be bound to cosine distance between the keyword and context - the bigger the difference, the bigger the update. Finally, the dataset could be enhanced to contain more ambiguous words and training/test examples.
+Further improvements could be sought by using different keyword and context embedding schemes, e.g. weighted average or by using some sentence embedding method. Optimization method itself could be made more stable by applying decay to alpha and beta parameters and by using a validation set for early stopping. It could also be bound to cosine distance between the keyword and context - the bigger the difference, the bigger the update.
+
+It would also be interesting to see, how the suggested approach for constructing semantic-rich embeddings would perform on a large-scale dataset.
+Such a dataset could be automatically collected from Wikipedia, using disambiguation pages to find ambiguous words and their meanings, and \textit{What links here} utility, to find usage examples for each keyword.
 
 \bibliographystyle{splncs}
 \bibliography{sample}

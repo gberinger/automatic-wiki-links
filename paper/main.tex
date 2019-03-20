@@ -46,13 +46,15 @@ Gda{\'n}sk University of Technology, Gda{\'n}sk, Poland
 \maketitle
 \begin{abstract}
 
-In recent years word embeddings have been shown to boost the performance in NLP tasks such as syntactic parsing or sentiment analysis, but also in multimodal systems like image captioning or visual question answering.
-It is therefore not surprising that word embeddings have been applied to Word Sense Disambiguation (WSD) problem as well.
-In this work, we present how a simple word embeddings average-based method can be used to produce keyword (meaning) and context embeddings, and how the former can be improved with two embeddings distance optimization techniques.
-We also open source the dataset that was created for the purpose of this research.
+In recent years, word embeddings have been shown to improve the performance in NLP tasks such as syntactic parsing or sentiment analysis.
+While useful, they are problematic in representing ambiguous words with multiple meanings, since they keep a single representation for each word in the vocabulary.
+Embeddings of ambiguous words and their meanings (which we call \textit{keywords}) could be useful for solving the Word Sense Disambiguation (WSD) task.
+
+In this work, we present how a word embeddings average-based method can be used to produce semantic-rich keyword and context embeddings, and how the former can be improved with embeddings distance optimization techniques.
+We also open-source a small WSD dataset that was created for the purpose of evaluating methods presented in this research.
 It is composed of 6 ambiguous words, with 4 to 7 meanings each, and collected real-world usage examples of those meanings, with tagged words to be disambiguated.
 
-\keywords{word sense disambiguation, word embeddings}
+\keywords{word embeddings, word sense disambiguation}
 \end{abstract}
 
 \section{Introduction}

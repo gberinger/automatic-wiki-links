@@ -58,15 +58,33 @@ It is composed of 6 ambiguous words, with 4 to 7 meanings each, and collected re
 \section{Introduction}
 \label{introduction}
 
-Word Sense Disambiguation (WSD) is an open problem of natural language processing (NLP) and ontology. WSD is identifying which sense of a word (i.e. meaning) is used in a sentence based on the word context. Difficulty is when the word has multiple meanings (e.g. a decision tree, a tree data structure, a tree in a forest). The problem requires two inputs: a dictionary to specify the senses which are to be disambiguated and a corpus of language data to be disambiguated. WSD task has two variants: "lexical sample" and "all words" task. The former aim to disambiguate the occurrences of a small sample of selected target words, while in the latter all the words in a piece of running text need to be disambiguated. Our solution targets the former one, but could be extended to the latter variant.
-The solution to WSD would be useful in many NLP related problems as: relevance of search engines, anaphora resolution, coherence, inference, etc.
+Word embedding methods, that map the vocabulary words to low-dimensional continuous space, have been widely applied to various natural language processing (NLP) problems.
+They are commonly used as the input representation of words, replacing high-dimensional one-hot encodings, and have been shown to improve the performance in tasks such as syntactic parsing\cite{parsingGrammars} and sentiment analysis\cite{sentimentAnalysis}.
 
-Word embeddings are a product of feature learning techniques in NLP, where words from the vocabulary are mapped to vectors of real numbers. Conceptually it involves a dimensionality reduction from a space with one dimension per word to a continuous vector space with a much lower dimension.
-Methods to generate this mapping include artificial neural networks\cite{word2vec}\cite{GloVe}\cite{fastText}, dimensionality reduction on the word co-occurrence matrix\cite{Levy2014NWE} and probabilistic models\cite{Globerson2007EEC}.
-Word embeddings are commonly used as the input representation. They have been shown to boost the performance in NLP tasks such as syntactic parsing\cite{parsingGrammars} and sentiment analysis\cite{sentimentAnalysis}.
+In word embedding methods, such as word2vec\cite{word2vec} or GloVe\cite{GloVe}, each word in the vocabulary has exactly one representation.
+While it is enough for most words, it is problematic for ambiguous words, which can contain more than one meaning.
+For example, consider the following examples with the word \textit{tree}, extracted from Wikipedia articles:
 
-Word embeddings cannot distinguish between different meanings of ambiguous words by themselves. By definition, there is only one embedding for each word e.g. for word ``tree'' there is a single real-valued vector. What can be done, is to try to distinguish the meaning based on the context, in which the word was used. Then, we treat each meaning as a separate keyword, which has its own embedding.
-We propose a simple method to infer the word meaning: an average of the context and the word embeddings and number of improvements to this approach in the chapter ``Our method''. Experiments with our solution are presented in the chapter ``Experiments''. To conduct those experiments we have created the dataset composed of 6 ambiguous words, with 4 to 7 meanings each, and collected real-world usage examples of those meanings, with tagged words to be disambiguated. We describe our dataset in the chapter ``Dataset''. In the chapter ``Related work'' we present other approaches to WSD.
+\medskip
+(a) \textit{The olive, known by the botanical name Olea europaea, meaning "European olive", is a species of small \textbf{tree} in the family Oleaceae [...]}
+
+(b) \textit{Many theories of syntax and grammar illustrate sentence structure using phrase \textbf{trees}, which provide schematics of how the words in a sentence are grouped and relate to each other.}
+
+(c) \textit{Upon completion of listing all files and directories found, \textbf{tree} returns the total number of files and directories listed.}
+\medskip
+
+All three sentences mention the word \textit{tree} (or \textit{trees}), but the meaning differs based on context - (a) means tree as a forest plant, (b) tree as a parse tree, (c) tree as a command in Unix systems.
+
+For many applications, such as improving relevance of search engines, anaphora resolution or coherence, identifying which meaning is used, based on context, is important.
+This task is called Word Sense Disambiguation (WSD) and is an open problem in NLP domain.
+Word embeddings cannot be applied to WSD out-of-the-box, since they cannot differentiate between multiple meanings of an ambiguous word.
+
+In this work, we suggest to create semantically rich embeddings for each meaning of a word (\textit{keyword}) (\ref{sec:kw_embed}), by averaging embeddings of the ambiguous word and words describing its meaning (\ref{sec:baseline_model}).
+We evaluate this approach on a small WSD task, gathered from Wikipedia articles (\ref{sec:dataset}).
+Word is disambiguated by choosing the closest keyword embedding given the embedding of context, which is an average of word embeddings surrounding the word (\ref{sec:ctx_embed}).
+We then propose an optimization method, to improve the quality of embeddings and the result on WSD task as well -  we move keyword embeddings closer to embeddings of contexts they appear in, using examples from the training set (\ref{sec:optimization}).
+A number of experiments is run to test the proposed method and its optimized version (\ref{sec:experiments}).
+Finally, we discuss our findings and present future work (\ref{sec:conclusion}).
 
 \section{Related work}
 \label{related work}
@@ -261,6 +279,7 @@ Finally, we run experiments for a very small number of ambiguous words and meani
 
 
 \section{Experiments}
+\label{sec:experiments}
 The goal of following experiments is to check how semantic-rich keyword embeddings (\ref{sec:kw_embed}, \ref{sec:ctx_embed}) perform for the dataset we collected (\ref{sec:dataset}), both for the basic approach (\ref{sec:baseline_model}) and after applying optimization techniques (\ref{sec:optimization}).
 We use a pretrained embedding model from spaCy - \textit{en\_vectors\_web\_lg}, which contains 300-dimensional word vectors trained on Common Crawl with GloVe\cite{spacymodel}.
 

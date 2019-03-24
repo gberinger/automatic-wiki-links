@@ -18,9 +18,12 @@
 %% Useful packages
 %\usepackage{amsmath}
 \usepackage{graphicx}
+\usepackage{tabu}
+\usepackage{array}
+\usepackage{tcolorbox}
 
 \usepackage[colorinlistoftodos]{todonotes}
-\title{Optimized average-based embeddings for word sense disambiguation problem}
+\title{Towards semantic-rich word embeddings}
 \author{Grzegorz Beringer \and Mateusz Jabłoński \and Piotr Januszewski \and Julian Szymański}
 %
 
@@ -43,100 +46,157 @@ Gda{\'n}sk University of Technology, Gda{\'n}sk, Poland
 \maketitle
 \begin{abstract}
 
-In recent years word embeddings have been shown to boost the performance in NLP tasks such as syntactic parsing or sentiment analysis, but also in multimodal systems like image captioning or visual question answering.
-It is therefore not surprising that word embeddings have been applied to Word Sense Disambiguation (WSD) problem as well.
-In this work, we present how a simple word embeddings average-based method can be used to produce keyword (meaning) and context embeddings, and how the former can be improved with two embeddings distance optimization techniques.
-We also open source the dataset that was created for the purpose of this research.
+In recent years, word embeddings have been shown to improve the performance in NLP tasks such as syntactic parsing or sentiment analysis.
+While useful, they are problematic in representing ambiguous words with multiple meanings, since they keep a single representation for each word in the vocabulary.
+Embeddings of ambiguous words and their meanings (which we call \textit{keywords}) could be useful for solving the Word Sense Disambiguation (WSD) task.
+
+In this work, we present how a word embeddings average-based method can be used to produce semantic-rich keyword and context embeddings, and how the former can be improved with embeddings distance optimization techniques.
+We also open-source a small WSD dataset that was created for the purpose of evaluating methods presented in this research.
 It is composed of 6 ambiguous words, with 4 to 7 meanings each, and collected real-world usage examples of those meanings, with tagged words to be disambiguated.
 
-\keywords{word sense disambiguation, word embeddings}
+\keywords{word embeddings, word sense disambiguation}
 \end{abstract}
 
 \section{Introduction}
 \label{introduction}
 
-Word Sense Disambiguation (WSD) is an open problem of natural language processing (NLP) and ontology. WSD is identifying which sense of a word (i.e. meaning) is used in a sentence based on the word context. Difficulty is when the word has multiple meanings (e.g. a decision tree, a tree data structure, a tree in a forest). The problem requires two inputs: a dictionary to specify the senses which are to be disambiguated and a corpus of language data to be disambiguated. WSD task has two variants: "lexical sample" and "all words" task. The former aim to disambiguate the occurrences of a small sample of selected target words, while in the latter all the words in a piece of running text need to be disambiguated. Our solution targets the former one, but could be extended to the latter variant.
-The solution to WSD would be useful in many NLP related problems as: relevance of search engines, anaphora resolution, coherence, inference, etc.
+Word embedding methods, that map the vocabulary words to low-dimensional continuous space, have been widely applied to various natural language processing (NLP) problems.
+They are commonly used as the input representation of words, replacing high-dimensional one-hot encodings, and have been shown to improve the performance in tasks such as syntactic parsing\cite{parsingGrammars} and sentiment analysis\cite{sentimentAnalysis}.
 
-Word embeddings are a product of feature learning techniques in NLP, where words from the vocabulary are mapped to vectors of real numbers. Conceptually it involves a dimensionality reduction from a space with one dimension per word to a continuous vector space with a much lower dimension.
-Methods to generate this mapping include artificial neural networks\cite{word2vec}\cite{GloVe}\cite{fastText}, dimensionality reduction on the word co-occurrence matrix\cite{Levy2014NWE} and probabilistic models\cite{Globerson2007EEC}.
-Word embeddings are commonly used as the input representation. They have been shown to boost the performance in NLP tasks such as syntactic parsing\cite{parsingGrammars} and sentiment analysis\cite{sentimentAnalysis}.
+In word embedding methods, such as word2vec\cite{word2vec} or GloVe\cite{GloVe}, each word in the vocabulary has exactly one representation.
+While it is enough for most words, it is problematic for ambiguous words, which can contain more than one meaning.
+For example, consider the following examples with the word \textit{tree}, extracted from Wikipedia articles:
 
-Word embeddings cannot distinguish between different meanings of ambiguous words by themselves. By definition, there is only one embedding for each word e.g. for word ``tree'' there is a single real-valued vector. What can be done, is to try to distinguish the meaning based on the context, in which the word was used. Then, we treat each meaning as a separate keyword, which has its own embedding.
-We propose a simple method to infer the word meaning: an average of the context and the word embeddings and number of improvements to this approach in the chapter ``Our method''. Experiments with our solution are presented in the chapter ``Experiments''. To conduct those experiments we have created the dataset composed of 6 ambiguous words, with 4 to 7 meanings each, and collected real-world usage examples of those meanings, with tagged words to be disambiguated. We describe our dataset in the chapter ``Dataset''. In the chapter ``Related work'' we present other approaches to WSD.
+\medskip
+(a) \textit{The olive, known by the botanical name Olea europaea, meaning "European olive", is a species of small \textbf{tree} in the family Oleaceae [...]}
+
+(b) \textit{Many theories of syntax and grammar illustrate sentence structure using phrase \textbf{trees}, which provide schematics of how the words in a sentence are grouped and relate to each other.}
+
+(c) \textit{Upon completion of listing all files and directories found, \textbf{tree} returns the total number of files and directories listed.}
+\medskip
+
+All three sentences mention the word \textit{tree} (or \textit{trees}), but the meaning differs based on context - (a) means tree as a forest plant, (b) tree as a parse tree, (c) tree as a command in Unix systems.
+
+For many applications, such as improving relevance of search engines, anaphora resolution or coherence, identifying which meaning is used, based on context, is important.
+This task is called Word Sense Disambiguation (WSD) and is an open problem in NLP domain.
+Word embeddings cannot be applied to WSD out-of-the-box, since they cannot differentiate between multiple meanings of an ambiguous word.
+
+In this work, we suggest to create semantically rich embeddings for each meaning of a word (\textit{keyword}) (\ref{sec:kw_embed}), by averaging embeddings of the ambiguous word and words describing its meaning (\ref{sec:baseline_model}).
+We evaluate this approach on a small WSD task, gathered from Wikipedia articles (\ref{sec:dataset}).
+Word is disambiguated by choosing the closest keyword embedding given the embedding of context, which is an average of word embeddings surrounding the word (\ref{sec:ctx_embed}).
+We then propose an optimization method, to improve the quality of embeddings and the result on WSD task as well -  we move keyword embeddings closer to embeddings of contexts they appear in, using examples from the training set (\ref{sec:optimization}).
+A number of experiments is run to test the proposed method and its optimized version (\ref{sec:experiments}).
+Finally, we discuss our findings and present future work (\ref{sec:conclusion}).
 
 \section{Related work}
-\label{related work}
+\label{sec:related_work}
 
-Typically, there are two kinds of approach for WSD: supervised, which make use of sense-annotated training data, and knowledge-based, which make use of the properties of lexical resources. In supervised approach, the most widely used training corpus used is SemCor\cite{semcor}, with 226,036 sense annotations from 352 manually annotated documents.
+% Word embeddings methods:
+%  Latent Semantic Analysis (LSA) and Latent Dirichlet Allocation (LDA)
+%  word2vec (skip-gram and CBOW)
+%  GloVe
+%  fastText?
+% WSD background
+
+There have been many methods of creating semantically meaningful word representations.
+Global matrix factorization methods, such as latent semantic analysis (LSA)\cite{LSA} use matrix factorization to perform rank reduction on a large term-frequency matrix, that captures statistical information about the corpus.
+
+Local context window methods, like popular skip-gram (SG) or continuous bag-of-words (CBOW) models from word2vec paper\cite{word2vec}, were shown to outperform approaches like LSA at word analogy task.
+They use shallow neural networks to either predict context words based on the current word (SG), or predict current word based on context words (CBOW).
+FastText\cite{fastText} enriches skip-gram word embeddings, by representing each word as a bag of character n-grams, which also has an added benefit of the ability to compute word representations for words unseen during training.
+
+Global Vectors (GloVe)\cite{GloVe} aim to combine both global matrix factorization and local context window methods, by training on nonzero elements in word-word co-occurence matrix, which leverages global corpus statistics and performs well on word analogy and similarity tasks.
+
+Typically, there are two kinds of approach for Word Sense Disambiguation (WSD): supervised, which make use of sense-annotated training data, and knowledge-based, which make use of the properties of lexical resources.
+%In supervised approach, the most widely used training corpus used is SemCor\cite{semcor}, with 226,036 sense annotations from 352 manually annotated documents.
 Knowledge-based systems usually exploit WordNet\cite{wordnet} or BabelNet\cite{babelnet} as semantic network.
-Our solution joins two approaches. We use the knowledge-based word embeddings like GloVe\cite{GloVe} as a baseline for our method and then optimize them in supervised fashion.
+%Our solution joins two approaches. We use the knowledge-based word embeddings like GloVe\cite{GloVe} as a baseline for our method and then optimize them in supervised fashion.
 
 The most usual baseline is the Most Frequent Sense\cite{evalmfs} (MFS) heuristic, which selects for each target word the most frequent sense in the training data.
-Recent growth of sequence learning techniques using artificial neural networks contributed to WSD research: Raganato et al.\cite{neuralseqmodelingforWSD} propose a series of end-to-end neural architectures directly tailored to the task, from bidirectional Long Short-Term Memory (LSTM) to encoder-decoder models. Melamud et al.\cite{context2vec} also use bidirectional LSTM it their work. They use large plain text corpora to learn a neural model that embeds entire sentential contexts and target words in the same low-dimensional space, which is optimized to reflect inter-dependencies between targets and their entire sentential context as a whole.
+Recent growth of sequence learning techniques using artificial neural networks contributed to WSD research: Raganato et al.\cite{neuralseqmodelingforWSD} propose a series of end-to-end neural architectures directly tailored to the task, from bidirectional Long Short-Term Memory (LSTM) to encoder-decoder models.
+Melamud et al.\cite{context2vec} also use bidirectional LSTM it their work. They use large plain text corpora to learn a neural model that embeds entire sentential contexts and target words in the same low-dimensional space, which is optimized to reflect inter-dependencies between targets and their entire sentential context as a whole.
 
 Iacobacci et al.\cite{embeddingsforWSD} were first to try to use word embeddings for WSD. They consider four different strategies for integrating a pre-trained word embeddings as context representation in a supervised WSD system: concatenation, average, fractional and exponential decay of the vectors of the words surrounding a target word.
 Peters et al.\cite{deepcontext} create word representations that differ from traditional word embeddings in that each token is assigned a representation that is a function of the entire input sentence. They use vectors derived from a bidirectional LSTM that is trained with a coupled language model objective on a large text corpus.
 
-Most of the previous neural networks applications to WSD ignore lexical resources like glosses (sense definitions) and rely solely on word's context. In Luo et al.\cite{glosses} paper, they integrate the context and glosses of the target word into a unified framework, in order to make full use of both labeled data and lexical knowledge.
+%Most of the previous neural networks applications to WSD ignore lexical resources like glosses (sense definitions) and rely solely on word's context. In Luo et al.\cite{glosses} paper, they integrate the context and glosses of the target word into a unified framework, in order to make full use of both labeled data and lexical knowledge.
 
-Entity Linking (EL) and WSD both address the lexical ambiguity of language. The aim of EL is to discover mentions of entities within text and to link them to the most suitable entry in a reference knowledge base. The two tasks are pretty similar, but they differ fundamentally: in EL the textual mention can be linked to a named entity which may or may not contain the exact mention, while in WSD there is a perfect match between the word form and a suitable word sense in the knowledge base.
-Moro et al.\cite{babelfy} present Babelfy, a unified graph-based approach to EL and WSD based on a loose identification of candidate meanings coupled with a densest subgraph heuristic, which selects high-coherence semantic interpretations.
-We can find also application of random walks\cite{randomwalks} and topic models\cite{topicmodels} for knowledge-based WSD.
+%Entity Linking (EL) and WSD both address the lexical ambiguity of language. The aim of EL is to discover mentions of entities within text and to link them to the most suitable entry in a reference knowledge base. The two tasks are pretty similar, but they differ fundamentally: in EL the textual mention can be linked to a named entity which may or may not contain the exact mention, while in WSD there is a perfect match between the word form and a suitable word sense in the knowledge base.
+%Moro et al.\cite{babelfy} present Babelfy, a unified graph-based approach to EL and WSD based on a loose identification of candidate meanings coupled with a densest subgraph heuristic, which selects high-coherence semantic interpretations.
+%We can find also application of random walks\cite{randomwalks} and topic models\cite{topicmodels} for knowledge-based WSD.
 
-Developing WSD system requires much effort and as a result, very few open source WSD systems are publicly available. Zhong et al.\cite{itmakessense} present an English all-words WSD system, IMS (It Makes Sense), built using a supervised learning approach that is written in Java and completely open source. Following Lee and Ng\cite{SVMtoWSD}, they adopt support vector machines (SVM) as the classifier and integrate multiple knowledge sources including parts-of-speech (POS), surrounding words, and local collocations as features.
+%Developing WSD system requires much effort and as a result, very few open source WSD systems are publicly available. Zhong et al.\cite{itmakessense} present an English all-words WSD system, IMS (It Makes Sense), built using a supervised learning approach that is written in Java and completely open source. Following Lee and Ng\cite{SVMtoWSD}, they adopt support vector machines (SVM) as the classifier and integrate multiple knowledge sources including parts-of-speech (POS), surrounding words, and local collocations as features.
 
 \section{Dataset}
 \label{sec:dataset}
-For the purpose of testing word embeddings as a method to differentiate between different meanings, we gathered examples for 6 ambiguous words, 4-7 meanings each (28 meanings in total).
+
+For the purpose of constructing semantic-rich word embeddings, we manually gathered usage examples for 6 ambiguous words, 4 to 7 meanings each (28 meanings in total) (Table \ref{table:dataset}).
 Ambiguous word together with its meaning constitues a \textit{keyword}, which we use as a separate class when identyfing the closest meaning given some context.
 All keywords can be seen on Fig. \ref{fig:keywords}.
 
+\begin{table}
+\centering
+    \begin{tabular}{ | m{7.5cm} | m{1cm} | }
+        \hline
+        Number of ambiguous words & 6 \\
+        \hline
+        Number of meanings per ambiguous word & 4 to 7 \\
+        \hline
+        Number of keywords (ambiguous word + meaning) & 28 \\
+    \hline
+    \hline
+    Number of training examples per keyword & 5 \\
+    \hline
+    Number of test examples per keyword & 10 \\
+    \hline
+    \end{tabular}
+    \caption{Statistics of the dataset collected for the purpose of this paper. Training examples can be used by the model to optimize semantic-rich word embeddings (Section \ref{sec:optimization}). Test examples are used to evaluate the embeddings and cannot be trained on.}
+    \label{table:dataset}
+\end{table}
+
 \begin{figure}
     \centering
-    \caption{Ambiguous words with their meanings that are present in the dataset. Each word-meaning pair is called a keyword, e.g. \textit{tree forest}, \textit{pool computer science}.}
+    \caption{Ambiguous words with their meanings that are present in the dataset. Each word-meaning pair is called a keyword, e.g. \textit{tree (forest)}, \textit{pool (computer science)}.}
     \label{fig:keywords}
     \includegraphics[scale=0.35]{res/keywords.png}
 \end{figure}
 
-Examples were mostly gathered from Wikipedia, using \textit{What links here} utility for each keyword.
-If usage examples from Wikipedia were not enough, other websites were used (or even the Wikipedia article on specific keyword itself).
+We chose ambiguous words based on the number and variety of meanings it had.
+Meanings themselves were chosen to cover a range of topics (e.g. \textit{tree (forest)}, \textit{tree (family)}, \textit{trees (folk band)}, \textit{tree (command)}).
+We also tried to look for meanings that are semantically related and can occur in similar context (and in turn be difficult for the model to differentiate between), e.g. \textit{tree (structure)}, \textit{tree (parse)}, \textit{tree (decision)} or \textit{nails (new wave band)}, \textit{nails (hardcore punk band)}.
+Lastly, we added some keywords, that we suspected to be really underrepresented in the word embedding of the ambiguous word, e.g. \textit{Mars} as the pop singer Bruno Mars (\textit{mars (bruno singer)}) or \textit{pool} as the computer science term (\textit{pool (computer science)}).
+
+Usage examples for keywords were gathered mostly from Wikipedia, using \textit{What links here} utility, which lists all Wikipedia pages that link to a specific article.
+We used these links to search for usages of our keywords in context.
+We found that \textit{What links here} utility has some limitations.
+Many articles linked to the keyword do not use that keyword in text at all or just list it in "See also" section, which does not provide good context around the keyword for the model to improve on.
+Moreover, some keywords do not have enough usage examples that can be found on Wikipedia alone.
+In such cases, other websites were used to find proper usage examples.
 
 The dataset is split into training and test set, with 5 training and 10 test examples for each keyword.
 Each example is stored in plain text, with the ambiguous word marked with "*" on both sides.
+For simplicity, only one word is marked in each text, even if more ambiguous word usages can be found.
+In case we wanted to mark another word in the same text, we could just add the same example twice, with different words marked each time.
 
 The correct keyword for each example, together with a path to file and a link, where the original text was taken from, are stored in CSV files: \textit{train.csv} for training set, \textit{test.csv} for test set (columns: path,keyword,link).
-Keywords themselves, together with links to their Wikipedia articles, are stored in \textit{keywords.csv} file.
+Keywords themselves, together with links to their Wikipedia articles, are stored in \textit{keywords.csv} file (Figure \ref{fig:dataset_format}).
+
 Dataset, together with the code to execute experiments from this paper, can be found on our GitHub repository \cite{repository}.
 
-\bigskip
-\underline{Example for \textit{bolt crossbow} keyword:}
+\begin{figure}
+    \centering
+    \caption{Dataset format with an example for \textit{bolt (crossbow)} keyword (highlighted text and arrows). Usage examples are stored in plain text, with ambiguous word marked with "*" (right), and are divided into training and test set. Paths to all test (training) examples can be read from \textit{test.csv} (\textit{train.csv}), together with the links to where they were taken from (middle). All keywords are stored in \textit{keywords.csv}, along with the link to their Wikipedia articles (left).}
+    \label{fig:dataset_format}
+    \includegraphics[scale=0.35]{res/dataset_format.png}
+\end{figure}
 
-\smallskip
-\textbf{Keyword definition}: keyword.csv\newline
-\textit{
-keyword,link\newline
-...\newline
-bolt crossbow,https://en.wikipedia.org/wiki/Crossbow\_bolt}
-
-\smallskip
-\textbf{Test set}: test.csv\newline
-\textit{
-path,keyword,link\newline
-...\newline
-texts/test/bolt\_crossbow\_5.txt,bolt crossbow,https://en.wikipedia.org/wiki/Incendiary\_device
-}
-
-\smallskip
-\textbf{Text}: texts/test/bolt\_crossbow\_5.txt\newline
-\textit{"Sulfur- and oil-soaked materials were sometimes ignited and thrown at the enemy, or attached to spears, arrow and *bolts* and fired by hand or machine. Some siege techniques—such as mining and boring—relied on combustibles and fire to complete the collapse of walls and structures."}
 
 \section{Our method}
 \subsection{Keyword embedding}
 \label{sec:kw_embed}
-\textit{Keyword} is a sequence of words that lets us disambiguate between different meanings of the same ambiguous word, e.g. "tree forest" that represents a tree as a plant and "tree structure" which represents tree as a mathematical structure.
+\textit{Keyword} is a sequence of words that lets us disambiguate between different meanings of the same ambiguous word, e.g. \textit{tree (forest)} that represents a tree as a plant and \textit{tree (structure)} which represents tree as a mathematical structure.
 
-To get the embedding of the keyword, we simply average all the words in the keyword:
+To get the embedding of the keyword, we average embeddings of all the words in the keyword:
 
 \begin{equation}
     \label{eq:keyword_embedding}
@@ -145,19 +205,30 @@ To get the embedding of the keyword, we simply average all the words in the keyw
 
 where \(e(\cdot)\) is the embedding function used and \(w_1, w_2, ..., w_N\) is a sequence of N words that, in this case, constitutes a keyword.
 
+Example for keyword \textit{tree (forest)}:
+
+\begin{equation}
+    \label{eq:example_kw_embed}
+    \bm{k}_{tree (forest)} = e(tree, forest) = \frac{e(tree) + e(forest)}{2}
+\end{equation}
+
 \subsection{Context embedding}
 \label{sec:ctx_embed}
 \textit{Context} is a sequence of words that contains an ambiguous word within, usually in the middle.
-It is parametrized by context length \(l\), which specifies how many of words from both side of the ambiguous word in question were taken into consideration.
+It is parametrized by \textbf{context length \(l\)}, which specifies how many of words from both side of the ambiguous word in question were taken into consideration.
 
 \textit{Context embedding} \(\bm{c}\) is also achieved by taking an average of word embeddings (Equation \ref{eq:keyword_embedding}).
 In this case, \(N = 2l + 1\) and \(w_1, w_2, ..., w_N\) is the context with ambiguous word inside. For some cases \(N < 2l + 1\), since the ambiguous word may occur at the beginning or ending of text example and full context cannot be collected.
 In this case, we just average the reduced context.
 
 Text, that we take context from, must be preprocessed.
-We remove any special characters and stopwords, and use lower-case letters only.
+We remove any special characters and stopwords, and use lower-case letters only. Below is an example taken from the dataset (\ref{sec:dataset}):
 
-\underline{Example with \(l=3\)}:
+\begin{tcolorbox}[
+    colframe=blue!25,
+    colback=white!10,
+    coltitle=white!20!black,
+    title={Example for keyword \textit{pool (computer science)} with context length \(l=3\)}]
 
 \textbf{Text}:
 \textit{"The object pool pattern is a software creational design pattern that uses a set of initialized objects kept ready to use – a " *pool* " – rather than allocating and destroying them on demand."}
@@ -168,11 +239,25 @@ We remove any special characters and stopwords, and use lower-case letters only.
 \textbf{Context}:
 \textit{kept ready use \underline{pool} rather allocating destroying}
 
+\textbf{Context embedding}:
+\(\bm{c} = \frac{e(kept) + e(ready) + e(use) + e(pool) + e(rather) + e(allocating) + e(destroying)}{7}\)
+
+\end{tcolorbox}
+
+\subsection{Baseline model}
+\label{sec:baseline_model}
+The basic approach is to use keyword (\ref{sec:kw_embed}) and context embeddings (\ref{sec:ctx_embed}) to find the closest keyword given some context, using cosine distance as a metric.
+
+In other words, given an input text and marked ambiguous word within, we extract the context and compute its embedding \(\bm{c}\) (see example in the frame above). The keyword, whose embedding is closest to \(\bm{c}\) w.r.t. cosine distance, is chosen as the ambiguous word's meaning.
+
+We evaluate this model based on top-k accuracy, which checks, if the embedding for correct keyword is among closest \(k\) keyword embeddings (\ref{sec:exp_baseline}).
+
+
 \subsection{Optimization}
 \label{sec:optimization}
-As a baseline, we use keyword and context embeddings described above to find the closest keyword given some context, using cosine distance as a metric.
-To optimize this system, we use texts from the training set to improve the quality of keyword embeddings.
-For each training example, we shift the correct keyword embedding by a factor of \(\alpha\) in the direction of context embedding, which describes said keyword.
+We assume, that the performance of the baseline model (\ref{sec:baseline_model}) (and the quality of keyword embeddings) can be improved, if we provide examples of contexts that the specific keyword appears in. To this end, we move keyword embeddings closer to embeddings of contexts they appear in, using examples taken from the training set (\ref{sec:dataset}).
+
+For each training example, we shift the correct keyword embedding by a factor of \(\alpha\), in the direction of the context embedding, which describes said keyword.
 
 \begin{equation}
     \label{eq:alpha_optimization}
@@ -191,6 +276,16 @@ We try to optimize the system even further, by also moving top-k closest keyword
 
 where \(\bm{m}^{(i)}\) is the embedding of incorrect keyword at iteration \(i\) and \(\beta\) is a scalar that controls the strength of the update.
 
+Both optimization methods can be seen on Fig. \ref{fig:opt}. The performance of these techniques is evaluated in \ref{sec:exp_alpha} and \ref{sec:exp_beta}.
+
+\begin{figure}
+    \centering
+    \caption{Optimization. Square is the context embedding \(\bm{c}\), triangles are the closest keyword embeddings, with \(\bm{k}\) being the correct keyword. Without the optimization, the closest keyword embedding w.r.t to context is \(\bm{m}_{1}\), which is incorrect (a). We move the correct keyword embedding in the direction of the context embedding by the factor of \(\alpha\) (Eq. \ref{eq:alpha_optimization}) and the closest \(N\) incorrect keyword embeddings (here \(N=2\)) away from the context embedding by the factor of \(\beta\) (Eq. \ref{eq:beta_optimization}) (b). After optimization, \(\bm{k}\) is the closest keyword (c).}
+    \label{fig:opt}
+    \includegraphics[scale=0.31]{res/opt.png}
+\end{figure}
+
+
 \subsection{Limitations}
 \label{sec:limitations}
 We are aware that our method has some limitations.
@@ -200,25 +295,28 @@ Therefore, it is possible that contexts for specific keyword overlap on contexts
 Secondly, the average context embedding may be ambiguous, with a high possibility of two different context being mapped to a similar point in space, especially for longer context legths.
 In future work (\ref{sec:conclusion}), we suggest experimenting with different sequence embedding techniques, that might be better suited for this purpose than a flat average.
 
+Finally, we run experiments for a very small number of ambiguous words and meanings (Table \ref{table:dataset}). Our method could have problems with a bigger dataset, since it would be much more difficult to separate different keywords.
+
 
 \section{Experiments}
-The goal of following experiments is to check how embedding approach (\ref{sec:kw_embed}, \ref{sec:ctx_embed}) works for the dataset we collected (\ref{sec:dataset}), both out-of-the-box (baseline) and after applying optimization techniques (\ref{sec:optimization}).
+\label{sec:experiments}
+The goal of following experiments is to check how semantic-rich keyword embeddings (\ref{sec:kw_embed}, \ref{sec:ctx_embed}) perform for the dataset we collected (\ref{sec:dataset}), both for the basic approach (\ref{sec:baseline_model}) and after applying optimization techniques (\ref{sec:optimization}).
 We use a pretrained embedding model from spaCy - \textit{en\_vectors\_web\_lg}, which contains 300-dimensional word vectors trained on Common Crawl with GloVe\cite{spacymodel}.
+
+We compare results on the test set with top-k metrics (\(k \in {1, 2, 3}\)), where we check, if the correct keyword is in closest \(k\) keywords given a specific context describing it (\ref{sec:baseline_model}). We focus mostly on top-1 accuracy, since we are interested if the word is correctly disambiguated.
 
 Due to the high impact of training data order on test results, we take the average score of 30 runs (each with a random order of training data) for each optimization experiment.
 The best configuration of each experiment is taken as a baseline for the next experiment.
 The goal of these experiments is to show how each of parameters influences on model's accuracy after training.
 
-We compare results on the test set with two metrics: top-1 accuracy, where we are only interested, if the correct keyword is the closest one to a specific context describing it, and top-3 accuracy, where we check if we are in the closest three keywords.
-
 \subsection{Baseline}
-\label{sec:baseline}
-For the baseline model, we check how out-of-the-box keyword (\ref{sec:kw_embed}) and context embeddings (\ref{sec:ctx_embed}) work without any extra optimizations.
-We evaluate the performance of the model with different context lengths, to see how it affects top-1 and top-3 accuracies (Fig. \ref{fig:baseline}).
+\label{sec:exp_baseline}
+As the baseline for optimization experiments, we check how keyword and context embeddings perform without any extra optimizations (\ref{sec:exp_baseline_model}).
+We evaluate the performance of the baseline model with different context lengths, to see how it affects top-k accuracies (Fig. \ref{fig:baseline}).
 
-\begin{figure}[H]
+\begin{figure}
     \centering
-    \caption{Top-1 and top-3 accuracies of the baseline model with different context lengths.}
+    \caption{Top-k accuracies of the baseline model with different context lengths.}
     \label{fig:baseline}
     \includegraphics[scale=0.7]{res/baseline_context_top_acc.png}
 \end{figure}
@@ -232,14 +330,14 @@ The best result w.r.t. top-1 accuracy was achieved with \(l=3\), which is why we
 
 \subsection{Alpha optimization}
 \label{sec:exp_alpha}
-We check, how a simple optimization method of moving keyword embeddings closer to the contexts they appear in (Eq. \ref{eq:alpha_optimization}), affects the accuracy of the model.
-To do this, we arbitrarily choose some \(\alpha\) value (here 0.2), test the results of improved keyword embeddings with different context lengths and compare them to the baseline (\ref{sec:baseline}). Since we average the results from 30 runs, we mark the measurement uncertainty on the graph (Fig. \ref{fig:exp1_optimization}).
+We check, how an optimization method of moving keyword embeddings closer to the contexts they appear in (Eq. \ref{eq:alpha_optimization}), affects the accuracy of the model.
+To do this, we arbitrarily choose some \(\alpha\) value (here 0.2), test the results of improved keyword embeddings with different context lengths and compare them to the baseline (\ref{sec:exp_baseline}). Since we average the results from 30 runs, we mark the measurement uncertainty on the graph (Fig. \ref{fig:exp1_optimization}).
 
-\begin{figure}[H]
+\begin{figure}
     \centering
-    \caption{Comparison of the baseline model (\ref{sec:baseline}) and a model optimized with \(\alpha=0.2\) for different context lengths.}
+    \caption{Comparison of the baseline model (\ref{sec:exp_baseline}) and a model optimized with \(\alpha=0.2\) for different context lengths.}
     \label{fig:exp1_optimization}
-    \includegraphics[scale=0.7]{res/exp1_context_top_acc.png}
+    \includegraphics[scale=0.65]{res/exp1_context_top_acc.png}
 \end{figure}
 
 Independently of some noise caused by the random order of training data, the optimized model is much better than the base model (12-36\% relative, 10-20\% absolute improvement w.r.t. top-1 accuracy on the test set).
@@ -248,32 +346,31 @@ It seems, that a simple optimization may help alleviate the problems with ambigu
 
 Overall, results suggest, that for an optimized model, context length is not as important as with the baseline model, at least with this particular \(\alpha\) value.
 
-\bigskip
-Next, we check the influence of the \(\alpha\) parameter value on the top-1 and top-3 accuracies for \(l=3\) (Fig. \ref{fig:exp2_alpha}).
-
-\begin{figure}[H]
-    \centering
-    \caption{Influence of \(\alpha\) parameter value on top-1 and top-3 accuracies for \(l=3\). Blue line denotes the average result from 30 runs, dotted lines denote worst and best result. The value for \(\alpha=0\) is the result achieved by the baseline model (\ref{sec:baseline}).}
-    \label{fig:exp2_alpha}
-    \includegraphics[scale=0.7]{res/exp2_alpha_top_acc.png}
-\end{figure}
-
-Top-1 accuracy grows up to \(\alpha=0.25\) and then starts to drop.
+Next, we check the influence of the \(\alpha\) parameter value on the top-k accuracies for \(l=3\) (Fig. \ref{fig:exp2_alpha}).
+Top-1 accuracy improves up to \(\alpha=0.25\) and then starts to drop.
 It suggests, that bigger values of \(\alpha\) may cause the movement on the multidimensional plane to be too chaotic, moving the correct keyword embedding too close to a specific context, causing overfitting to a specific example.
 Similarly, small values of \(\alpha\) may update the keyword embedding too little, ending up in only slightly better position.
 
+\begin{figure}
+    \centering
+    \caption{Influence of \(\alpha\) parameter value on top-k accuracies for \(l=3\). Blue line denotes the average result from 30 runs, dotted lines denote worst and best result. The value for \(\alpha=0\) is the result achieved by the baseline model (\ref{sec:exp_baseline}).}
+    \label{fig:exp2_alpha}
+    \includegraphics[scale=0.65]{res/exp2_alpha_top_acc.png}
+\end{figure}
+
 \subsection{Beta optimization}
+\label{sec:exp_beta}
 We proved that moving keyword embeddings closer to their contexts is beneficial for the accuracy on the test set (\ref{sec:exp_alpha}).
-We theorize, that the results could be further improved, if we also increase the distance between closest incorrect keyword embeddings and the context embedding for a specific example (Eq. \ref{eq:beta_optimization}).
+We assume, that the results could be further improved, if we also increase the distance between closest incorrect keyword embeddings and the context embedding for a specific example (Eq. \ref{eq:beta_optimization}).
 
 In following experiment, we therefore check the influence of \(\beta\) parameter value on the accuracy on the test set, for \(l=3, \alpha=0.25\) (Fig. \ref{fig:exp3_beta}).
 Since we compare the results to an average value from previous experiments (Fig. \ref{fig:exp2_alpha}), we decide to only plot an average result achieved by this optimization.
 
-\begin{figure}[H]
+\begin{figure}
     \centering
-    \caption{Influence of \(\beta\) parameter value on top-1 and top-3 accuracies for \(l=3\) nad \(\alpha=0.25\). The value for \(\beta=0\) is the best result achieved by the model from previous experiment (Fig. \ref{fig:exp2_alpha}).}
+    \caption{Influence of \(\beta\) parameter value on top-k accuracies for \(l=3\) nad \(\alpha=0.25\). The value for \(\beta=0\) is the best result achieved by the model from previous experiment (Fig. \ref{fig:exp2_alpha}).}
     \label{fig:exp3_beta}
-    \includegraphics[scale=0.7]{res/exp3_beta_top_acc.png}
+    \includegraphics[scale=0.65]{res/exp3_beta_top_acc.png}
 \end{figure}
 
 Low values of \(\beta\) seem to slightly improve the performance of our optimization method w.r.t. top-1 accuracy (about 1\% absolute and relative improvement).
@@ -282,22 +379,23 @@ High values of \(\beta\) suffer from a similar problem to high values of \(\alph
 We chose to move only top-3 closest keywords per each training example. In future work, it might be interesting to see, how does the number of keyword embeddings moved affects the results. We also theorize, that influence of this particular optimization could be bigger for trainings with more than 1 epoch.
 
 \subsection{Accuracy in time}
-In previous experiments, we passed through the training data only once, which may not be optimal.
+\label{sec:exp_epochs}
+In previous experiments, we performed only one epoch of training, i.e. we used each training example only once for keyword embeddings optimization.
 The goal of this experiment is to check how a number of epochs (full passes through training data) affects the final accuracy.
 We run 5 epochs of training, using best parameters from previous experiments: \(l=3, \alpha=0.25, \beta=0.05\) (Fig. \ref{fig:exp4_1_epochs_fixed}).
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \caption{Top-1 and top-3 accuracy for model with \(l=3, \alpha=0.25, \beta=0.05\) trained for 5 epochs.}
     \label{fig:exp4_1_epochs_fixed}
     \includegraphics[scale=0.65]{res/exp4_epoch_top_acc.png}
 \end{figure}
 
-We see that there is almost no improvement after the first epoch of training.
-The possible problem is that the values of \(\alpha\) and \(\beta\) are too high, causing the updates to keyword embeddings to be too big.
+It can be seen, that there is almost no improvement after the first epoch of training.
+The possible problem is that the values of \(\alpha\) and \(\beta\) are too high, causing the updates to keyword embeddings to be too big, similar to what happens, if we choose a big learning rate when training neural networks.
 We therefore check what happens, when we choose lower values of these parameters (Fig. \ref{fig:exp4_2_epochs_comparison}).
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \caption{Comparison of models optimized with different \(\alpha\) and \(\beta\) values with \(l=3\) for 5 epochs.}
     \label{fig:exp4_2_epochs_comparison}
@@ -311,11 +409,19 @@ In future work (\ref{sec:conclusion}) we suggest, that a decay parameter might b
 
 \section{Conclusion and future work}
 \label{sec:conclusion}
+Constructing semantic-rich embeddings for ambiguous words, by taking the average of embeddings of the ambiguous word and words describing its meaning (\ref{sec:kw_embed}), and then comparing it with the average embedding of context words describing said keyword (\ref{sec:ctx_embed}), proved to be a surprisingly good approach for the task of disambiguation on the dataset of 28 keywords we collected (\ref{sec:dataset}).
+The baseline model (\ref{sec:baseline_model}) achieved 67\% top-1, 85\% top-2 and 93\% top-3 accuracy (\ref{sec:exp_baseline}) for context length \(l=3\). Longer context lengths were shown to decrease the accuracy, since the average of many word embeddings may result in similar embeddings for different contexts.
 
-Average-based keyword and context embeddings proved to be a surprisingly good baseline for the dataset of ambiguous keywords that we collected, achieving over 65\% top-1 and 93\% top-3 accuracy.
-We have shown, that you can improve these results up to about 79\% top-1 and 95\% top-3 accuracy by using a simple optimization method of improving keyword embeddings with even a few training examples per keyword.
+To improve the quality of embeddings, an optimization method of moving keyword embeddings closer to contexts they appear in was suggested (\ref{sec:optimization}).
+We have shown, that accuracy on the disambiguation task can be improved up to about 79\% top-1, 90\% top-2 and 95\% top-3 accuracy, even with a few training examples per keyword.
+Importance of choosing parameters \(\alpha\) (Eq. \ref{eq:alpha_optimization}) and \(\beta\) (Eq. \ref{eq:beta_optimization}) was shown, with \(\alpha\) being the most crucial for final accuracy (\ref{sec:exp_alpha}).
+Moving incorrect keyword embeddings, given some context embedding, controlled by \(\beta\) parameter, was shown to  minimally improve results (\ref{sec:exp_beta}) over only using the \(\alpha\) parameter.
+The accuracy was further increased, by performing the optimization over many epochs (i.e. using the training examples more than once, in random order), but with lower values of \(\alpha\) than with a single epoch (\ref{sec:exp_epochs}).
 
-Further improvements could be sought by using different keyword and context embedding schemes, e.g. weighted average or by using some sentence embedding method. Optimization method itself could be made more stable by applying decay to alpha and beta parameters and by using a validation set for early stopping. It could also be bound to cosine distance between the keyword and context - the bigger the difference, the bigger the update. Finally, the dataset could be enhanced to contain more ambiguous words and training/test examples.
+Further improvements could be sought by using different keyword and context embedding schemes, e.g. weighted average or by using some sentence embedding method. Optimization method itself could be made more stable by applying decay to alpha and beta parameters and by using a validation set for early stopping. It could also be bound to cosine distance between the keyword and context - the bigger the difference, the bigger the update.
+
+It would also be interesting to see, how the suggested approach for constructing semantic-rich embeddings would perform on a large-scale dataset.
+Such a dataset could be automatically collected from Wikipedia, using disambiguation pages to find ambiguous words and their meanings, and \textit{What links here} utility, to find usage examples for each keyword.
 
 \bibliographystyle{splncs}
 \bibliography{sample}

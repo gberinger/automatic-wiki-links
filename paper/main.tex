@@ -21,6 +21,7 @@
 \usepackage{tabu}
 \usepackage{array}
 \usepackage{tcolorbox}
+\usepackage[toc,page]{appendix}
 
 \usepackage[colorinlistoftodos]{todonotes}
 \title{Towards semantic-rich word embeddings}
@@ -425,6 +426,58 @@ Such a dataset could be automatically collected from Wikipedia, using disambigua
 
 \bibliographystyle{splncs}
 \bibliography{sample}
+
+\newpage
+\appendix
+\section{Appendix}
+\label{sec:appendix}
+
+Fig. \ref{fig:cm_tree}-\ref{fig:cm_pool} depict confusion matrices for meanings of ambiguous words, displaying how frequently each keyword was confused with others, before (\ref{sec:baseline_model})(left matrices) and after optimization (\ref{sec:optimization})(right matrices).
+Each confusion matrix was limited to meanings of one ambiguous word, with other keywords labeled as \textit{other} on the graph.
+
+Model with context length \(l=4\) was used.  Optimization was done for 4 epochs with \(\alpha=0.15, \beta=0.04\) on the train set. Both baseline and optimized model were evaluated on the test set of 10 usage examples per keyword (\ref{sec:dataset}).
+
+\begin{figure}
+    \centering
+    \caption{Confusion matrices for \textit{tree} keywords.}
+    \label{fig:cm_tree}
+    \includegraphics[scale=0.38]{res/cm_tree.png}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \caption{Confusion matrices for \textit{nail} keywords.}
+    \label{fig:cm_nail}
+    \includegraphics[scale=0.38]{res/cm_nail.png}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \caption{Confusion matrices for \textit{mars} keywords.}
+    \label{fig:cm_mars}
+    \includegraphics[scale=0.38]{res/cm_mars.png}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \caption{Confusion matrices for \textit{bolt} keywords.}
+    \label{fig:cm_bolt}
+    \includegraphics[scale=0.38]{res/cm_bolt.png}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \caption{Confusion matrices for \textit{season} keywords.}
+    \label{fig:cm_season}
+    \includegraphics[scale=0.38]{res/cm_season.png}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \caption{Confusion matrices for \textit{pool} keywords.}
+    \label{fig:cm_pool}
+    \includegraphics[scale=0.38]{res/cm_pool.png}
+\end{figure}
 
 \end{document}
 

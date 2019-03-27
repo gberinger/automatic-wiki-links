@@ -86,7 +86,7 @@ In this work, we suggest to create semantically rich embeddings for each meaning
 We evaluate this approach on a small WSD task, gathered from Wikipedia articles (\ref{sec:dataset}).
 Word is disambiguated by choosing the closest keyword embedding given the embedding of context, which is an average of word embeddings surrounding the word (\ref{sec:ctx_embed}).
 We then propose an optimization method, to improve the quality of embeddings and the result on WSD task as well -  we move keyword embeddings closer to embeddings of contexts they appear in, using examples from the training set (\ref{sec:optimization}).
-A number of experiments is run to test the proposed method and its optimized version (\ref{sec:experiments}).
+A number of experiments is run to test the proposed method and its optimized version (\ref{sec:experiments}, \ref{sec:model_analysis}).
 Finally, we discuss our findings and present future work (\ref{sec:conclusion}).
 
 \section{Related work}
@@ -406,6 +406,45 @@ We therefore check what happens, when we choose lower values of these parameters
 Longer training shows that optimal parameters obtained from previous experiments are not necessarily good for multiple passes through the training data.
 If we train for a bigger number of epochs, lower values of \(\alpha\) and \(\beta\) parameters are better.
 In future work (\ref{sec:conclusion}) we suggest, that a decay parameter might be useful for this particular reason, with each update being a bit smaller to fine-tune the results.
+
+
+\section{Model analysis}
+\label{sec:model_analysis}
+In this section, we take a closer look at how proposed solution performs before (\ref{sec:baseline_model}) and after optimization (\ref{sec:optimization}).
+For this purpose, we take a model with context length \(l=4\) as the baseline and then optimize it on the training data (\ref{sec:dataset}) for 4 epochs (\ref{sec:exp_epochs}), using \(\alpha=0.15, \beta=0.04\).
+
+\begin{table}
+\centering
+\begin{tabular}{ | m{3cm} | m{2cm} | m{2cm} |}
+    \hline
+    \textbf{Metric} & \textbf{Baseline} & \textbf{Optimized} \\
+    \hline
+    Avg. cosine distance & 0.348763 & 0.264627 \\
+    \hline
+    Top-1 accuracy & 66\% & 78\% \\
+    \hline
+    Top-2 accuracy & 81\% & 90\% \\
+    \hline
+    Top-3 accuracy & 89\% & 93\% \\
+    \hline
+\end{tabular}
+\caption{Results achieved on the test set for the model before (baseline) and after optimization (4 epochs, \(\alpha=0.15, \beta=0.04\)). Cosine distance is measured between the correct keyword and context embeddings.}
+\label{table:model_analysis}
+\end{table}
+
+Performance on the test set can be seen in Table \ref{table:model_analysis}.
+All metrics improved due to the optimization process of moving correct keywords closer to (and incorrect keywords away from) contexts found in the training set.
+High top-2 and top-3 accuracies suggest, that the correct keyword is usually relatively close to the context describing it, even with the baseline model.
+
+For the purpose of analysing which keywords get confused with each other, confusion matrices were constructed for each ambiguous word, for the baseline and optimized model (due to space constraints, Fig. \ref{fig:cm_tree}-\ref{fig:cm_pool} were moved to Appendix \ref{sec:appendix}).
+Model was not limited to choosing between the meanings of the specific ambiguous word, but nevertheless, it relatively rarely chose the meaning of unrelated ambiguous word (especially after optimization).
+It suggests, that the ambiguous word (which is always a part of context) is usually enough for the context embedding to shift in the direction of meanings connected to this word.
+
+Analysis of confusion matrices also tells us, that some keywords are easier to recognize than other, i.e. the ambiguous word often appears together with its meaning (e.g. \textit{decision tree} or \textit{growing season}, which are coined phrases) or the context in which they appear is often very similar and distinct from the rest (e.g. \textit{tree (command)}).
+Moreover, keywords of similar meaning are more likely to get confused, e.g. \textit{nails (new wave band)}, \textit{nails (hardcore punk band)} and \textit{trees (folk band)}, or \textit{tree (decision)}, \textit{tree (structure)} and \textit{tree (parse)}.
+
+It is important to note, that the performance might worsen, if we expand the keyword vocabulary to large-scale experiments, where we have much more possible keywords than 28 (Table \ref{table:dataset}).
+We suggest checking the proposed solution on large-scale dataset as possible future work (\ref{sec:conclusion}).
 
 
 \section{Conclusion and future work}

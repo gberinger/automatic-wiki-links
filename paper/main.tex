@@ -313,14 +313,14 @@ The goal of these experiments is to show how each of parameters influences on mo
 
 \subsection{Baseline}
 \label{sec:exp_baseline}
-As the baseline for optimization experiments, we check how keyword and context embeddings perform without any extra optimizations (\ref{sec:exp_baseline_model}).
+As the baseline for optimization experiments, we check how keyword and context embeddings perform without any extra optimizations (\ref{sec:baseline_model}).
 We evaluate the performance of the baseline model with different context lengths, to see how it affects top-k accuracies (Fig. \ref{fig:baseline}).
 
 \begin{figure}
     \centering
     \caption{Top-k accuracies of the baseline model with different context lengths.}
     \label{fig:baseline}
-    \includegraphics[scale=0.7]{res/baseline_context_top_acc.png}
+    \includegraphics[scale=0.5]{res/baseline_context_top_acc.png}
 \end{figure}
 
 We can see, that the model does relatively well, even unoptimized.

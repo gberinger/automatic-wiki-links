@@ -21,6 +21,7 @@
 \usepackage{tabu}
 \usepackage{array}
 \usepackage{tcolorbox}
+\usepackage[toc,page]{appendix}
 
 \usepackage[colorinlistoftodos]{todonotes}
 \title{Towards semantic-rich word embeddings}
@@ -85,7 +86,7 @@ In this work, we suggest to create semantically rich embeddings for each meaning
 We evaluate this approach on a small WSD task, gathered from Wikipedia articles (\ref{sec:dataset}).
 Word is disambiguated by choosing the closest keyword embedding given the embedding of context, which is an average of word embeddings surrounding the word (\ref{sec:ctx_embed}).
 We then propose an optimization method, to improve the quality of embeddings and the result on WSD task as well -  we move keyword embeddings closer to embeddings of contexts they appear in, using examples from the training set (\ref{sec:optimization}).
-A number of experiments is run to test the proposed method and its optimized version (\ref{sec:experiments}).
+A number of experiments is run to test the proposed method and its optimized version (\ref{sec:experiments}, \ref{sec:model_analysis}).
 Finally, we discuss our findings and present future work (\ref{sec:conclusion}).
 
 \section{Related work}
@@ -107,17 +108,18 @@ FastText\cite{fastText} enriches skip-gram word embeddings, by representing each
 
 Global Vectors (GloVe)\cite{GloVe} aim to combine both global matrix factorization and local context window methods, by training on nonzero elements in word-word co-occurence matrix, which leverages global corpus statistics and performs well on word analogy and similarity tasks.
 
-Typically, there are two kinds of approach for Word Sense Disambiguation (WSD): supervised, which make use of sense-annotated training data, and knowledge-based, which make use of the properties of lexical resources.
-%In supervised approach, the most widely used training corpus used is SemCor\cite{semcor}, with 226,036 sense annotations from 352 manually annotated documents.
-Knowledge-based systems usually exploit WordNet\cite{wordnet} or BabelNet\cite{babelnet} as semantic network.
-%Our solution joins two approaches. We use the knowledge-based word embeddings like GloVe\cite{GloVe} as a baseline for our method and then optimize them in supervised fashion.
+Iacobacci et al.\cite{embeddingsforWSD} were the first to try to use word embeddings for Word Sense Disambiguation.
+They consider four different strategies for integrating a pre-trained word embeddings as context representation in a supervised WSD system: concatenation, average, fractional and exponential decay of the vectors of the words surrounding a target word.
+Peters et al.\cite{deepcontext} create word representations that differ from traditional word embeddings in that each token is assigned a representation that is a function of the entire input sentence. They use vectors derived from a bidirectional LSTM that is trained with a coupled language model objective on a large text corpus.
 
-The most usual baseline is the Most Frequent Sense\cite{evalmfs} (MFS) heuristic, which selects for each target word the most frequent sense in the training data.
+The most usual baseline for WSD task is the Most Frequent Sense\cite{evalmfs} (MFS) heuristic, which selects for each target word the most frequent sense in the training data.
 Recent growth of sequence learning techniques using artificial neural networks contributed to WSD research: Raganato et al.\cite{neuralseqmodelingforWSD} propose a series of end-to-end neural architectures directly tailored to the task, from bidirectional Long Short-Term Memory (LSTM) to encoder-decoder models.
 Melamud et al.\cite{context2vec} also use bidirectional LSTM it their work. They use large plain text corpora to learn a neural model that embeds entire sentential contexts and target words in the same low-dimensional space, which is optimized to reflect inter-dependencies between targets and their entire sentential context as a whole.
 
-Iacobacci et al.\cite{embeddingsforWSD} were first to try to use word embeddings for WSD. They consider four different strategies for integrating a pre-trained word embeddings as context representation in a supervised WSD system: concatenation, average, fractional and exponential decay of the vectors of the words surrounding a target word.
-Peters et al.\cite{deepcontext} create word representations that differ from traditional word embeddings in that each token is assigned a representation that is a function of the entire input sentence. They use vectors derived from a bidirectional LSTM that is trained with a coupled language model objective on a large text corpus.
+%Typically, there are two kinds of approach for Word Sense Disambiguation (WSD): supervised, which make use of sense-annotated training data, and knowledge-based, which make use of the properties of lexical resources.
+%In supervised approach, the most widely used training corpus used is SemCor\cite{semcor}, with 226,036 sense annotations from 352 manually annotated documents.
+%Knowledge-based systems usually exploit WordNet\cite{wordnet} or BabelNet\cite{babelnet} as semantic network.
+%Our solution joins two approaches. We use the knowledge-based word embeddings like GloVe\cite{GloVe} as a baseline for our method and then optimize them in supervised fashion.
 
 %Most of the previous neural networks applications to WSD ignore lexical resources like glosses (sense definitions) and rely solely on word's context. In Luo et al.\cite{glosses} paper, they integrate the context and glosses of the target word into a unified framework, in order to make full use of both labeled data and lexical knowledge.
 
@@ -311,14 +313,14 @@ The goal of these experiments is to show how each of parameters influences on mo
 
 \subsection{Baseline}
 \label{sec:exp_baseline}
-As the baseline for optimization experiments, we check how keyword and context embeddings perform without any extra optimizations (\ref{sec:exp_baseline_model}).
+As the baseline for optimization experiments, we check how keyword and context embeddings perform without any extra optimizations (\ref{sec:baseline_model}).
 We evaluate the performance of the baseline model with different context lengths, to see how it affects top-k accuracies (Fig. \ref{fig:baseline}).
 
 \begin{figure}
     \centering
     \caption{Top-k accuracies of the baseline model with different context lengths.}
     \label{fig:baseline}
-    \includegraphics[scale=0.7]{res/baseline_context_top_acc.png}
+    \includegraphics[scale=0.5]{res/baseline_context_top_acc.png}
 \end{figure}
 
 We can see, that the model does relatively well, even unoptimized.
@@ -407,6 +409,45 @@ If we train for a bigger number of epochs, lower values of \(\alpha\) and \(\bet
 In future work (\ref{sec:conclusion}) we suggest, that a decay parameter might be useful for this particular reason, with each update being a bit smaller to fine-tune the results.
 
 
+\section{Model analysis}
+\label{sec:model_analysis}
+In this section, we take a closer look at how proposed solution performs before (\ref{sec:baseline_model}) and after optimization (\ref{sec:optimization}).
+For this purpose, we take a model with context length \(l=4\) as the baseline and then optimize it on the training data (\ref{sec:dataset}) for 4 epochs (\ref{sec:exp_epochs}), using \(\alpha=0.15, \beta=0.04\).
+
+\begin{table}
+\centering
+\begin{tabular}{ | m{3cm} | m{2cm} | m{2cm} |}
+    \hline
+    \textbf{Metric} & \textbf{Baseline} & \textbf{Optimized} \\
+    \hline
+    Avg. cosine distance & 0.348763 & 0.264627 \\
+    \hline
+    Top-1 accuracy & 66\% & 78\% \\
+    \hline
+    Top-2 accuracy & 81\% & 90\% \\
+    \hline
+    Top-3 accuracy & 89\% & 93\% \\
+    \hline
+\end{tabular}
+\caption{Results achieved on the test set for the model before (baseline) and after optimization (4 epochs, \(\alpha=0.15, \beta=0.04\)). Cosine distance is measured between the correct keyword and context embeddings.}
+\label{table:model_analysis}
+\end{table}
+
+Performance on the test set can be seen in Table \ref{table:model_analysis}.
+All metrics improved due to the optimization process of moving correct keywords closer to (and incorrect keywords away from) contexts found in the training set.
+High top-2 and top-3 accuracies suggest, that the correct keyword is usually relatively close to the context describing it, even with the baseline model.
+
+For the purpose of analysing which keywords get confused with each other, confusion matrices were constructed for each ambiguous word, for the baseline and optimized model (due to space constraints, Fig. \ref{fig:cm_tree}-\ref{fig:cm_pool} were moved to Appendix \ref{sec:appendix}).
+Model was not limited to choosing between the meanings of the specific ambiguous word, but nevertheless, it relatively rarely chose the meaning of unrelated ambiguous word (especially after optimization).
+It suggests, that the ambiguous word (which is always a part of context) is usually enough for the context embedding to shift in the direction of meanings connected to this word.
+
+Analysis of confusion matrices also tells us, that some keywords are easier to recognize than other, i.e. the ambiguous word often appears together with its meaning (e.g. \textit{decision tree} or \textit{growing season}, which are coined phrases) or the context in which they appear is often very similar and distinct from the rest (e.g. \textit{tree (command)}).
+Moreover, keywords of similar meaning are more likely to get confused, e.g. \textit{nails (new wave band)}, \textit{nails (hardcore punk band)} and \textit{trees (folk band)}, or \textit{tree (decision)}, \textit{tree (structure)} and \textit{tree (parse)}.
+
+It is important to note, that the performance might worsen, if we expand the keyword vocabulary to large-scale experiments, where we have much more possible keywords than 28 (Table \ref{table:dataset}).
+We suggest checking the proposed solution on large-scale dataset as possible future work (\ref{sec:conclusion}).
+
+
 \section{Conclusion and future work}
 \label{sec:conclusion}
 Constructing semantic-rich embeddings for ambiguous words, by taking the average of embeddings of the ambiguous word and words describing its meaning (\ref{sec:kw_embed}), and then comparing it with the average embedding of context words describing said keyword (\ref{sec:ctx_embed}), proved to be a surprisingly good approach for the task of disambiguation on the dataset of 28 keywords we collected (\ref{sec:dataset}).
@@ -425,6 +466,58 @@ Such a dataset could be automatically collected from Wikipedia, using disambigua
 
 \bibliographystyle{splncs}
 \bibliography{sample}
+
+\newpage
+\appendix
+\section{Appendix}
+\label{sec:appendix}
+
+Fig. \ref{fig:cm_tree}-\ref{fig:cm_pool} depict confusion matrices for meanings of ambiguous words, displaying how frequently each keyword was confused with others, before (\ref{sec:baseline_model})(left matrices) and after optimization (\ref{sec:optimization})(right matrices).
+Each confusion matrix was limited to meanings of one ambiguous word, with other keywords labeled as \textit{other} on the graph.
+
+Model with context length \(l=4\) was used.  Optimization was done for 4 epochs with \(\alpha=0.15, \beta=0.04\) on the train set. Both baseline and optimized model were evaluated on the test set of 10 usage examples per keyword (\ref{sec:dataset}).
+
+\begin{figure}
+    \centering
+    \caption{Confusion matrices for \textit{tree} keywords.}
+    \label{fig:cm_tree}
+    \includegraphics[scale=0.38]{res/cm_tree.png}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \caption{Confusion matrices for \textit{nail} keywords.}
+    \label{fig:cm_nail}
+    \includegraphics[scale=0.38]{res/cm_nail.png}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \caption{Confusion matrices for \textit{mars} keywords.}
+    \label{fig:cm_mars}
+    \includegraphics[scale=0.38]{res/cm_mars.png}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \caption{Confusion matrices for \textit{bolt} keywords.}
+    \label{fig:cm_bolt}
+    \includegraphics[scale=0.38]{res/cm_bolt.png}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \caption{Confusion matrices for \textit{season} keywords.}
+    \label{fig:cm_season}
+    \includegraphics[scale=0.38]{res/cm_season.png}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \caption{Confusion matrices for \textit{pool} keywords.}
+    \label{fig:cm_pool}
+    \includegraphics[scale=0.38]{res/cm_pool.png}
+\end{figure}
 
 \end{document}
 

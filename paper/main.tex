@@ -195,7 +195,7 @@ Dataset, together with the code to execute experiments from this paper, can be f
 \section{Our method}
 \subsection{Keyword embedding}
 \label{sec:kw_embed}
-\textit{Keyword} is a sequence of words that lets us disambiguate between different meanings of the same ambiguous word, e.g. \textit{tree (forest)} that represents a tree as a plant and \textit{tree (structure)} which represents tree as a mathematical structure.
+\textit{Keyword} is a sequence of words that is composed of the ambigous word and words describing its specific meaning, e.g. \textit{tree (forest)} that represents tree as a plant (ambiguous word: \textit{tree}, meaning: \textit{forest}) and \textit{tree (structure)} which represents tree as a mathematical structure (ambiguous word: \textit{tree}, meaning: \textit{structure}).
 
 To get the embedding of the keyword, we average embeddings of all the words in the keyword:
 
@@ -215,8 +215,8 @@ Example for keyword \textit{tree (forest)}:
 
 \subsection{Context embedding}
 \label{sec:ctx_embed}
-\textit{Context} is a sequence of words that contains an ambiguous word within, usually in the middle.
-It is parametrized by \textbf{context length \(l\)}, which specifies how many of words from both side of the ambiguous word in question were taken into consideration.
+\textit{Context} is a sequence of words, extracted from some text, which contains an ambiguous word and words surrounding it in text.
+It is parametrized by \textbf{context length \(l\)}, which specifies how many words from both sides of the ambiguous word are taken into consideration.
 
 \textit{Context embedding} \(\bm{c}\) is also achieved by taking an average of word embeddings (Equation \ref{eq:keyword_embedding}).
 In this case, \(N = 2l + 1\) and \(w_1, w_2, ..., w_N\) is the context with ambiguous word inside. For some cases \(N < 2l + 1\), since the ambiguous word may occur at the beginning or ending of text example and full context cannot be collected.

@@ -85,7 +85,7 @@ In this work, we suggest to create semantically rich embeddings for each \textit
 We evaluate this approach on a small WSD task, gathered from Wikipedia articles (\ref{sec:dataset}).
 Word is disambiguated by choosing the closest keyword embedding given the embedding of context, which is an average of word embeddings surrounding the word (\ref{sec:ctx_embed}).
 We then propose an optimization method, to improve the quality of embeddings and the result on WSD task as well -  we move keyword embeddings closer to embeddings of contexts they appear in, using examples from the training set (\ref{sec:optimization}).
-A number of experiments is run to test the proposed method and its optimized version (\ref{sec:experiments}, \ref{sec:model_analysis}).
+A number of experiments is run to test the proposed method and its optimized version (\ref{sec:experiments}, \ref{sec:discussion}).
 Finally, we discuss our results and propose future work (\ref{sec:conclusion}).
 
 \section{Related work}
@@ -287,18 +287,6 @@ Both optimization methods can be seen on Fig. \ref{fig:opt}. The performance of 
 \end{figure}
 
 
-\subsection{Limitations}
-\label{sec:limitations}
-We are aware that our method has some limitations.
-First of all, it may be impossible to achieve the optimal solution, as we can only optimize keyword embeddings, leaving context embeddings fixed in the multidimensional space.
-Therefore, it is possible that contexts for specific keyword overlap on contexts for other keyword.
-
-Secondly, the average context embedding may be ambiguous, with a high possibility of two different context being mapped to a similar point in space, especially for longer context legths.
-In future work (\ref{sec:conclusion}), we suggest experimenting with different sequence embedding techniques, that might be better suited for this purpose than a flat average.
-
-Finally, we run experiments for a very small number of ambiguous words and meanings (Table \ref{table:dataset}). Our method could have problems with a bigger dataset, since it would be much more difficult to separate different keywords.
-
-
 \section{Experiments}
 \label{sec:experiments}
 The goal of following experiments is to check how semantic-rich keyword embeddings (\ref{sec:kw_embed}, \ref{sec:ctx_embed}) perform for the dataset we collected (\ref{sec:dataset}), both for the basic approach (\ref{sec:baseline_model}) and after applying optimization techniques (\ref{sec:optimization}).
@@ -408,9 +396,12 @@ If we train for a bigger number of epochs, lower values of \(\alpha\) and \(\bet
 In future work (\ref{sec:conclusion}) we suggest, that a decay parameter might be useful for this particular reason, with each update being a bit smaller to fine-tune the results.
 
 
-\section{Model analysis}
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{Model analysis}
 \label{sec:model_analysis}
-In this section, we take a closer look at how proposed solution performs before (\ref{sec:baseline_model}) and after optimization (\ref{sec:optimization}).
+We take a look at how the proposed model performs before (\ref{sec:baseline_model}) and after optimization (\ref{sec:optimization}).
 For this purpose, we take a model with context length \(l=4\) as the baseline and then optimize it on the training data (\ref{sec:dataset}) for 4 epochs (\ref{sec:exp_epochs}), using \(\alpha=0.15, \beta=0.04\).
 
 \begin{table}
@@ -445,6 +436,17 @@ Moreover, keywords of similar meaning are more likely to get confused, e.g. \tex
 
 It is important to note, that the performance might worsen, if we expand the keyword vocabulary to large-scale experiments, where we have much more possible keywords than 28 (Table \ref{table:dataset}).
 We suggest checking the proposed solution on large-scale dataset as possible future work (\ref{sec:conclusion}).
+
+\subsection{Limitations}
+\label{sec:limitations}
+We are aware that our method has some limitations.
+First of all, it may be impossible to achieve the optimal solution, as we can only optimize keyword embeddings, leaving context embeddings fixed in the multidimensional space.
+Therefore, it is possible that contexts for specific keyword overlap on contexts for other keyword.
+
+Secondly, the average context embedding may be ambiguous, with a high possibility of two different context being mapped to a similar point in space, especially for longer context legths.
+In future work (\ref{sec:conclusion}), we suggest experimenting with different sequence embedding techniques, that might be better suited for this purpose than a flat average.
+
+Finally, we run experiments for a very small number of ambiguous words and meanings (Table \ref{table:dataset}). Our method could have problems with a bigger dataset, since it would be much more difficult to separate different keywords.
 
 
 \section{Conclusion and future work}

@@ -81,12 +81,12 @@ For many applications, such as improving relevance of search engines, anaphora r
 This task is called Word Sense Disambiguation (WSD) and is an open problem in NLP domain.
 Word embeddings cannot be applied to WSD out-of-the-box, since they cannot differentiate between multiple meanings of an ambiguous word.
 
-In this work, we suggest to create semantically rich embeddings for each meaning of a word (\textit{keyword}) (\ref{sec:kw_embed}), by averaging embeddings of the ambiguous word and words describing its meaning (\ref{sec:baseline_model}).
+In this work, we suggest to create semantically rich embeddings for each \textit{keyword} (ambiguous word together with meaning, e.g. \textit{tree (structure)}, \textit{pool (computer science)}) (\ref{sec:kw_embed}), by averaging embeddings of the ambiguous word and words describing its meaning (\ref{sec:baseline_model}).
 We evaluate this approach on a small WSD task, gathered from Wikipedia articles (\ref{sec:dataset}).
 Word is disambiguated by choosing the closest keyword embedding given the embedding of context, which is an average of word embeddings surrounding the word (\ref{sec:ctx_embed}).
 We then propose an optimization method, to improve the quality of embeddings and the result on WSD task as well -  we move keyword embeddings closer to embeddings of contexts they appear in, using examples from the training set (\ref{sec:optimization}).
 A number of experiments is run to test the proposed method and its optimized version (\ref{sec:experiments}, \ref{sec:model_analysis}).
-Finally, we discuss our findings and present future work (\ref{sec:conclusion}).
+Finally, we discuss our results and propose future work (\ref{sec:conclusion}).
 
 \section{Related work}
 \label{sec:related_work}

@@ -99,13 +99,21 @@ Finally, we discuss our results and propose future work (\ref{sec:conclusion}).
 % WSD background
 
 There have been many methods of creating semantically meaningful word representations.
-Global matrix factorization methods, such as latent semantic analysis (LSA)\cite{LSA} use matrix factorization to perform rank reduction on a large term-frequency matrix, that captures statistical information about the corpus.
+Global matrix factorization methods, such as latent semantic analysis (LSA)\cite{LSA}, use matrix factorization to perform dimensionality reduction on a large term-frequency matrix, that captures statistical information about the corpus. As the result, we receive word and document embeddings, which are parametrized by the number of topics we want to extract from the documents, and which can be used to find similarities between different words and documents.
 
-Local context window methods, like popular skip-gram (SG) or continuous bag-of-words (CBOW) models from word2vec paper\cite{word2vec}, were shown to outperform approaches like LSA at word analogy task.
-They use shallow neural networks to either predict context words based on the current word (SG), or predict current word based on context words (CBOW).
-FastText\cite{fastText} enriches skip-gram word embeddings, by representing each word as a bag of character n-grams, which also has an added benefit of the ability to compute word representations for words unseen during training.
+Other approach to creating word embeddings is to take only local context into account, without using global statistics.
+Example of this is word2vec\cite{word2vec}, where a shallow neural network is trained to either predict context words based on the current word (skig-gram), or predict current word based on context words (continuous bag-of-words).
+Continuous representations of words are then extracted from the hidden layer of the trained network.
+Such word embeddings were shown to outperform previous approaches at word analogy and similarity tasks.
+FastText\cite{fastText} improves upon skip-gram method, by representing each word as a bag of character n-grams, which provides more flexibility and has an added benefit of the ability to compute word representations for words unseen during training.
 
-Global Vectors (GloVe)\cite{GloVe} aim to combine both global matrix factorization and local context window methods, by training on nonzero elements in word-word co-occurence matrix, which leverages global corpus statistics and performs well on word analogy and similarity tasks.
+Global Vectors (GloVe)\cite{GloVe} combine both global matrix factorization and local context window methods, by training word vectors on co-occurence matrix, so that their differences predict co-occurence ratios.
+Unlike word2vec\cite{word2vec}, GloVe takes advantage of global count statistics instead of only local information, which results in better performance on some word analogy and similarity benchmarks.
+
+Word embeddings can be also extracted from a trained language model\cite{nnlm}.
+Recently, methods like ELMo\cite{elmo} or BERT\cite{bert} were shown to achieve great results in many NLP tasks.
+They produce deep contextualized word embeddings by using internal states of a trained language model pretrained on large corpus of text.
+Since models used are bidirectional (LSTM for ELMo, Transformer for BERT), the word embedding is conditioned on its left and right context, achieving flexible vector representations that could be used to disambiguate words.
 
 Iacobacci et al.\cite{embeddingsforWSD} were the first to try to use word embeddings for Word Sense Disambiguation.
 They consider four different strategies for integrating a pre-trained word embeddings as context representation in a supervised WSD system: concatenation, average, fractional and exponential decay of the vectors of the words surrounding a target word.
@@ -290,7 +298,7 @@ Both optimization methods can be seen on Fig. \ref{fig:opt}. The performance of 
 \section{Experiments}
 \label{sec:experiments}
 The goal of following experiments is to check how semantic-rich keyword embeddings (\ref{sec:kw_embed}, \ref{sec:ctx_embed}) perform for the dataset we collected (\ref{sec:dataset}), both for the basic approach (\ref{sec:baseline_model}) and after applying optimization techniques (\ref{sec:optimization}).
-We use a pretrained embedding model from spaCy - \textit{en\_vectors\_web\_lg}, which contains 300-dimensional word vectors trained on Common Crawl with GloVe\cite{spacymodel}.
+We use a pretrained embedding model from spaCy - \textit{en\_vectors\_web\_lg}, which contains 300-dimensional word vectors trained on Common Crawl with GloVe\footnote{https://spacy.io/models/en\#section-en\_vectors\_web\_lg}.
 
 We compare results on the test set with top-k metrics (\(k \in {1, 2, 3}\)), where we check, if the correct keyword is in closest \(k\) keywords given a specific context describing it (\ref{sec:baseline_model}). We focus mostly on top-1 accuracy, since we are interested if the word is correctly disambiguated.
 
